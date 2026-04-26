@@ -9,7 +9,7 @@ import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import * as bcrypt from 'bcrypt';
 
-const PUBLIC_MEMBER_SELECT = {
+const BASE_PUBLIC = {
   id: true,
   userId: true,
   displayName: true,
@@ -21,22 +21,41 @@ const PUBLIC_MEMBER_SELECT = {
   discordHandle: true,
 };
 
+const PUBLIC_MEMBER_SELECT = {
+  ...BASE_PUBLIC,
+  phone: true,
+  birthDate: true,
+  showPhone: true,
+  showBirthDate: true,
+};
+
 const SELF_MEMBER_SELECT = {
-  ...PUBLIC_MEMBER_SELECT,
+  ...BASE_PUBLIC,
   realName: true,
   phone: true,
+  showPhone: true,
+  birthDate: true,
+  showBirthDate: true,
+  dni: true,
+  address: true,
   user: { select: { email: true, role: true, isActive: true } },
 };
 
 const ADMIN_MEMBER_SELECT = {
-  ...PUBLIC_MEMBER_SELECT,
-  realName: true,
-  phone: true,
+  ...SELF_MEMBER_SELECT,
   notes: true,
   createdAt: true,
   updatedAt: true,
-  user: { select: { email: true, role: true, isActive: true } },
 };
+
+function applyPublicVisibility(member: any) {
+  const { showPhone, showBirthDate, ...rest } = member;
+  return {
+    ...rest,
+    phone: showPhone ? rest.phone : null,
+    birthDate: showBirthDate ? rest.birthDate : null,
+  };
+}
 
 @Injectable()
 export class MembersService {
@@ -57,11 +76,12 @@ export class MembersService {
     if (status) where.status = status;
 
     const isAdmin = this.isAdmin(viewerRole);
-    return this.prisma.member.findMany({
+    const members = await this.prisma.member.findMany({
       where,
       select: isAdmin ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
       orderBy: { displayName: 'asc' },
     });
+    return isAdmin ? members : members.map(applyPublicVisibility);
   }
 
   async findOne(id: string, viewerRole: Role) {
@@ -71,7 +91,7 @@ export class MembersService {
       select: isAdmin ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
     });
     if (!member) throw new NotFoundException('Miembro no encontrado');
-    return member;
+    return isAdmin ? member : applyPublicVisibility(member);
   }
 
   async findByUserId(userId: string, viewerRole: Role) {

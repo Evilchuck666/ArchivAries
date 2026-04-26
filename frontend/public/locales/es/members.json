@@ -46,5 +46,13 @@
   "uploading": "Subiendo...",
   "upload_error": "Error al subir. Usa JPG, PNG, WEBP o GIF (máx. 5MB).",
   "or_enter_url": "o pega una URL",
-  "current_password_invalid": "Contraseña incorrecta"
+  "current_password_invalid": "Contraseña incorrecta",
+  "show_phone": "Mostrar teléfono a otros miembros",
+  "birth_date": "Fecha de nacimiento",
+  "show_birth_date": "Mostrar fecha de nacimiento a otros miembros",
+  "dni": "DNI / NIE",
+  "dni_placeholder": "12345678A",
+  "address": "Dirección",
+  "address_placeholder": "Calle, número, ciudad...",
+  "admin_only": "Solo visible para administradores"
 }

@@ -16,8 +16,13 @@ interface ProfileFormData {
   realName: string;
   bio: string;
   phone: string;
+  showPhone: boolean;
   discordHandle: string;
   avatarUrl: string;
+  birthDate: string;
+  showBirthDate: boolean;
+  dni: string;
+  address: string;
 }
 
 interface PasswordFormData {
@@ -64,11 +69,16 @@ export function MemberEditPage() {
     if (member) {
       profileForm.reset({
         displayName: member.displayName,
-        realName: (member as any).realName ?? '',
+        realName: member.realName ?? '',
         bio: member.bio ?? '',
-        phone: (member as any).phone ?? '',
+        phone: member.phone ?? '',
+        showPhone: member.showPhone ?? false,
         discordHandle: member.discordHandle ?? '',
         avatarUrl: member.avatarUrl ?? '',
+        birthDate: member.birthDate ? member.birthDate.slice(0, 10) : '',
+        showBirthDate: member.showBirthDate ?? false,
+        dni: member.dni ?? '',
+        address: member.address ?? '',
       });
     }
   }, [member, profileForm]);
@@ -79,8 +89,13 @@ export function MemberEditPage() {
       realName: data.realName || undefined,
       bio: data.bio || undefined,
       phone: data.phone || undefined,
+      showPhone: data.showPhone,
       discordHandle: data.discordHandle || undefined,
       avatarUrl: data.avatarUrl || undefined,
+      birthDate: data.birthDate || undefined,
+      showBirthDate: data.showBirthDate,
+      dni: data.dni || undefined,
+      address: data.address || undefined,
     }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['member-me'] });
@@ -204,6 +219,40 @@ export function MemberEditPage() {
               <label className="block text-sm text-slate-400 mb-1">{t('phone')}</label>
               <Input {...profileForm.register('phone')} placeholder={t('phone_placeholder')} type="tel" />
             </div>
+          </div>
+
+          <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-400">
+            <input type="checkbox" {...profileForm.register('showPhone')} className="accent-amber-600" />
+            {t('show_phone')}
+          </label>
+
+          <div>
+            <label className="block text-sm text-slate-400 mb-1">{t('birth_date')}</label>
+            <Input type="date" {...profileForm.register('birthDate')} />
+          </div>
+
+          <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-400">
+            <input type="checkbox" {...profileForm.register('showBirthDate')} className="accent-amber-600" />
+            {t('show_birth_date')}
+          </label>
+
+          <div>
+            <label className="block text-sm text-slate-400 mb-1">
+              {t('dni')} <span className="text-xs text-slate-600">— {t('admin_only')}</span>
+            </label>
+            <Input {...profileForm.register('dni')} placeholder={t('dni_placeholder')} />
+          </div>
+
+          <div>
+            <label className="block text-sm text-slate-400 mb-1">
+              {t('address')} <span className="text-xs text-slate-600">— {t('admin_only')}</span>
+            </label>
+            <textarea
+              {...profileForm.register('address')}
+              rows={2}
+              placeholder={t('address_placeholder')}
+              className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
+            />
           </div>
 
           {profileMutation.isError && (

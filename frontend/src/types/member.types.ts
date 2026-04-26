@@ -10,9 +10,15 @@ export interface Member {
   rank: string | null;
   joinedAt: string;
   discordHandle: string | null;
-  // admin-only fields
+  // self + admin fields
   realName?: string;
-  phone?: string;
+  phone?: string | null;
+  showPhone?: boolean;
+  birthDate?: string | null;
+  showBirthDate?: boolean;
+  dni?: string | null;
+  address?: string | null;
+  // admin-only fields
   notes?: string;
   user?: { email: string; role: string; isActive: boolean };
 }

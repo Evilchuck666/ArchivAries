@@ -83,6 +83,30 @@ export function MemberProfilePage() {
               <dd className="text-slate-300">{member.discordHandle}</dd>
             </div>
           )}
+          {member.phone && (
+            <div className="flex justify-between text-sm">
+              <dt className="text-slate-500">{t('phone')}</dt>
+              <dd className="text-slate-300">{member.phone}</dd>
+            </div>
+          )}
+          {member.birthDate && (
+            <div className="flex justify-between text-sm">
+              <dt className="text-slate-500">{t('birth_date')}</dt>
+              <dd className="text-slate-300">{format(new Date(member.birthDate), "d 'de' MMMM yyyy", { locale: es })}</dd>
+            </div>
+          )}
+          {member.dni && (
+            <div className="flex justify-between text-sm">
+              <dt className="text-slate-500">{t('dni')}</dt>
+              <dd className="text-slate-300">{member.dni}</dd>
+            </div>
+          )}
+          {member.address && (
+            <div className="flex justify-between text-sm">
+              <dt className="text-slate-500">{t('address')}</dt>
+              <dd className="text-slate-300 text-right max-w-[60%]">{member.address}</dd>
+            </div>
+          )}
           {member.user?.email && (
             <div className="flex justify-between text-sm">
               <dt className="text-slate-500">{t('email')}</dt>

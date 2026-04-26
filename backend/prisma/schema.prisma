@@ -89,8 +89,13 @@ model Member {
   status        MemberStatus @default(ASPIRANT)
   joinedAt      DateTime     @default(now())
   phone         String?
+  showPhone     Boolean      @default(false)
   discordHandle String?
   rank          String?
+  birthDate     DateTime?
+  showBirthDate Boolean      @default(false)
+  dni           String?
+  address       String?
   notes         String?      @db.Text
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt

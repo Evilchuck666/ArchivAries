@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 import { MemberStatus } from '../../common/enums/member-status.enum';
 
 export class UpdateMemberDto {
@@ -27,12 +27,32 @@ export class UpdateMemberDto {
   phone?: string;
 
   @IsOptional()
+  @IsBoolean()
+  showPhone?: boolean;
+
+  @IsOptional()
   @IsString()
   discordHandle?: string;
 
   @IsOptional()
   @IsString()
   rank?: string;
+
+  @IsOptional()
+  @IsDateString()
+  birthDate?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  showBirthDate?: boolean;
+
+  @IsOptional()
+  @IsString()
+  dni?: string;
+
+  @IsOptional()
+  @IsString()
+  address?: string;
 
   @IsOptional()
   @IsString()
