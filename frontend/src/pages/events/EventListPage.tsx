@@ -1,0 +1,89 @@
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { eventsApi } from '../../api/events.api';
+import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
+import { Spinner } from '../../components/ui/Spinner';
+import { EmptyState } from '../../components/ui/EmptyState';
+import { useAuthStore } from '../../store/auth.store';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+
+const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+
+export function EventListPage() {
+  const { t } = useTranslation('events');
+  const { user } = useAuthStore();
+  const [status, setStatus] = useState('');
+  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
+
+  const { data: events = [], isLoading } = useQuery({
+    queryKey: ['events', status],
+    queryFn: () => eventsApi.getAll({ status: status || undefined }),
+    staleTime: 30_000,
+  });
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-serif text-amber-200">{t('title')}</h1>
+        <div className="flex items-center gap-3">
+          <Link to="/app/events/calendar" className="text-sm text-amber-400 hover:text-amber-300">
+            🗓 {t('calendar_view')}
+          </Link>
+          {canCreate && (
+            <Link
+              to="/app/events/create"
+              className="bg-amber-600 hover:bg-amber-500 text-white text-sm px-3 py-1.5 rounded-md transition-colors border border-amber-500"
+            >
+              + {t('create_event')}
+            </Link>
+          )}
+        </div>
+      </div>
+
+      <select
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        className="mb-4 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+      >
+        <option value="">Todos los estados</option>
+        {['PLANNED', 'CONFIRMED', 'CANCELLED', 'FINISHED'].map((s) => (
+          <option key={s} value={s}>{s}</option>
+        ))}
+      </select>
+
+      {isLoading ? (
+        <Spinner className="py-20" />
+      ) : events.length === 0 ? (
+        <EmptyState title={t('no_events')} icon={<span className="text-5xl">📅</span>} />
+      ) : (
+        <div className="flex flex-col gap-3">
+          {events.map((event) => (
+            <Link
+              key={event.id}
+              to={`/app/events/${event.id}`}
+              className="bg-slate-900 border border-slate-800 hover:border-amber-800 rounded-lg p-4 transition-colors group flex gap-4 items-start"
+            >
+              <div className="shrink-0 bg-slate-800 rounded p-2 text-center min-w-14">
+                <p className="text-xs text-slate-500 uppercase">{format(new Date(event.startDate), 'MMM', { locale: es })}</p>
+                <p className="text-2xl font-bold text-amber-300 leading-none">{format(new Date(event.startDate), 'd')}</p>
+                <p className="text-xs text-slate-500">{format(new Date(event.startDate), 'yyyy')}</p>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">{event.title}</h3>
+                {event.location && <p className="text-xs text-slate-500 mt-0.5">📍 {event.location}</p>}
+                <div className="flex items-center gap-2 mt-2">
+                  <EventStatusBadge status={event.status} />
+                  <span className="text-xs text-slate-500">{event.eventType}</span>
+                  {event._count && <span className="text-xs text-slate-500">👥 {event._count.participations}</span>}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Lore",
+  "entry": "Entrada",
+  "create_entry": "Nueva entrada",
+  "entry_title": "Título",
+  "content": "Contenido",
+  "summary": "Resumen",
+  "category": "Categoría",
+  "tags": "Etiquetas",
+  "all_categories": "Todas las categorías",
+  "no_entries": "No hay entradas de lore en esta categoría",
+  "categories": {
+    "HISTORY": "Historia",
+    "SYMBOLS": "Símbolos",
+    "ENEMIES": "Enemigos",
+    "FACTIONS": "Facciones",
+    "PLACES": "Lugares",
+    "CHARACTERS": "Personajes",
+    "CHRONICLES": "Crónicas",
+    "OTHER": "Otros"
+  }
+}

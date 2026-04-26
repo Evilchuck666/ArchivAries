@@ -1,0 +1,29 @@
+{
+  "title": "Avisos",
+  "announcement": "Aviso",
+  "create_news": "Publicar aviso",
+  "news_title": "Título",
+  "content": "Contenido",
+  "important": "Importante",
+  "published": "Publicado",
+  "published_at": "Publicado el",
+  "by": "por",
+  "no_news": "No hay avisos publicados",
+  "no_content": "Este aviso no tiene contenido todavía.",
+  "mark_important": "Marcar como importante",
+  "not_found": "Aviso no encontrado",
+  "delete": "Eliminar",
+  "confirm_delete": "¿Seguro que quieres eliminar este aviso?",
+  "prev": "Anterior",
+  "next": "Siguiente",
+  "page": "Página",
+  "form": {
+    "title": "Título",
+    "content": "Contenido",
+    "mark_important": "Marcar como importante",
+    "error": "Ha ocurrido un error al publicar.",
+    "saving": "Publicando...",
+    "publish": "Publicar aviso",
+    "cancel": "Cancelar"
+  }
+}

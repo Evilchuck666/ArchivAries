@@ -1,0 +1,82 @@
+{
+  "app_name": "ArchivAries",
+  "tagline": "Archivo vivo de Aries Ferrus",
+  "nav": {
+    "dashboard": "Panel principal",
+    "members": "Miembros",
+    "events": "Eventos",
+    "calendar": "Calendario",
+    "documents": "Documentación",
+    "news": "Avisos",
+    "lore": "Lore",
+    "admin": "Administración",
+    "profile": "Mi perfil",
+    "logout": "Cerrar sesión"
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "view": "Ver",
+    "back": "Volver",
+    "confirm": "Confirmar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "loading": "Cargando...",
+    "submit": "Enviar",
+    "activate": "Activar",
+    "deactivate": "Desactivar"
+  },
+  "status": {
+    "ACTIVE": "Activo",
+    "ASPIRANT": "Aspirante",
+    "INACTIVE": "Inactivo",
+    "ALUMNI": "Exmiembro",
+    "COLLABORATOR": "Colaborador",
+    "PLANNED": "Previsto",
+    "CONFIRMED": "Confirmado",
+    "CANCELLED": "Cancelado",
+    "FINISHED": "Finalizado",
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "roles": {
+    "VISITOR": "Visitante",
+    "MEMBER": "Miembro",
+    "AREA_MANAGER": "Responsable",
+    "ADMIN": "Administrador",
+    "SUPER_ADMIN": "Super-Administrador"
+  },
+  "errors": {
+    "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+    "not_found": "No encontrado",
+    "unauthorized": "No autorizado",
+    "forbidden": "Acceso denegado"
+  },
+  "empty": {
+    "default": "No hay nada aquí todavía"
+  },
+  "pagination": {
+    "prev": "Anterior",
+    "next": "Siguiente"
+  },
+  "fields": {
+    "user": "Usuario",
+    "email": "Correo",
+    "role": "Rol",
+    "status": "Estado",
+    "actions": "Acciones"
+  },
+  "admin": {
+    "title": "Administración",
+    "subtitle": "Gestión centralizada de la plataforma ArchivAries",
+    "users": "Gestión de usuarios",
+    "users_desc": "Consultar roles y activar/desactivar cuentas",
+    "documents_desc": "Gestionar documentación interna",
+    "news_desc": "Publicar y gestionar avisos",
+    "events_desc": "Crear y gestionar eventos",
+    "lore_desc": "Gestionar entradas del lore"
+  }
+}

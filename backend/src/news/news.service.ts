@@ -1,0 +1,74 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateNewsDto } from './dto/create-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
+
+@Injectable()
+export class NewsService {
+  constructor(private prisma: PrismaService) {}
+
+  findAll(page = 1, limit = 10) {
+    return this.prisma.newsAnnouncement.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedAt: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: {
+        id: true,
+        title: true,
+        isImportant: true,
+        publishedAt: true,
+        creator: { select: { member: { select: { displayName: true } } } },
+      },
+    });
+  }
+
+  findImportant() {
+    return this.prisma.newsAnnouncement.findMany({
+      where: { isPublished: true, isImportant: true },
+      orderBy: { publishedAt: 'desc' },
+      take: 5,
+    });
+  }
+
+  findRecent(limit = 5) {
+    return this.prisma.newsAnnouncement.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedAt: 'desc' },
+      take: limit,
+      select: {
+        id: true,
+        title: true,
+        isImportant: true,
+        publishedAt: true,
+      },
+    });
+  }
+
+  async findOne(id: string) {
+    const news = await this.prisma.newsAnnouncement.findUnique({
+      where: { id },
+      include: {
+        creator: { select: { member: { select: { displayName: true } } } },
+      },
+    });
+    if (!news) throw new NotFoundException('Aviso no encontrado');
+    return news;
+  }
+
+  create(dto: CreateNewsDto, creatorId: string) {
+    return this.prisma.newsAnnouncement.create({
+      data: { ...dto, creatorId },
+    });
+  }
+
+  async update(id: string, dto: UpdateNewsDto) {
+    await this.findOne(id);
+    return this.prisma.newsAnnouncement.update({ where: { id }, data: dto });
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
+    return this.prisma.newsAnnouncement.delete({ where: { id } });
+  }
+}

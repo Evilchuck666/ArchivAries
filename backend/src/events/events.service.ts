@@ -1,0 +1,137 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { Role } from '../common/enums/role.enum';
+import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
+import { ParticipationDto } from './dto/participation.dto';
+
+@Injectable()
+export class EventsService {
+  constructor(private prisma: PrismaService) {}
+
+  findAll(filters: {
+    status?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    isPublic?: boolean;
+  }) {
+    const where: any = {};
+    if (filters.status) where.status = filters.status;
+    if (filters.isPublic !== undefined) where.isPublic = filters.isPublic;
+    if (filters.dateFrom || filters.dateTo) {
+      where.startDate = {};
+      if (filters.dateFrom) where.startDate.gte = new Date(filters.dateFrom);
+      if (filters.dateTo) where.startDate.lte = new Date(filters.dateTo);
+    }
+
+    return this.prisma.event.findMany({
+      where,
+      orderBy: { startDate: 'asc' },
+      include: {
+        creator: { select: { member: { select: { displayName: true } } } },
+        _count: { select: { participations: true } },
+      },
+    });
+  }
+
+  findUpcoming(limit = 5) {
+    return this.prisma.event.findMany({
+      where: {
+        startDate: { gte: new Date() },
+        status: { not: 'CANCELLED' },
+      },
+      orderBy: { startDate: 'asc' },
+      take: limit,
+      include: {
+        _count: { select: { participations: true } },
+      },
+    });
+  }
+
+  findPublic() {
+    return this.findAll({ isPublic: true });
+  }
+
+  async findOne(id: string) {
+    const event = await this.prisma.event.findUnique({
+      where: { id },
+      include: {
+        creator: { select: { member: { select: { displayName: true } } } },
+        _count: { select: { participations: true } },
+      },
+    });
+    if (!event) throw new NotFoundException('Evento no encontrado');
+    return event;
+  }
+
+  create(dto: CreateEventDto, creatorId: string) {
+    return this.prisma.event.create({
+      data: {
+        ...dto,
+        startDate: new Date(dto.startDate),
+        endDate: dto.endDate ? new Date(dto.endDate) : undefined,
+        creatorId,
+      },
+    });
+  }
+
+  async update(id: string, dto: UpdateEventDto) {
+    await this.findOne(id);
+    return this.prisma.event.update({
+      where: { id },
+      data: {
+        ...dto,
+        startDate: dto.startDate ? new Date(dto.startDate) : undefined,
+        endDate: dto.endDate ? new Date(dto.endDate) : undefined,
+      },
+    });
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
+    return this.prisma.event.delete({ where: { id } });
+  }
+
+  async participate(eventId: string, userId: string, dto: ParticipationDto) {
+    await this.findOne(eventId);
+    return this.prisma.eventParticipation.upsert({
+      where: { eventId_userId: { eventId, userId } },
+      create: {
+        eventId,
+        userId,
+        ...dto,
+        confirmedAt: dto.status === 'CONFIRMED' ? new Date() : null,
+      },
+      update: {
+        ...dto,
+        confirmedAt: dto.status === 'CONFIRMED' ? new Date() : null,
+      },
+    });
+  }
+
+  async getParticipants(eventId: string, viewerRole: Role) {
+    await this.findOne(eventId);
+    const isAdmin = [Role.ADMIN, Role.SUPER_ADMIN, Role.AREA_MANAGER].includes(viewerRole);
+
+    return this.prisma.eventParticipation.findMany({
+      where: { eventId },
+      select: {
+        status: true,
+        role: true,
+        notes: isAdmin,
+        confirmedAt: true,
+        user: {
+          select: {
+            member: { select: { displayName: true, avatarUrl: true } },
+          },
+        },
+      },
+    });
+  }
+
+  async getUserParticipation(eventId: string, userId: string) {
+    return this.prisma.eventParticipation.findUnique({
+      where: { eventId_userId: { eventId, userId } },
+    });
+  }
+}

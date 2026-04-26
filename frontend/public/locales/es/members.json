@@ -1,0 +1,20 @@
+{
+  "title": "Miembros",
+  "member": "Miembro",
+  "display_name": "Nombre en el grupo",
+  "real_name": "Nombre real",
+  "status": "Estado",
+  "rank": "Rango",
+  "joined": "Miembro desde",
+  "bio": "Sobre mí",
+  "discord": "Discord",
+  "phone": "Teléfono",
+  "notes": "Notas internas",
+  "email": "Correo electrónico",
+  "search_placeholder": "Buscar por nombre...",
+  "filter_status": "Filtrar por estado",
+  "all_statuses": "Todos los estados",
+  "create_member": "Añadir miembro",
+  "edit_profile": "Editar perfil",
+  "no_members": "No se han encontrado miembros"
+}

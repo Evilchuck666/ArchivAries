@@ -1,0 +1,42 @@
+{
+  "title": "Documentación",
+  "document": "Documento",
+  "create_document": "Crear documento",
+  "document_title": "Título",
+  "content": "Contenido",
+  "summary": "Resumen",
+  "category": "Categoría",
+  "visibility_label": "Visibilidad",
+  "visibility_all": "Todos los miembros",
+  "visibility_restricted": "Restringido",
+  "pinned": "Destacado",
+  "published": "Publicado",
+  "search_placeholder": "Buscar documentos...",
+  "all_categories": "Todas las categorías",
+  "no_documents": "No hay documentos en esta sección",
+  "no_content": "Este documento no tiene contenido todavía.",
+  "last_updated": "Actualizado",
+  "not_found": "Documento no encontrado",
+  "edit": "Editar",
+  "delete": "Eliminar",
+  "confirm_delete": "¿Seguro que quieres eliminar este documento?",
+  "by": "por",
+  "updated": "Actualizado",
+  "form": {
+    "title": "Título",
+    "category": "Categoría",
+    "select_category": "Selecciona una categoría",
+    "summary": "Resumen",
+    "content": "Contenido",
+    "visibility": "Visibilidad",
+    "pin": "Destacar documento",
+    "error": "Ha ocurrido un error al guardar.",
+    "saving": "Guardando...",
+    "save": "Guardar documento",
+    "cancel": "Cancelar"
+  },
+  "visibility": {
+    "all_members": "Todos los miembros",
+    "restricted": "Restringido (ADMIN+)"
+  }
+}

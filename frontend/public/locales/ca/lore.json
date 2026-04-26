@@ -1,0 +1,38 @@
+{
+  "title": "Lore",
+  "entry": "Entrada",
+  "create_entry": "Nueva entrada",
+  "entry_title": "Título",
+  "content": "Contenido",
+  "summary": "Resumen",
+  "category": "Categoría",
+  "tags": "Etiquetas",
+  "all_categories": "Todas las categorías",
+  "no_entries": "No hay entradas de lore en esta categoría",
+  "no_content": "Esta entrada no tiene contenido todavía.",
+  "not_found": "Entrada no encontrada",
+  "delete": "Eliminar",
+  "confirm_delete": "¿Seguro que quieres eliminar esta entrada?",
+  "search_placeholder": "Buscar en el lore...",
+  "categories": {
+    "HISTORY": "Historia",
+    "SYMBOLS": "Símbolos",
+    "ENEMIES": "Enemigos",
+    "FACTIONS": "Facciones",
+    "PLACES": "Lugares",
+    "CHARACTERS": "Personajes",
+    "CHRONICLES": "Crónicas",
+    "OTHER": "Otros"
+  },
+  "form": {
+    "title": "Título",
+    "category": "Categoría",
+    "summary": "Resumen",
+    "tags": "Etiquetas",
+    "content": "Contenido",
+    "error": "Ha ocurrido un error al guardar.",
+    "saving": "Guardando...",
+    "save": "Guardar entrada",
+    "cancel": "Cancelar"
+  }
+}

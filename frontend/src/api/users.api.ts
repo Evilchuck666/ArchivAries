@@ -1,0 +1,20 @@
+import { apiClient, unwrap } from './client';
+import type { Role } from '../types/auth.types';
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  role: Role;
+  isActive: boolean;
+  createdAt: string;
+  member: { displayName: string; avatarUrl: string | null } | null;
+}
+
+export const usersApi = {
+  getAll: () =>
+    apiClient.get<{ data: AdminUser[] }>('/users').then(unwrap),
+  updateRole: (id: string, role: Role) =>
+    apiClient.patch(`/users/${id}/role`, { role }).then(unwrap),
+  updateStatus: (id: string, isActive: boolean) =>
+    apiClient.patch(`/users/${id}/status`, { isActive }).then(unwrap),
+};

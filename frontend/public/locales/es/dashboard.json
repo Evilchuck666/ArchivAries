@@ -1,0 +1,12 @@
+{
+  "title": "Panel principal",
+  "welcome": "Bienvenido, {{name}}",
+  "upcoming_events": "Próximos eventos",
+  "important_news": "Avisos importantes",
+  "recent_documents": "Documentos recientes",
+  "quick_links": "Accesos rápidos",
+  "no_upcoming_events": "No hay eventos próximos",
+  "no_important_news": "No hay avisos importantes",
+  "no_recent_documents": "No hay documentos recientes",
+  "my_rsvp": "Mi confirmación"
+}

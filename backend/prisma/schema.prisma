@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  VISITOR
+  MEMBER
+  AREA_MANAGER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum MemberStatus {
+  ACTIVE
+  ASPIRANT
+  INACTIVE
+  ALUMNI
+  COLLABORATOR
+}
+
+enum EventStatus {
+  PLANNED
+  CONFIRMED
+  CANCELLED
+  FINISHED
+}
+
+enum AttendanceStatus {
+  CONFIRMED
+  DECLINED
+  PENDING
+}
+
+enum DocumentVisibility {
+  ALL_MEMBERS
+  RESTRICTED
+}
+
+enum LoreCategory {
+  HISTORY
+  SYMBOLS
+  ENEMIES
+  FACTIONS
+  PLACES
+  CHARACTERS
+  CHRONICLES
+  OTHER
+}
+
+// ─── User ─────────────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(MEMBER)
+  isActive     Boolean  @default(true)
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  member              Member?
+  eventParticipations EventParticipation[]
+  createdEvents       Event[]              @relation("EventCreator")
+  createdDocuments    Document[]           @relation("DocumentCreator")
+  createdNews         NewsAnnouncement[]   @relation("NewsCreator")
+  createdLoreEntries  LoreEntry[]          @relation("LoreCreator")
+
+  @@map("users")
+}
+
+// ─── Member ───────────────────────────────────────────────────────────────────
+
+model Member {
+  id            String       @id @default(cuid())
+  userId        String       @unique
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName   String
+  realName      String?
+  avatarUrl     String?
+  bio           String?      @db.Text
+  status        MemberStatus @default(ASPIRANT)
+  joinedAt      DateTime     @default(now())
+  phone         String?
+  discordHandle String?
+  rank          String?
+  notes         String?      @db.Text
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("members")
+}
+
+// ─── Event ────────────────────────────────────────────────────────────────────
+
+model Event {
+  id            String      @id @default(cuid())
+  title         String
+  description   String?     @db.Text
+  location      String?
+  startDate     DateTime
+  endDate       DateTime?
+  eventType     String
+  status        EventStatus @default(PLANNED)
+  isPublic      Boolean     @default(false)
+  practicalInfo String?     @db.Text
+  creatorId     String
+  creator       User        @relation("EventCreator", fields: [creatorId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  participations EventParticipation[]
+
+  @@index([startDate])
+  @@index([status])
+  @@map("events")
+}
+
+// ─── EventParticipation ───────────────────────────────────────────────────────
+
+model EventParticipation {
+  id          String           @id @default(cuid())
+  eventId     String
+  event       Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      AttendanceStatus @default(PENDING)
+  role        String?
+  notes       String?
+  confirmedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([eventId, userId])
+  @@map("event_participations")
+}
+
+// ─── DocumentCategory ─────────────────────────────────────────────────────────
+
+model DocumentCategory {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  documents Document[]
+
+  @@map("document_categories")
+}
+
+// ─── Document ─────────────────────────────────────────────────────────────────
+
+model Document {
+  id          String             @id @default(cuid())
+  title       String
+  content     String             @db.Text
+  summary     String?
+  visibility  DocumentVisibility @default(ALL_MEMBERS)
+  categoryId  String
+  category    DocumentCategory   @relation(fields: [categoryId], references: [id])
+  creatorId   String
+  creator     User               @relation("DocumentCreator", fields: [creatorId], references: [id])
+  isPinned    Boolean            @default(false)
+  isPublished Boolean            @default(true)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([categoryId])
+  @@index([isPublished, visibility])
+  @@map("documents")
+}
+
+// ─── NewsAnnouncement ─────────────────────────────────────────────────────────
+
+model NewsAnnouncement {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  isImportant Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  creatorId   String
+  creator     User     @relation("NewsCreator", fields: [creatorId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, isImportant])
+  @@map("news_announcements")
+}
+
+// ─── LoreEntry ────────────────────────────────────────────────────────────────
+
+model LoreEntry {
+  id          String       @id @default(cuid())
+  title       String
+  content     String       @db.Text
+  summary     String?
+  category    LoreCategory @default(OTHER)
+  tags        String[]
+  isPublished Boolean      @default(true)
+  creatorId   String
+  creator     User         @relation("LoreCreator", fields: [creatorId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("lore_entries")
+}
