@@ -43,7 +43,7 @@ export function MemberEditPage() {
     setUploadError('');
     try {
       const updated = await membersApi.uploadAvatar(file);
-      profileForm.setValue('avatarUrl', updated.avatarUrl ?? '');
+      profileForm.setValue('avatarUrl', updated.avatarUrl ?? '', { shouldDirty: true });
     } catch {
       setUploadError(t('upload_error'));
     } finally {
@@ -195,7 +195,7 @@ export function MemberEditPage() {
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>
               {tc('actions.cancel')}
             </Button>
-            <Button type="submit" loading={profileMutation.isPending}>
+            <Button type="submit" loading={profileMutation.isPending} disabled={!profileForm.formState.isDirty}>
               {t('save_changes')}
             </Button>
           </div>
@@ -251,7 +251,7 @@ export function MemberEditPage() {
           )}
 
           <div className="flex justify-end">
-            <Button type="submit" loading={passwordMutation.isPending}>
+            <Button type="submit" loading={passwordMutation.isPending} disabled={!passwordForm.formState.isDirty}>
               {t('change_password')}
             </Button>
           </div>

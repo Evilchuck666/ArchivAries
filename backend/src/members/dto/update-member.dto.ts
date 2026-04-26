@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { MemberStatus } from '../../common/enums/member-status.enum';
 
 export class UpdateMemberDto {
@@ -11,7 +11,7 @@ export class UpdateMemberDto {
   realName?: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   avatarUrl?: string;
 
   @IsOptional()
