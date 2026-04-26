@@ -62,6 +62,13 @@ export class AuthService {
     await this.prisma.user.update({ where: { id: userId }, data: { passwordHash } });
   }
 
+  async verifyPassword(userId: string, currentPassword: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new UnauthorizedException();
+    const match = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!match) throw new BadRequestException('Contraseña incorrecta');
+  }
+
   async logout(userId: string) {
     await this.prisma.user.update({
       where: { id: userId },

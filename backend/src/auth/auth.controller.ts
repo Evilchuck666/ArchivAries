@@ -41,6 +41,16 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
+  @Post('verify-password')
+  @Roles(Role.MEMBER)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  verifyPassword(
+    @CurrentUser('id') userId: string,
+    @Body('currentPassword') currentPassword: string,
+  ) {
+    return this.authService.verifyPassword(userId, currentPassword);
+  }
+
   @Patch('password')
   @Roles(Role.MEMBER)
   @HttpCode(HttpStatus.NO_CONTENT)

@@ -13,4 +13,6 @@ export const authApi = {
   logout: () => apiClient.post('/auth/logout'),
   changePassword: (currentPassword: string, newPassword: string) =>
     apiClient.patch('/auth/password', { currentPassword, newPassword }),
+  verifyPassword: (currentPassword: string) =>
+    apiClient.post('/auth/verify-password', { currentPassword }),
 };

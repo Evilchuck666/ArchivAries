@@ -45,5 +45,6 @@
   "upload_avatar": "Pujar imatge",
   "uploading": "Pujant...",
   "upload_error": "Error en pujar. Utilitza JPG, PNG, WEBP o GIF (màx. 5MB).",
-  "or_enter_url": "o enganxa una URL"
+  "or_enter_url": "o enganxa una URL",
+  "current_password_invalid": "Contrasenya incorrecta"
 }

@@ -45,5 +45,6 @@
   "upload_avatar": "Subir imagen",
   "uploading": "Subiendo...",
   "upload_error": "Error al subir. Usa JPG, PNG, WEBP o GIF (máx. 5MB).",
-  "or_enter_url": "o pega una URL"
+  "or_enter_url": "o pega una URL",
+  "current_password_invalid": "Contraseña incorrecta"
 }

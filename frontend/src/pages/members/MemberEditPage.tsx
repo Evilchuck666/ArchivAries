@@ -91,8 +91,22 @@ export function MemberEditPage() {
   const passwordForm = useForm<PasswordFormData>({
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
   });
+  const [currentPwdStatus, setCurrentPwdStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle');
   const [watchedCurrent, watchedNew, watchedConfirm] = passwordForm.watch(['currentPassword', 'newPassword', 'confirmPassword']);
-  const passwordFormReady = !!(watchedCurrent && watchedNew?.length >= 8 && watchedNew === watchedConfirm);
+  const passwordFormReady = currentPwdStatus === 'valid' && !!watchedNew && watchedNew.length >= 8 && watchedNew === watchedConfirm;
+
+  useEffect(() => { setCurrentPwdStatus('idle'); }, [watchedCurrent]);
+
+  const handleCurrentPasswordBlur = async () => {
+    if (!watchedCurrent) return;
+    setCurrentPwdStatus('checking');
+    try {
+      await authApi.verifyPassword(watchedCurrent);
+      setCurrentPwdStatus('valid');
+    } catch {
+      setCurrentPwdStatus('invalid');
+    }
+  };
 
   const passwordMutation = useMutation({
     mutationFn: (data: PasswordFormData) =>
@@ -100,6 +114,7 @@ export function MemberEditPage() {
     onSuccess: () => {
       setPasswordSuccess(true);
       passwordForm.reset();
+      setCurrentPwdStatus('idle');
     },
   });
 
@@ -215,7 +230,11 @@ export function MemberEditPage() {
               type="password"
               {...passwordForm.register('currentPassword', { required: true })}
               placeholder={t('current_password_placeholder')}
+              onBlur={handleCurrentPasswordBlur}
             />
+            {currentPwdStatus === 'checking' && <p className="text-slate-400 text-xs mt-1">…</p>}
+            {currentPwdStatus === 'invalid' && <p className="text-red-400 text-xs mt-1">{t('current_password_invalid')}</p>}
+            {currentPwdStatus === 'valid' && <p className="text-green-400 text-xs mt-1">✓</p>}
           </div>
 
           <div>
