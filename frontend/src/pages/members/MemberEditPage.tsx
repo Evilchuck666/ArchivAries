@@ -18,7 +18,7 @@ interface FormData {
 }
 
 export function MemberEditPage() {
-  const { t } = useTranslation('members');
+  const { t } = useTranslation(['members', 'common']);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -111,7 +111,7 @@ export function MemberEditPage() {
 
           <div className="flex gap-3 justify-end pt-1">
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>
-              {t('form.cancel') ?? 'Cancelar'}
+              {t('actions.cancel', { ns: 'common' })}
             </Button>
             <Button type="submit" loading={isPending}>
               Guardar cambios
