@@ -155,7 +155,7 @@ export function MemberEditPage() {
       <div className="grid md:grid-cols-2 gap-6 items-start">
       {/* Perfil */}
       <Card title={t('profile_information')}>
-        <form onSubmit={profileForm.handleSubmit((d) => profileMutation.mutate(d))} className="flex flex-col gap-4">
+        <form onSubmit={profileForm.handleSubmit((d) => profileMutation.mutate(d))} className="flex flex-col gap-3">
           {/* Avatar */}
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-full bg-amber-800/50 flex items-center justify-center font-bold text-amber-200 text-xl shrink-0 overflow-hidden">
@@ -190,21 +190,22 @@ export function MemberEditPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm text-slate-400 mb-1">{t('display_name')} *</label>
-            <Input {...profileForm.register('displayName', { required: true })} />
-          </div>
-
-          <div>
-            <label className="block text-sm text-slate-400 mb-1">{t('real_name')}</label>
-            <Input {...profileForm.register('realName')} placeholder={t('real_name_placeholder')} />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-400 mb-1">{t('display_name')} *</label>
+              <Input {...profileForm.register('displayName', { required: true })} />
+            </div>
+            <div>
+              <label className="block text-sm text-slate-400 mb-1">{t('real_name')}</label>
+              <Input {...profileForm.register('realName')} placeholder={t('real_name_placeholder')} />
+            </div>
           </div>
 
           <div>
             <label className="block text-sm text-slate-400 mb-1">{t('bio')}</label>
             <textarea
               {...profileForm.register('bio')}
-              rows={4}
+              rows={3}
               placeholder={t('bio_placeholder')}
               className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
             />
@@ -218,41 +219,38 @@ export function MemberEditPage() {
             <div>
               <label className="block text-sm text-slate-400 mb-1">{t('phone')}</label>
               <Input {...profileForm.register('phone')} placeholder={t('phone_placeholder')} type="tel" />
+              <label className="flex items-center gap-1.5 mt-1.5 cursor-pointer text-xs text-slate-500">
+                <input type="checkbox" {...profileForm.register('showPhone')} className="accent-amber-600" />
+                {t('show_phone')}
+              </label>
             </div>
           </div>
 
-          <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-400">
-            <input type="checkbox" {...profileForm.register('showPhone')} className="accent-amber-600" />
-            {t('show_phone')}
-          </label>
-
-          <div>
-            <label className="block text-sm text-slate-400 mb-1">{t('birth_date')}</label>
-            <Input type="date" {...profileForm.register('birthDate')} />
-          </div>
-
-          <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-400">
-            <input type="checkbox" {...profileForm.register('showBirthDate')} className="accent-amber-600" />
-            {t('show_birth_date')}
-          </label>
-
-          <div>
-            <label className="block text-sm text-slate-400 mb-1">
-              {t('dni')} <span className="text-xs text-slate-600">— {t('admin_only')}</span>
-            </label>
-            <Input {...profileForm.register('dni')} placeholder={t('dni_placeholder')} />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm text-slate-400 mb-1">{t('birth_date')}</label>
+              <Input type="date" {...profileForm.register('birthDate')} />
+              <label className="flex items-center gap-1.5 mt-1.5 cursor-pointer text-xs text-slate-500">
+                <input type="checkbox" {...profileForm.register('showBirthDate')} className="accent-amber-600" />
+                {t('show_birth_date')}
+              </label>
+            </div>
+            <div>
+              <label className="block text-sm text-slate-400 mb-1">{t('dni')}</label>
+              <Input {...profileForm.register('dni')} placeholder={t('dni_placeholder')} />
+              <p className="text-xs text-slate-600 mt-1">{t('admin_only')}</p>
+            </div>
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">
-              {t('address')} <span className="text-xs text-slate-600">— {t('admin_only')}</span>
-            </label>
+            <label className="block text-sm text-slate-400 mb-1">{t('address')}</label>
             <textarea
               {...profileForm.register('address')}
               rows={2}
               placeholder={t('address_placeholder')}
               className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
             />
+            <p className="text-xs text-slate-600 mt-1">{t('admin_only')}</p>
           </div>
 
           {profileMutation.isError && (
