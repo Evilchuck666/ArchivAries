@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/auth.store';
 import { useUiStore } from '../../store/ui.store';
 import { authApi } from '../../api/auth.api';
@@ -36,12 +36,12 @@ export function Topbar() {
 
       <div className="flex items-center gap-3">
         <LanguageSwitcher />
-        <div className="flex items-center gap-2">
+        <Link to={ROUTES.MEMBER_ME} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="w-7 h-7 rounded-full bg-amber-700 flex items-center justify-center text-xs font-bold text-amber-100">
             {user?.displayName?.charAt(0).toUpperCase() ?? '?'}
           </div>
           <span className="text-sm text-slate-300 hidden sm:block">{user?.displayName}</span>
-        </div>
+        </Link>
         <button
           onClick={handleLogout}
           className="text-sm text-slate-400 hover:text-red-400 transition-colors cursor-pointer"
