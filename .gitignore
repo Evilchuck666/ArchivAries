@@ -35,3 +35,4 @@ postgres_data/
 
 # TypeScript
 *.tsbuildinfo
+backend/uploads/avatars/*
