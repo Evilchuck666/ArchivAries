@@ -41,5 +41,9 @@
   "password_min_length": "Mínimo 8 caracteres",
   "password_mismatch": "Las contraseñas no coinciden",
   "password_change_error": "Error al cambiar la contraseña",
-  "password_changed": "Contraseña cambiada correctamente."
+  "password_changed": "Contraseña cambiada correctamente.",
+  "upload_avatar": "Subir imagen",
+  "uploading": "Subiendo...",
+  "upload_error": "Error al subir. Usa JPG, PNG, WEBP o GIF (máx. 5MB).",
+  "or_enter_url": "o pega una URL"
 }

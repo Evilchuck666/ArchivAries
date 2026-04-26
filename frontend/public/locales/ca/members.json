@@ -41,5 +41,9 @@
   "password_min_length": "Mínim 8 caràcters",
   "password_mismatch": "Les contrasenyes no coincideixen",
   "password_change_error": "Error en canviar la contrasenya",
-  "password_changed": "Contrasenya canviada correctament."
+  "password_changed": "Contrasenya canviada correctament.",
+  "upload_avatar": "Pujar imatge",
+  "uploading": "Pujant...",
+  "upload_error": "Error en pujar. Utilitza JPG, PNG, WEBP o GIF (màx. 5MB).",
+  "or_enter_url": "o enganxa una URL"
 }

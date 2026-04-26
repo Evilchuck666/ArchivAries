@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -32,6 +32,25 @@ export function MemberEditPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadError('');
+    try {
+      const updated = await membersApi.uploadAvatar(file);
+      profileForm.setValue('avatarUrl', updated.avatarUrl ?? '');
+    } catch {
+      setUploadError(t('upload_error'));
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
 
   const { data: member, isLoading } = useQuery({
     queryKey: ['member-me'],
@@ -104,7 +123,7 @@ export function MemberEditPage() {
       <Card title={t('profile_information')}>
         <form onSubmit={profileForm.handleSubmit((d) => profileMutation.mutate(d))} className="flex flex-col gap-4">
           {/* Avatar */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-full bg-amber-800/50 flex items-center justify-center font-bold text-amber-200 text-xl shrink-0 overflow-hidden">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="" className="w-full h-full object-cover"
@@ -113,9 +132,27 @@ export function MemberEditPage() {
                 member?.displayName.charAt(0).toUpperCase()
               )}
             </div>
-            <div className="flex-1">
-              <label className="block text-sm text-slate-400 mb-1">{t('avatar_url')}</label>
-              <Input {...profileForm.register('avatarUrl')} placeholder={t('avatar_url_placeholder')} />
+            <div className="flex-1 flex flex-col gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="text-sm px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 border border-slate-700 text-slate-300 rounded-md transition-colors text-left"
+              >
+                {uploading ? t('uploading') : t('upload_avatar')}
+              </button>
+              {uploadError && <p className="text-red-400 text-xs">{uploadError}</p>}
+              <div>
+                <label className="block text-xs text-slate-500 mb-1">{t('or_enter_url')}</label>
+                <Input {...profileForm.register('avatarUrl')} placeholder={t('avatar_url_placeholder')} />
+              </div>
             </div>
           </div>
 
