@@ -91,14 +91,15 @@ export function MemberEditPage() {
   if (isLoading) return <Spinner className="py-20" />;
 
   return (
-    <div className="max-w-lg mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="max-w-5xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-serif text-amber-200">{t('edit_profile')}</h1>
         <Link to={ROUTES.MEMBER_ME} className="text-sm text-slate-400 hover:text-amber-300 transition-colors">
           {t('back_to_profile')}
         </Link>
       </div>
 
+      <div className="grid md:grid-cols-2 gap-6 items-start">
       {/* Perfil */}
       <Card title={t('profile_information')}>
         <form onSubmit={profileForm.handleSubmit((d) => profileMutation.mutate(d))} className="flex flex-col gap-4">
@@ -219,6 +220,7 @@ export function MemberEditPage() {
           </div>
         </form>
       </Card>
+      </div>
     </div>
   );
 }
