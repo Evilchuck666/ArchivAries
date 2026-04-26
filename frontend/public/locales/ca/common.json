@@ -1,82 +1,82 @@
 {
   "app_name": "ArchivAries",
-  "tagline": "Archivo vivo de Aries Ferrus",
+  "tagline": "Arxiu viu d'Aries Ferrus",
   "nav": {
-    "dashboard": "Panel principal",
-    "members": "Miembros",
-    "events": "Eventos",
-    "calendar": "Calendario",
-    "documents": "Documentación",
+    "dashboard": "Tauler principal",
+    "members": "Membres",
+    "events": "Esdeveniments",
+    "calendar": "Calendari",
+    "documents": "Documentació",
     "news": "Avisos",
     "lore": "Lore",
-    "admin": "Administración",
-    "profile": "Mi perfil",
-    "logout": "Cerrar sesión"
+    "admin": "Administració",
+    "profile": "El meu perfil",
+    "logout": "Tancar sessió"
   },
   "actions": {
-    "save": "Guardar",
-    "cancel": "Cancelar",
+    "save": "Desar",
+    "cancel": "Cancel·lar",
     "delete": "Eliminar",
     "edit": "Editar",
     "create": "Crear",
-    "view": "Ver",
-    "back": "Volver",
+    "view": "Veure",
+    "back": "Tornar",
     "confirm": "Confirmar",
-    "search": "Buscar",
+    "search": "Cercar",
     "filter": "Filtrar",
-    "loading": "Cargando...",
+    "loading": "Carregant...",
     "submit": "Enviar",
     "activate": "Activar",
     "deactivate": "Desactivar"
   },
   "status": {
-    "ACTIVE": "Activo",
-    "ASPIRANT": "Aspirante",
-    "INACTIVE": "Inactivo",
-    "ALUMNI": "Exmiembro",
-    "COLLABORATOR": "Colaborador",
-    "PLANNED": "Previsto",
-    "CONFIRMED": "Confirmado",
-    "CANCELLED": "Cancelado",
-    "FINISHED": "Finalizado",
-    "active": "Activo",
-    "inactive": "Inactivo"
+    "ACTIVE": "Actiu",
+    "ASPIRANT": "Aspirant",
+    "INACTIVE": "Inactiu",
+    "ALUMNI": "Exmembre",
+    "COLLABORATOR": "Col·laborador",
+    "PLANNED": "Previst",
+    "CONFIRMED": "Confirmat",
+    "CANCELLED": "Cancel·lat",
+    "FINISHED": "Finalitzat",
+    "active": "Actiu",
+    "inactive": "Inactiu"
   },
   "roles": {
-    "VISITOR": "Visitante",
-    "MEMBER": "Miembro",
+    "VISITOR": "Visitant",
+    "MEMBER": "Membre",
     "AREA_MANAGER": "Responsable",
     "ADMIN": "Administrador",
     "SUPER_ADMIN": "Super-Administrador"
   },
   "errors": {
-    "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
-    "not_found": "No encontrado",
-    "unauthorized": "No autorizado",
-    "forbidden": "Acceso denegado"
+    "generic": "S'ha produït un error. Si us plau, torna-ho a intentar.",
+    "not_found": "No trobat",
+    "unauthorized": "No autoritzat",
+    "forbidden": "Accés denegat"
   },
   "empty": {
-    "default": "No hay nada aquí todavía"
+    "default": "Encara no hi ha res aquí"
   },
   "pagination": {
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Següent"
   },
   "fields": {
-    "user": "Usuario",
-    "email": "Correo",
+    "user": "Usuari",
+    "email": "Correu",
     "role": "Rol",
-    "status": "Estado",
-    "actions": "Acciones"
+    "status": "Estat",
+    "actions": "Accions"
   },
   "admin": {
-    "title": "Administración",
-    "subtitle": "Gestión centralizada de la plataforma ArchivAries",
-    "users": "Gestión de usuarios",
-    "users_desc": "Consultar roles y activar/desactivar cuentas",
-    "documents_desc": "Gestionar documentación interna",
-    "news_desc": "Publicar y gestionar avisos",
-    "events_desc": "Crear y gestionar eventos",
-    "lore_desc": "Gestionar entradas del lore"
+    "title": "Administració",
+    "subtitle": "Gestió centralitzada de la plataforma ArchivAries",
+    "users": "Gestió d'usuaris",
+    "users_desc": "Consultar rols i activar/desactivar comptes",
+    "documents_desc": "Gestionar documentació interna",
+    "news_desc": "Publicar i gestionar avisos",
+    "events_desc": "Crear i gestionar esdeveniments",
+    "lore_desc": "Gestionar entrades del lore"
   }
 }

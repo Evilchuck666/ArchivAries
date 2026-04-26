@@ -1,0 +1,31 @@
+{
+  "title": "Esdeveniments",
+  "event": "Esdeveniment",
+  "create_event": "Crear esdeveniment",
+  "event_name": "Nom de l'esdeveniment",
+  "event_type": "Tipus d'esdeveniment",
+  "date": "Data",
+  "start_date": "Data d'inici",
+  "end_date": "Data de fi",
+  "location": "Lloc",
+  "description": "Descripció",
+  "practical_info": "Informació pràctica",
+  "status": "Estat",
+  "is_public": "Visible a la web pública",
+  "participants": "Participants",
+  "my_rsvp": "La meva assistència",
+  "rsvp_confirm": "Confirmar assistència",
+  "rsvp_decline": "No puc assistir",
+  "rsvp_pending": "Pendent de confirmar",
+  "no_events": "No hi ha esdeveniments",
+  "calendar_view": "Vista calendari",
+  "list_view": "Vista llista",
+  "types": {
+    "training": "Entrenament",
+    "fair": "Fira medieval",
+    "game": "Partida de rol",
+    "meeting": "Reunió",
+    "social": "Activitat social",
+    "other": "Altre"
+  }
+}

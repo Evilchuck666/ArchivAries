@@ -1,0 +1,20 @@
+{
+  "title": "Membres",
+  "member": "Membre",
+  "display_name": "Nom al grup",
+  "real_name": "Nom real",
+  "status": "Estat",
+  "rank": "Rang",
+  "joined": "Membre des de",
+  "bio": "Sobre mi",
+  "discord": "Discord",
+  "phone": "Telèfon",
+  "notes": "Notes internes",
+  "email": "Correu electrònic",
+  "search_placeholder": "Cercar per nom...",
+  "filter_status": "Filtrar per estat",
+  "all_statuses": "Tots els estats",
+  "create_member": "Afegir membre",
+  "edit_profile": "Editar perfil",
+  "no_members": "No s'han trobat membres"
+}

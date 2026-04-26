@@ -1,0 +1,12 @@
+{
+  "title": "Tauler principal",
+  "welcome": "Benvingut, {{name}}",
+  "upcoming_events": "Pròxims esdeveniments",
+  "important_news": "Avisos importants",
+  "recent_documents": "Documents recents",
+  "quick_links": "Accessos ràpids",
+  "no_upcoming_events": "No hi ha esdeveniments pròxims",
+  "no_important_news": "No hi ha avisos importants",
+  "no_recent_documents": "No hi ha documents recents",
+  "my_rsvp": "La meva confirmació"
+}
