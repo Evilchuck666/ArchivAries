@@ -2,6 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
   ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -48,6 +49,17 @@ export class AuthService {
     const tokens = await this.generateTokens(userId, email, role);
     await this.storeRefreshToken(userId, tokens.refreshToken);
     return tokens;
+  }
+
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new UnauthorizedException();
+
+    const match = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!match) throw new BadRequestException('La contraseña actual es incorrecta');
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await this.prisma.user.update({ where: { id: userId }, data: { passwordHash } });
   }
 
   async logout(userId: string) {

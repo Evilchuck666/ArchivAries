@@ -21,6 +21,13 @@ const PUBLIC_MEMBER_SELECT = {
   discordHandle: true,
 };
 
+const SELF_MEMBER_SELECT = {
+  ...PUBLIC_MEMBER_SELECT,
+  realName: true,
+  phone: true,
+  user: { select: { email: true, role: true, isActive: true } },
+};
+
 const ADMIN_MEMBER_SELECT = {
   ...PUBLIC_MEMBER_SELECT,
   realName: true,
@@ -71,7 +78,7 @@ export class MembersService {
     const isAdmin = this.isAdmin(viewerRole);
     const member = await this.prisma.member.findUnique({
       where: { userId },
-      select: isAdmin ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
+      select: isAdmin ? ADMIN_MEMBER_SELECT : SELF_MEMBER_SELECT,
     });
     if (!member) throw new NotFoundException('Perfil no encontrado');
     return member;
@@ -137,7 +144,7 @@ export class MembersService {
     return this.prisma.member.update({
       where: { userId },
       data: allowedFields,
-      select: PUBLIC_MEMBER_SELECT,
+      select: SELF_MEMBER_SELECT,
     });
   }
 
