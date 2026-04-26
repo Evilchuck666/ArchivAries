@@ -15,6 +15,7 @@ import { DashboardPage } from './pages/dashboard/DashboardPage';
 
 import { MemberListPage } from './pages/members/MemberListPage';
 import { MemberDetailPage } from './pages/members/MemberDetailPage';
+import { MemberProfilePage } from './pages/members/MemberProfilePage';
 import { MemberEditPage } from './pages/members/MemberEditPage';
 
 import { EventListPage } from './pages/events/EventListPage';
@@ -62,7 +63,7 @@ export default function App() {
 
                 {/* Members */}
                 <Route path="/app/members" element={<MemberListPage />} />
-                <Route path="/app/members/me" element={<MemberDetailPage />} />
+                <Route path="/app/members/me" element={<MemberProfilePage />} />
                 <Route path="/app/members/:id" element={<MemberDetailPage />} />
                 <Route path="/app/members/me/edit" element={<MemberEditPage />} />
 
