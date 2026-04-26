@@ -11,7 +11,7 @@ import type { LoreCategory } from '../../types/lore.types';
 const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
 
 const CATEGORY_ICONS: Record<LoreCategory, string> = {
-  HISTORY: '📜', SYMBOLS: '⚜️', ENEMIES: '⚔️', FACTIONS: '🏰',
+  HISTORY: '📜', SYMBOLS: '🐐', ENEMIES: '⚔️', FACTIONS: '🏰',
   PLACES: '🗺️', CHARACTERS: '👤', CHRONICLES: '📖', OTHER: '📌',
 };
 

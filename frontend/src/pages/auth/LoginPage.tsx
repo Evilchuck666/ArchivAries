@@ -38,7 +38,7 @@ export function LoginPage() {
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <span className="text-5xl">⚜️</span>
+          <span className="text-5xl">🐐</span>
           <h1 className="text-2xl font-serif text-amber-300 mt-3 mb-1">ArchivAries</h1>
           <p className="text-slate-500 text-sm">{t('login.subtitle')}</p>
         </div>

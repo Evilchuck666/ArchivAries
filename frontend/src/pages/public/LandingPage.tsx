@@ -7,7 +7,7 @@ export function LandingPage() {
     <div className="text-slate-200">
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-6 py-24 text-center">
-        <span className="text-7xl mb-6 block">⚜️</span>
+        <span className="text-7xl mb-6 block">🐐</span>
         <h1 className="text-5xl md:text-6xl font-serif text-amber-200 mb-4">Aries Ferrus</h1>
         <p className="text-xl text-slate-400 mb-3">Compañía de Rol en Vivo y Recreación Medieval</p>
         <p className="text-slate-500 max-w-xl mx-auto mb-10">
@@ -94,7 +94,7 @@ export function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-slate-800 bg-slate-900/50">
         <div className="max-w-6xl mx-auto px-6 py-6 text-center text-slate-600 text-sm">
-          <p>⚜️ Aries Ferrus — Todos los derechos reservados</p>
+          <p>🐐 Aries Ferrus — Todos los derechos reservados</p>
         </div>
       </footer>
     </div>

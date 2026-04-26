@@ -43,7 +43,7 @@ export function Sidebar() {
       } min-h-screen shrink-0`}
     >
       <div className={`flex items-center gap-2 px-4 py-4 border-b border-slate-800 ${sidebarOpen ? '' : 'justify-center'}`}>
-        <span className="text-2xl">⚜️</span>
+        <span className="text-2xl">🐐</span>
         {sidebarOpen && (
           <div>
             <p className="text-amber-300 font-serif font-semibold text-sm leading-tight">ArchivAries</p>

@@ -17,7 +17,7 @@ const LORE_CATEGORIES: LoreCategory[] = [
 ];
 
 const CATEGORY_ICONS: Record<LoreCategory, string> = {
-  HISTORY: '📜', SYMBOLS: '⚜️', ENEMIES: '⚔️', FACTIONS: '🏰',
+  HISTORY: '📜', SYMBOLS: '🐐', ENEMIES: '⚔️', FACTIONS: '🏰',
   PLACES: '🗺️', CHARACTERS: '👤', CHRONICLES: '📖', OTHER: '📌',
 };
 
