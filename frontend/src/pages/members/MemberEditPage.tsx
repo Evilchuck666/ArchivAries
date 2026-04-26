@@ -88,7 +88,9 @@ export function MemberEditPage() {
     },
   });
 
-  const passwordForm = useForm<PasswordFormData>();
+  const passwordForm = useForm<PasswordFormData>({
+    defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
+  });
 
   const passwordMutation = useMutation({
     mutationFn: (data: PasswordFormData) =>
