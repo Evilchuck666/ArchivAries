@@ -91,6 +91,8 @@ export function MemberEditPage() {
   const passwordForm = useForm<PasswordFormData>({
     defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
   });
+  const [watchedCurrent, watchedNew, watchedConfirm] = passwordForm.watch(['currentPassword', 'newPassword', 'confirmPassword']);
+  const passwordFormReady = !!(watchedCurrent && watchedNew?.length >= 8 && watchedNew === watchedConfirm);
 
   const passwordMutation = useMutation({
     mutationFn: (data: PasswordFormData) =>
@@ -253,7 +255,7 @@ export function MemberEditPage() {
           )}
 
           <div className="flex justify-end">
-            <Button type="submit" loading={passwordMutation.isPending} disabled={!passwordForm.formState.isDirty}>
+            <Button type="submit" loading={passwordMutation.isPending} disabled={!passwordFormReady}>
               {t('change_password')}
             </Button>
           </div>
