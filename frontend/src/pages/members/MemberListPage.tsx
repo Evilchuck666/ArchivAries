@@ -61,8 +61,12 @@ export function MemberListPage() {
               className="bg-slate-900 border border-slate-800 hover:border-amber-800 rounded-lg p-4 transition-colors group"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-amber-800/50 flex items-center justify-center font-bold text-amber-200 text-sm shrink-0">
-                  {member.displayName.charAt(0).toUpperCase()}
+                <div className="w-10 h-10 rounded-full bg-amber-800/50 flex items-center justify-center font-bold text-amber-200 text-sm shrink-0 overflow-hidden">
+                  {member.avatarUrl ? (
+                    <img src={member.avatarUrl} alt={member.displayName} className="w-full h-full object-cover" />
+                  ) : (
+                    member.displayName.charAt(0).toUpperCase()
+                  )}
                 </div>
                 <div className="min-w-0">
                   <p className="font-medium text-slate-200 group-hover:text-amber-300 transition-colors truncate">{member.displayName}</p>
