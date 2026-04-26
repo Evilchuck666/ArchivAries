@@ -57,6 +57,13 @@ function applyPublicVisibility(member: any) {
   };
 }
 
+function normalizeDates(dto: UpdateMemberDto): UpdateMemberDto {
+  if (dto.birthDate) {
+    return { ...dto, birthDate: new Date(dto.birthDate) as any };
+  }
+  return dto;
+}
+
 @Injectable()
 export class MembersService {
   constructor(private prisma: PrismaService) {}
@@ -141,7 +148,7 @@ export class MembersService {
   async update(id: string, dto: UpdateMemberDto, viewerRole: Role) {
     await this.findOne(id, viewerRole);
 
-    const data: any = { ...dto };
+    const data: any = { ...normalizeDates(dto) };
     if (!this.isAdmin(viewerRole)) {
       delete data.status;
       delete data.rank;
@@ -159,7 +166,7 @@ export class MembersService {
     const member = await this.prisma.member.findUnique({ where: { userId } });
     if (!member) throw new NotFoundException('Perfil no encontrado');
 
-    const { status, rank, notes, ...allowedFields } = dto;
+    const { status, rank, notes, ...allowedFields } = normalizeDates(dto);
 
     return this.prisma.member.update({
       where: { userId },
