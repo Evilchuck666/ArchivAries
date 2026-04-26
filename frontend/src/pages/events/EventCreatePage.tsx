@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
@@ -18,6 +19,8 @@ interface FormData {
 }
 
 export function EventCreatePage() {
+  const { t } = useTranslation('events');
+  const { t: tc } = useTranslation('common');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { register, handleSubmit } = useForm<FormData>();
@@ -32,31 +35,31 @@ export function EventCreatePage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-serif text-amber-200 mb-6">Crear evento</h1>
+      <h1 className="text-2xl font-serif text-amber-200 mb-6">{t('create_event')}</h1>
       <Card>
         <form onSubmit={handleSubmit((d) => mutate(d))} className="flex flex-col gap-4">
-          <Input label="Nombre del evento" {...register('title', { required: true })} />
-          <Input label="Tipo de evento" {...register('eventType', { required: true })} placeholder="Entrenamiento, Feria medieval, Partida..." />
+          <Input label={t('event_name')} {...register('title', { required: true })} />
+          <Input label={t('event_type')} {...register('eventType', { required: true })} placeholder={t('event_type_placeholder')} />
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Fecha de inicio" type="datetime-local" {...register('startDate', { required: true })} />
-            <Input label="Fecha de fin" type="datetime-local" {...register('endDate')} />
+            <Input label={t('start_date')} type="datetime-local" {...register('startDate', { required: true })} />
+            <Input label={t('end_date')} type="datetime-local" {...register('endDate')} />
           </div>
-          <Input label="Lugar" {...register('location')} />
+          <Input label={t('location')} {...register('location')} />
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-slate-300">Descripción (markdown)</label>
+            <label className="text-sm font-medium text-slate-300">{t('description_markdown')}</label>
             <textarea {...register('description')} rows={5} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none" />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-slate-300">Información práctica</label>
+            <label className="text-sm font-medium text-slate-300">{t('practical_info')}</label>
             <textarea {...register('practicalInfo')} rows={3} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none" />
           </div>
           <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
             <input type="checkbox" {...register('isPublic')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
-            Visible en la web pública
+            {t('is_public')}
           </label>
           <div className="flex gap-3 justify-end pt-2">
-            <Button type="button" variant="ghost" onClick={() => navigate(-1)}>Cancelar</Button>
-            <Button type="submit" loading={isPending}>Crear evento</Button>
+            <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
+            <Button type="submit" loading={isPending}>{t('create_event')}</Button>
           </div>
         </form>
       </Card>

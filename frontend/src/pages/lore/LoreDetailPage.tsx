@@ -56,7 +56,7 @@ export function LoreDetailPage() {
               <span className="text-xs text-amber-600 font-medium">
                 {CATEGORY_ICONS[entry.category]} {t(`categories.${entry.category}`)}
               </span>
-              {!entry.isPublished && <Badge color="gray">Borrador</Badge>}
+              {!entry.isPublished && <Badge color="gray">{t('draft')}</Badge>}
             </div>
             <h1 className="text-2xl font-serif text-amber-200">{entry.title}</h1>
             {entry.summary && <p className="text-slate-400 mt-1 text-sm">{entry.summary}</p>}

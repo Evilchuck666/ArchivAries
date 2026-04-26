@@ -53,8 +53,8 @@ export function DocumentDetailPage() {
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className="text-xs text-amber-600 font-medium">{doc.category.name}</span>
               {doc.isPinned && <span className="text-xs text-amber-500">📌 {t('pinned')}</span>}
-              {doc.visibility === 'RESTRICTED' && <Badge color="red">Restringido</Badge>}
-              {!doc.isPublished && <Badge color="gray">Borrador</Badge>}
+              {doc.visibility === 'RESTRICTED' && <Badge color="red">{t('visibility_restricted')}</Badge>}
+              {!doc.isPublished && <Badge color="gray">{t('draft')}</Badge>}
             </div>
             <h1 className="text-2xl font-serif text-amber-200">{doc.title}</h1>
             {doc.summary && <p className="text-slate-400 mt-1 text-sm">{doc.summary}</p>}

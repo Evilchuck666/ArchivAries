@@ -17,6 +17,7 @@
   "prev": "Anterior",
   "next": "Següent",
   "page": "Pàgina",
+  "draft": "Esborrany",
   "form": {
     "title": "Títol",
     "content": "Contingut",

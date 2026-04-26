@@ -21,7 +21,7 @@ export function MemberProfilePage() {
   if (isLoading) return <Spinner className="py-20" />;
   if (!member) return (
     <div className="max-w-2xl mx-auto text-center py-20">
-      <p className="text-slate-400 mb-4">No tienes una ficha de miembro todavía.</p>
+      <p className="text-slate-400 mb-4">{t('no_profile_yet')}</p>
     </div>
   );
 
@@ -65,7 +65,7 @@ export function MemberProfilePage() {
         </Card>
       )}
 
-      <Card title="Información">
+      <Card title={t('information')}>
         <dl className="grid gap-3">
           {member.realName && (
             <div className="flex justify-between text-sm">

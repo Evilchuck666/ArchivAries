@@ -24,11 +24,14 @@
     "CHRONICLES": "Cròniques",
     "OTHER": "Altres"
   },
+  "draft": "Esborrany",
   "form": {
     "title": "Títol",
     "category": "Categoria",
     "summary": "Resum",
     "tags": "Etiquetes",
+    "tags_help": "(separats per coma)",
+    "tags_placeholder": "ex: fundadors, batalla, traïció",
     "content": "Contingut",
     "error": "S'ha produït un error en desar.",
     "saving": "Desant...",

@@ -35,6 +35,7 @@
     "save": "Desar document",
     "cancel": "Cancel·lar"
   },
+  "draft": "Esborrany",
   "visibility": {
     "all_members": "Tots els membres",
     "restricted": "Restringit (ADMIN+)"

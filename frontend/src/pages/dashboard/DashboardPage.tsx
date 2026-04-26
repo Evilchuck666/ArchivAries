@@ -16,6 +16,7 @@ import type { Document } from '../../types/document.types';
 
 export function DashboardPage() {
   const { t } = useTranslation('dashboard');
+  const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
 
   const { data, isLoading } = useQuery({
@@ -39,14 +40,14 @@ export function DashboardPage() {
         <h1 className="text-3xl font-serif text-amber-200">
           {t('welcome', { name: user?.displayName })}
         </h1>
-        <p className="text-slate-500 text-sm mt-1">Panel principal de ArchivAries</p>
+        <p className="text-slate-500 text-sm mt-1">{t('subtitle')}</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         {/* Upcoming Events */}
         <Card
           title={t('upcoming_events')}
-          action={<Link to={ROUTES.EVENTS} className="text-xs text-amber-400 hover:text-amber-300">Ver todos →</Link>}
+          action={<Link to={ROUTES.EVENTS} className="text-xs text-amber-400 hover:text-amber-300">{tc('actions.view_all')}</Link>}
         >
           {upcomingEvents.length === 0 ? (
             <p className="text-slate-500 text-sm py-4 text-center">{t('no_upcoming_events')}</p>
@@ -65,7 +66,7 @@ export function DashboardPage() {
                         <EventStatusBadge status={event.status} />
                         {rsvpMap[event.id] && (
                           <Badge color={rsvpMap[event.id] === 'CONFIRMED' ? 'green' : 'red'}>
-                            {rsvpMap[event.id] === 'CONFIRMED' ? '✓ Confirmado' : '✗ No asiste'}
+                            {rsvpMap[event.id] === 'CONFIRMED' ? t('rsvp_confirmed') : t('rsvp_declined')}
                           </Badge>
                         )}
                       </div>
@@ -80,7 +81,7 @@ export function DashboardPage() {
         {/* Important News */}
         <Card
           title={t('important_news')}
-          action={<Link to={ROUTES.NEWS} className="text-xs text-amber-400 hover:text-amber-300">Ver todos →</Link>}
+          action={<Link to={ROUTES.NEWS} className="text-xs text-amber-400 hover:text-amber-300">{tc('actions.view_all')}</Link>}
         >
           {importantNews.length === 0 ? (
             <p className="text-slate-500 text-sm py-4 text-center">{t('no_important_news')}</p>
@@ -108,7 +109,7 @@ export function DashboardPage() {
       {/* Recent Documents */}
       <Card
         title={t('recent_documents')}
-        action={<Link to={ROUTES.DOCUMENTS} className="text-xs text-amber-400 hover:text-amber-300">Ver todos →</Link>}
+        action={<Link to={ROUTES.DOCUMENTS} className="text-xs text-amber-400 hover:text-amber-300">{tc('actions.view_all')}</Link>}
       >
         {recentDocuments.length === 0 ? (
           <p className="text-slate-500 text-sm py-4 text-center">{t('no_recent_documents')}</p>
@@ -134,10 +135,10 @@ export function DashboardPage() {
         <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wide mb-3">{t('quick_links')}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { to: ROUTES.MEMBERS, icon: '🛡️', label: 'Miembros' },
-            { to: ROUTES.CALENDAR, icon: '🗓️', label: 'Calendario' },
-            { to: ROUTES.LORE, icon: '🔮', label: 'Lore' },
-            { to: ROUTES.MEMBER_ME, icon: '👤', label: 'Mi perfil' },
+            { to: ROUTES.MEMBERS, icon: '🛡️', label: tc('nav.members') },
+            { to: ROUTES.CALENDAR, icon: '🗓️', label: tc('nav.calendar') },
+            { to: ROUTES.LORE, icon: '🔮', label: tc('nav.lore') },
+            { to: ROUTES.MEMBER_ME, icon: '👤', label: tc('nav.profile') },
           ].map((item) => (
             <Link
               key={item.to}

@@ -67,8 +67,8 @@ export function LoreCreatePage() {
         </div>
 
         <div>
-          <label className="block text-sm text-slate-400 mb-1">{t('form.tags')} <span className="text-slate-600">(separados por coma)</span></label>
-          <Input value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} placeholder="eg: fundadores, batalla, traición" />
+          <label className="block text-sm text-slate-400 mb-1">{t('form.tags')} <span className="text-slate-600">{t('form.tags_help')}</span></label>
+          <Input value={tagsInput} onChange={(e) => setTagsInput(e.target.value)} placeholder={t('form.tags_placeholder')} />
         </div>
 
         <div>

@@ -14,6 +14,7 @@ const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADM
 
 export function EventListPage() {
   const { t } = useTranslation('events');
+  const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
   const [status, setStatus] = useState('');
   const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
@@ -48,9 +49,9 @@ export function EventListPage() {
         onChange={(e) => setStatus(e.target.value)}
         className="mb-4 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
       >
-        <option value="">Todos los estados</option>
+        <option value="">{t('all_statuses')}</option>
         {['PLANNED', 'CONFIRMED', 'CANCELLED', 'FINISHED'].map((s) => (
-          <option key={s} value={s}>{s}</option>
+          <option key={s} value={s}>{tc(`status.${s}`)}</option>
         ))}
       </select>
 

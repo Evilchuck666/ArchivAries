@@ -51,7 +51,7 @@ export function NewsListPage() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     {item.isImportant && <Badge color="red">⚠ {t('important')}</Badge>}
-                    {!item.isPublished && <Badge color="gray">Borrador</Badge>}
+                    {!item.isPublished && <Badge color="gray">{t('draft')}</Badge>}
                   </div>
                   <h3 className="font-medium text-slate-200 group-hover:text-amber-300 transition-colors">{item.title}</h3>
                   {item.creator?.member && (

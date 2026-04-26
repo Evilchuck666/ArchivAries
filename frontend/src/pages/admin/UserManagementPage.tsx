@@ -69,7 +69,7 @@ export function UserManagementPage() {
                         </div>
                       )}
                       <span className="text-slate-200">{u.member?.displayName ?? '—'}</span>
-                      {isSelf && <span className="text-xs text-amber-600">(tú)</span>}
+                      {isSelf && <span className="text-xs text-amber-600">({t('roles.you')})</span>}
                     </div>
                   </td>
                   <td className="px-4 py-3 text-slate-400">{u.email}</td>

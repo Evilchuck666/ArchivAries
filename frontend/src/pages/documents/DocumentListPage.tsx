@@ -63,7 +63,7 @@ export function DocumentListPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs text-amber-600 font-medium">{doc.category.name}</span>
                   {doc.isPinned && <span className="text-xs text-amber-500">📌</span>}
-                  {doc.visibility === 'RESTRICTED' && <Badge color="red">Restringido</Badge>}
+                  {doc.visibility === 'RESTRICTED' && <Badge color="red">{t('visibility_restricted')}</Badge>}
                 </div>
                 <h3 className="font-medium text-slate-200 group-hover:text-amber-300 transition-colors">{doc.title}</h3>
                 {doc.summary && <p className="text-xs text-slate-500 mt-1 truncate">{doc.summary}</p>}

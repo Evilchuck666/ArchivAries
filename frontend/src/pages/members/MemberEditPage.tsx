@@ -27,7 +27,8 @@ interface PasswordFormData {
 }
 
 export function MemberEditPage() {
-  const { t } = useTranslation(['members', 'common']);
+  const { t } = useTranslation('members');
+  const { t: tc } = useTranslation('common');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [passwordSuccess, setPasswordSuccess] = useState(false);
@@ -81,7 +82,7 @@ export function MemberEditPage() {
 
   const onPasswordSubmit = (data: PasswordFormData) => {
     if (data.newPassword !== data.confirmPassword) {
-      passwordForm.setError('confirmPassword', { message: 'Las contraseñas no coinciden' });
+      passwordForm.setError('confirmPassword', { message: t('password_mismatch') });
       return;
     }
     passwordMutation.mutate(data);
@@ -94,12 +95,12 @@ export function MemberEditPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-serif text-amber-200">{t('edit_profile')}</h1>
         <Link to={ROUTES.MEMBER_ME} className="text-sm text-slate-400 hover:text-amber-300 transition-colors">
-          ← Volver al perfil
+          {t('back_to_profile')}
         </Link>
       </div>
 
       {/* Perfil */}
-      <Card title="Información del perfil">
+      <Card title={t('profile_information')}>
         <form onSubmit={profileForm.handleSubmit((d) => profileMutation.mutate(d))} className="flex flex-col gap-4">
           {/* Avatar */}
           <div className="flex items-center gap-4">
@@ -112,8 +113,8 @@ export function MemberEditPage() {
               )}
             </div>
             <div className="flex-1">
-              <label className="block text-sm text-slate-400 mb-1">URL del avatar</label>
-              <Input {...profileForm.register('avatarUrl')} placeholder="https://ejemplo.com/avatar.jpg" />
+              <label className="block text-sm text-slate-400 mb-1">{t('avatar_url')}</label>
+              <Input {...profileForm.register('avatarUrl')} placeholder={t('avatar_url_placeholder')} />
             </div>
           </div>
 
@@ -124,7 +125,7 @@ export function MemberEditPage() {
 
           <div>
             <label className="block text-sm text-slate-400 mb-1">{t('real_name')}</label>
-            <Input {...profileForm.register('realName')} placeholder="Tu nombre real" />
+            <Input {...profileForm.register('realName')} placeholder={t('real_name_placeholder')} />
           </div>
 
           <div>
@@ -132,7 +133,7 @@ export function MemberEditPage() {
             <textarea
               {...profileForm.register('bio')}
               rows={4}
-              placeholder="Cuéntanos algo sobre ti..."
+              placeholder={t('bio_placeholder')}
               className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
             />
           </div>
@@ -140,59 +141,59 @@ export function MemberEditPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-sm text-slate-400 mb-1">{t('discord')}</label>
-              <Input {...profileForm.register('discordHandle')} placeholder="nombreusuario" />
+              <Input {...profileForm.register('discordHandle')} placeholder={t('discord_placeholder')} />
             </div>
             <div>
               <label className="block text-sm text-slate-400 mb-1">{t('phone')}</label>
-              <Input {...profileForm.register('phone')} placeholder="+34 600 000 000" type="tel" />
+              <Input {...profileForm.register('phone')} placeholder={t('phone_placeholder')} type="tel" />
             </div>
           </div>
 
           {profileMutation.isError && (
-            <p className="text-red-400 text-sm">Ha ocurrido un error al guardar.</p>
+            <p className="text-red-400 text-sm">{t('save_error')}</p>
           )}
 
           <div className="flex gap-3 justify-end pt-1">
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>
-              {t('actions.cancel', { ns: 'common' })}
+              {tc('actions.cancel')}
             </Button>
             <Button type="submit" loading={profileMutation.isPending}>
-              Guardar cambios
+              {t('save_changes')}
             </Button>
           </div>
         </form>
       </Card>
 
       {/* Contraseña */}
-      <Card title="Cambiar contraseña">
+      <Card title={t('change_password')}>
         <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="flex flex-col gap-4">
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Contraseña actual</label>
+            <label className="block text-sm text-slate-400 mb-1">{t('current_password')}</label>
             <Input
               type="password"
               {...passwordForm.register('currentPassword', { required: true })}
-              placeholder="Tu contraseña actual"
+              placeholder={t('current_password_placeholder')}
             />
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Nueva contraseña</label>
+            <label className="block text-sm text-slate-400 mb-1">{t('new_password')}</label>
             <Input
               type="password"
               {...passwordForm.register('newPassword', { required: true, minLength: 8 })}
-              placeholder="Mínimo 8 caracteres"
+              placeholder={t('new_password_placeholder')}
             />
             {passwordForm.formState.errors.newPassword?.type === 'minLength' && (
-              <p className="text-red-400 text-xs mt-1">Mínimo 8 caracteres</p>
+              <p className="text-red-400 text-xs mt-1">{t('password_min_length')}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">Confirmar nueva contraseña</label>
+            <label className="block text-sm text-slate-400 mb-1">{t('confirm_password')}</label>
             <Input
               type="password"
               {...passwordForm.register('confirmPassword', { required: true })}
-              placeholder="Repite la nueva contraseña"
+              placeholder={t('confirm_password_placeholder')}
             />
             {passwordForm.formState.errors.confirmPassword && (
               <p className="text-red-400 text-xs mt-1">
@@ -203,17 +204,17 @@ export function MemberEditPage() {
 
           {passwordMutation.isError && (
             <p className="text-red-400 text-sm">
-              {(passwordMutation.error as any)?.response?.data?.message ?? 'Error al cambiar la contraseña'}
+              {(passwordMutation.error as any)?.response?.data?.message ?? t('password_change_error')}
             </p>
           )}
 
           {passwordSuccess && (
-            <p className="text-green-400 text-sm">Contraseña cambiada correctamente.</p>
+            <p className="text-green-400 text-sm">{t('password_changed')}</p>
           )}
 
           <div className="flex justify-end">
             <Button type="submit" loading={passwordMutation.isPending}>
-              Cambiar contraseña
+              {t('change_password')}
             </Button>
           </div>
         </form>

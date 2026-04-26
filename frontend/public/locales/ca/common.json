@@ -27,7 +27,9 @@
     "loading": "Carregant...",
     "submit": "Enviar",
     "activate": "Activar",
-    "deactivate": "Desactivar"
+    "deactivate": "Desactivar",
+    "view_all": "Veure tots →",
+    "save_changes": "Desar canvis"
   },
   "status": {
     "ACTIVE": "Actiu",
@@ -40,14 +42,16 @@
     "CANCELLED": "Cancel·lat",
     "FINISHED": "Finalitzat",
     "active": "Actiu",
-    "inactive": "Inactiu"
+    "inactive": "Inactiu",
+    "draft": "Esborrany"
   },
   "roles": {
     "VISITOR": "Visitant",
     "MEMBER": "Membre",
     "AREA_MANAGER": "Responsable",
     "ADMIN": "Administrador",
-    "SUPER_ADMIN": "Super-Administrador"
+    "SUPER_ADMIN": "Super-Administrador",
+    "you": "tu"
   },
   "errors": {
     "generic": "S'ha produït un error. Si us plau, torna-ho a intentar.",
@@ -78,5 +82,30 @@
     "news_desc": "Publicar i gestionar avisos",
     "events_desc": "Crear i gestionar esdeveniments",
     "lore_desc": "Gestionar entrades del lore"
+  },
+  "landing": {
+    "company_description": "Companyia de Rol en Viu i Recreació Medieval",
+    "hero_description": "Una companyia d'aventurers units per la camaraderia, l'honor i la passió pel joc de rol en viu.",
+    "login_button": "Accedir a l'Arxiu →",
+    "learn_more": "Conèixer més",
+    "about_title": "Qui som?",
+    "about_larp_title": "Rol en Viu",
+    "about_larp_desc": "Vivim aventures en primera persona, interpretant personatges en escenaris reals amb combat segur i narrativa immersiva.",
+    "about_unity_title": "Companyia unida",
+    "about_unity_desc": "Som una associació on la camaraderia i el respecte són tan importants com l'habilitat al camp de batalla.",
+    "about_lore_title": "Lore propi",
+    "about_lore_desc": "Hem construït un món propi amb història, faccions, enemics i cròniques que enriqueixen cada partida.",
+    "activities_title": "Activitats",
+    "trainings_title": "Entrenaments",
+    "trainings_desc": "Sessions regulars de combat amb armes de seguretat, tècnica i treball en equip.",
+    "larp_games_title": "Partides de rol en viu",
+    "larp_games_desc": "Esdeveniments d'immersió on els personatges cobren vida en escenaris preparats.",
+    "fairs_title": "Fires medievals",
+    "fairs_desc": "Participació en fires i esdeveniments de recreació històrica medieval.",
+    "social_title": "Activitats socials",
+    "social_desc": "Reunions, celebracions i activitats per enfortir els lligams de la companyia.",
+    "contact_title": "Contacte",
+    "contact_desc": "Vols saber més sobre Aries Ferrus o unir-te a la companyia? Posa't en contacte amb nosaltres.",
+    "footer_copyright": "🐐 Aries Ferrus — Tots els drets reservats"
   }
 }

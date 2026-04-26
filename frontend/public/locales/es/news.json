@@ -17,6 +17,7 @@
   "prev": "Anterior",
   "next": "Siguiente",
   "page": "Página",
+  "draft": "Borrador",
   "form": {
     "title": "Título",
     "content": "Contenido",

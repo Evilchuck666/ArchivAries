@@ -27,7 +27,9 @@
     "loading": "Cargando...",
     "submit": "Enviar",
     "activate": "Activar",
-    "deactivate": "Desactivar"
+    "deactivate": "Desactivar",
+    "view_all": "Ver todos →",
+    "save_changes": "Guardar cambios"
   },
   "status": {
     "ACTIVE": "Activo",
@@ -40,14 +42,16 @@
     "CANCELLED": "Cancelado",
     "FINISHED": "Finalizado",
     "active": "Activo",
-    "inactive": "Inactivo"
+    "inactive": "Inactivo",
+    "draft": "Borrador"
   },
   "roles": {
     "VISITOR": "Visitante",
     "MEMBER": "Miembro",
     "AREA_MANAGER": "Responsable",
     "ADMIN": "Administrador",
-    "SUPER_ADMIN": "Super-Administrador"
+    "SUPER_ADMIN": "Super-Administrador",
+    "you": "tú"
   },
   "errors": {
     "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
@@ -78,5 +82,30 @@
     "news_desc": "Publicar y gestionar avisos",
     "events_desc": "Crear y gestionar eventos",
     "lore_desc": "Gestionar entradas del lore"
+  },
+  "landing": {
+    "company_description": "Compañía de Rol en Vivo y Recreación Medieval",
+    "hero_description": "Una compañía de aventureros unidos por la camaradería, el honor y la pasión por el juego de rol en vivo.",
+    "login_button": "Acceder al Archivo →",
+    "learn_more": "Conocer más",
+    "about_title": "¿Quiénes somos?",
+    "about_larp_title": "Rol en Vivo",
+    "about_larp_desc": "Vivimos aventuras en primera persona, interpretando personajes en escenarios reales con combate seguro y narrativa inmersiva.",
+    "about_unity_title": "Compañía unida",
+    "about_unity_desc": "Somos una asociación donde la camaradería y el respeto son tan importantes como la habilidad en el campo de batalla.",
+    "about_lore_title": "Lore propio",
+    "about_lore_desc": "Hemos construido un mundo propio con historia, facciones, enemigos y crónicas que enriquecen cada partida.",
+    "activities_title": "Actividades",
+    "trainings_title": "Entrenamientos",
+    "trainings_desc": "Sesiones regulares de combate con armas de seguridad, técnica y trabajo en equipo.",
+    "larp_games_title": "Partidas de rol en vivo",
+    "larp_games_desc": "Eventos de inmersión donde los personajes cobran vida en escenarios preparados.",
+    "fairs_title": "Ferias medievales",
+    "fairs_desc": "Participación en ferias y eventos de recreación histórica medieval.",
+    "social_title": "Actividades sociales",
+    "social_desc": "Reuniones, celebraciones y actividades para fortalecer los lazos de la compañía.",
+    "contact_title": "Contacto",
+    "contact_desc": "¿Quieres saber más sobre Aries Ferrus o unirte a la compañía? Ponte en contacto con nosotros.",
+    "footer_copyright": "🐐 Aries Ferrus — Todos los derechos reservados"
   }
 }

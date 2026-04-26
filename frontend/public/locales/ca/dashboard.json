@@ -1,5 +1,6 @@
 {
   "title": "Tauler principal",
+  "subtitle": "Tauler principal d'ArchivAries",
   "welcome": "Benvingut, {{name}}",
   "upcoming_events": "Pròxims esdeveniments",
   "important_news": "Avisos importants",
@@ -8,5 +9,7 @@
   "no_upcoming_events": "No hi ha esdeveniments pròxims",
   "no_important_news": "No hi ha avisos importants",
   "no_recent_documents": "No hi ha documents recents",
-  "my_rsvp": "La meva confirmació"
+  "my_rsvp": "La meva confirmació",
+  "rsvp_confirmed": "✓ Confirmat",
+  "rsvp_declined": "✗ No assisteix"
 }

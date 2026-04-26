@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
 import { Button } from '../../components/ui/Button';
@@ -11,6 +12,7 @@ import { es } from 'date-fns/locale';
 
 export function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation('events');
   const queryClient = useQueryClient();
 
   const { data: event, isLoading } = useQuery({
@@ -29,12 +31,12 @@ export function EventDetailPage() {
   });
 
   if (isLoading) return <Spinner className="py-20" />;
-  if (!event) return <p className="text-slate-500">Evento no encontrado.</p>;
+  if (!event) return <p className="text-slate-500">{t('not_found')}</p>;
 
   return (
     <div className="max-w-3xl mx-auto">
       <Link to="/app/events" className="text-sm text-slate-400 hover:text-amber-300 mb-6 inline-block">
-        ← Volver a eventos
+        {t('back_to_events')}
       </Link>
 
       <Card className="mb-4">
@@ -48,7 +50,7 @@ export function EventDetailPage() {
 
         <dl className="grid sm:grid-cols-2 gap-3 mb-4">
           <div>
-            <dt className="text-xs text-slate-500 uppercase tracking-wide mb-1">Fecha</dt>
+            <dt className="text-xs text-slate-500 uppercase tracking-wide mb-1">{t('date')}</dt>
             <dd className="text-slate-300 text-sm">
               {format(new Date(event.startDate), "d 'de' MMMM yyyy, HH:mm", { locale: es })}
               {event.endDate && ` → ${format(new Date(event.endDate), "d 'de' MMMM yyyy", { locale: es })}`}
@@ -56,7 +58,7 @@ export function EventDetailPage() {
           </div>
           {event.location && (
             <div>
-              <dt className="text-xs text-slate-500 uppercase tracking-wide mb-1">Lugar</dt>
+              <dt className="text-xs text-slate-500 uppercase tracking-wide mb-1">{t('location')}</dt>
               <dd className="text-slate-300 text-sm">📍 {event.location}</dd>
             </div>
           )}
@@ -69,7 +71,7 @@ export function EventDetailPage() {
             onClick={() => rsvp('CONFIRMED')}
             loading={isPending}
           >
-            ✓ Confirmar asistencia
+            ✓ {t('rsvp_confirm')}
           </Button>
           <Button
             variant="ghost"
@@ -77,19 +79,19 @@ export function EventDetailPage() {
             onClick={() => rsvp('DECLINED')}
             disabled={isPending}
           >
-            ✗ No puedo asistir
+            ✗ {t('rsvp_decline')}
           </Button>
         </div>
       </Card>
 
       {event.description && (
-        <Card title="Descripción" className="mb-4">
+        <Card title={t('description')} className="mb-4">
           <MarkdownRenderer content={event.description} />
         </Card>
       )}
 
       {event.practicalInfo && (
-        <Card title="Información práctica">
+        <Card title={t('practical_info')}>
           <MarkdownRenderer content={event.practicalInfo} />
         </Card>
       )}

@@ -24,11 +24,14 @@
     "CHRONICLES": "Crónicas",
     "OTHER": "Otros"
   },
+  "draft": "Borrador",
   "form": {
     "title": "Título",
     "category": "Categoría",
     "summary": "Resumen",
     "tags": "Etiquetas",
+    "tags_help": "(separados por coma)",
+    "tags_placeholder": "p.ej: fundadores, batalla, traición",
     "content": "Contenido",
     "error": "Ha ocurrido un error al guardar.",
     "saving": "Guardando...",

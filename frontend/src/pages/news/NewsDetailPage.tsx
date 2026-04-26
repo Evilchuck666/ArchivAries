@@ -50,7 +50,7 @@ export function NewsDetailPage() {
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               {item.isImportant && <Badge color="red">⚠ {t('important')}</Badge>}
-              {!item.isPublished && <Badge color="gray">Borrador</Badge>}
+              {!item.isPublished && <Badge color="gray">{t('draft')}</Badge>}
             </div>
             <h1 className="text-2xl font-serif text-amber-200">{item.title}</h1>
           </div>
