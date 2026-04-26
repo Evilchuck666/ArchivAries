@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 interface Props {
   title?: string;
   description?: string;
@@ -5,11 +7,13 @@ interface Props {
   icon?: React.ReactNode;
 }
 
-export function EmptyState({ title = 'Sin contenido', description, action, icon }: Props) {
+export function EmptyState({ title, description, action, icon }: Props) {
+  const { t } = useTranslation('common');
+
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center gap-3">
       {icon && <div className="text-slate-600 mb-2">{icon}</div>}
-      <p className="text-slate-400 font-medium">{title}</p>
+      <p className="text-slate-400 font-medium">{title ?? t('empty.default')}</p>
       {description && <p className="text-slate-500 text-sm max-w-sm">{description}</p>}
       {action && <div className="mt-2">{action}</div>}
     </div>
