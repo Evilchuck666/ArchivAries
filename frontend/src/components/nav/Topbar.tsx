@@ -37,8 +37,12 @@ export function Topbar() {
       <div className="flex items-center gap-3">
         <LanguageSwitcher />
         <Link to={ROUTES.MEMBER_ME} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="w-7 h-7 rounded-full bg-amber-700 flex items-center justify-center text-xs font-bold text-amber-100">
-            {user?.displayName?.charAt(0).toUpperCase() ?? '?'}
+          <div className="w-7 h-7 rounded-full bg-amber-700 flex items-center justify-center text-xs font-bold text-amber-100 overflow-hidden shrink-0">
+            {user?.avatarUrl ? (
+              <img src={user.avatarUrl} alt={user.displayName} className="w-full h-full object-cover" />
+            ) : (
+              user?.displayName?.charAt(0).toUpperCase() ?? '?'
+            )}
           </div>
           <span className="text-sm text-slate-300 hidden sm:block">{user?.displayName}</span>
         </Link>
