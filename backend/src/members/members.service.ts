@@ -19,6 +19,7 @@ const BASE_PUBLIC = {
   rank: true,
   joinedAt: true,
   discordHandle: true,
+  user: { select: { role: true } },
 };
 
 const PUBLIC_MEMBER_SELECT = {

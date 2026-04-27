@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { membersApi } from '../../api/members.api';
 import { MemberStatusBadge } from '../../components/shared/MemberStatusBadge';
+import { RoleBadge } from '../../components/shared/RoleBadge';
+import type { Role } from '../../types/auth.types';
 import { Input } from '../../components/ui/Input';
 import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
@@ -75,6 +77,7 @@ export function MemberListPage() {
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <MemberStatusBadge status={member.status} />
+                {member.user?.role && <RoleBadge role={member.user.role as Role} />}
               </div>
             </Link>
           ))}
