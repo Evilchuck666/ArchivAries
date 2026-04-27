@@ -23,6 +23,7 @@ const BASE_PUBLIC = {
 
 const PUBLIC_MEMBER_SELECT = {
   ...BASE_PUBLIC,
+  realName: true,
   phone: true,
   birthDate: true,
   showPhone: true,
