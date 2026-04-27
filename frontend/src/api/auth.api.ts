@@ -15,4 +15,8 @@ export const authApi = {
     apiClient.patch('/auth/password', { currentPassword, newPassword }),
   verifyPassword: (currentPassword: string) =>
     apiClient.post('/auth/verify-password', { currentPassword }),
+  validateInviteToken: (token: string) =>
+    apiClient.get<{ data: { email: string } }>('/auth/invite/validate', { params: { token } }).then(r => r.data.data),
+  activate: (token: string, displayName: string, password: string) =>
+    apiClient.post('/auth/activate', { token, displayName, password }).then(r => (r.data as any).data),
 };

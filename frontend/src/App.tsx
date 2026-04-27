@@ -10,6 +10,7 @@ import { RoleRoute } from './router/RoleRoute';
 
 import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
+import { ActivatePage } from './pages/auth/ActivatePage';
 
 import { DashboardPage } from './pages/dashboard/DashboardPage';
 
@@ -54,6 +55,7 @@ export default function App() {
             <Route element={<PublicLayout />}>
               <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/activate" element={<ActivatePage />} />
             </Route>
 
             {/* Protected app routes */}

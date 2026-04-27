@@ -10,6 +10,13 @@ export interface AdminUser {
   member: { displayName: string; avatarUrl: string | null } | null;
 }
 
+export interface InviteResult {
+  id: string;
+  email: string;
+  role: Role;
+  devActivationUrl: string;
+}
+
 export const usersApi = {
   getAll: () =>
     apiClient.get<{ data: AdminUser[] }>('/users').then(unwrap),
@@ -17,4 +24,6 @@ export const usersApi = {
     apiClient.patch(`/users/${id}/role`, { role }).then(unwrap),
   updateStatus: (id: string, isActive: boolean) =>
     apiClient.patch(`/users/${id}/status`, { isActive }).then(unwrap),
+  invite: (email: string, role?: Role) =>
+    apiClient.post<{ data: InviteResult }>('/users/invite', { email, role }).then(unwrap),
 };

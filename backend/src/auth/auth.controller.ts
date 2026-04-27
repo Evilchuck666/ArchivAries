@@ -2,7 +2,9 @@ import {
   Controller,
   Post,
   Patch,
+  Get,
   Body,
+  Query,
   HttpCode,
   HttpStatus,
   UseGuards,
@@ -11,6 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ActivateDto } from './dto/activate.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -59,5 +62,18 @@ export class AuthController {
     @Body() dto: ChangePasswordDto,
   ) {
     return this.authService.changePassword(userId, dto.currentPassword, dto.newPassword);
+  }
+
+  @Public()
+  @Get('invite/validate')
+  validateInvite(@Query('token') token: string) {
+    return this.authService.validateInviteToken(token);
+  }
+
+  @Public()
+  @Post('activate')
+  @HttpCode(HttpStatus.OK)
+  activate(@Body() dto: ActivateDto) {
+    return this.authService.activate(dto);
   }
 }

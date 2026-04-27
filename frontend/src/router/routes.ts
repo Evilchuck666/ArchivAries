@@ -20,4 +20,5 @@ export const ROUTES = {
   LORE_CREATE: '/app/lore/create',
   ADMIN: '/app/admin',
   ADMIN_USERS: '/app/admin/users',
+  ACTIVATE: '/activate',
 } as const;

@@ -62,8 +62,10 @@ model User {
   passwordHash String
   role         Role     @default(MEMBER)
   isActive     Boolean  @default(true)
-  refreshToken String?
-  createdAt    DateTime @default(now())
+  refreshToken    String?
+  inviteToken     String?
+  inviteExpiresAt DateTime?
+  createdAt       DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   member              Member?

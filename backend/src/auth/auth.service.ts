@@ -8,7 +8,9 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { LoginDto } from './dto/login.dto';
+import { ActivateDto } from './dto/activate.dto';
 
 @Injectable()
 export class AuthService {
@@ -74,6 +76,59 @@ export class AuthService {
       where: { id: userId },
       data: { refreshToken: null },
     });
+  }
+
+  async validateInviteToken(token: string): Promise<{ email: string }> {
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await this.prisma.user.findFirst({
+      where: { inviteToken: tokenHash, isActive: false },
+    });
+    if (!user || !user.inviteExpiresAt || user.inviteExpiresAt < new Date()) {
+      throw new BadRequestException('Token inválido o caducado');
+    }
+    return { email: user.email };
+  }
+
+  async activate(dto: ActivateDto) {
+    const tokenHash = crypto.createHash('sha256').update(dto.token).digest('hex');
+    const user = await this.prisma.user.findFirst({
+      where: { inviteToken: tokenHash, isActive: false },
+    });
+    if (!user || !user.inviteExpiresAt || user.inviteExpiresAt < new Date()) {
+      throw new BadRequestException('Token inválido o caducado');
+    }
+
+    const passwordHash = await bcrypt.hash(dto.password, 10);
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id: user.id },
+        data: {
+          passwordHash,
+          isActive: true,
+          inviteToken: null,
+          inviteExpiresAt: null,
+        },
+      });
+      await tx.member.create({
+        data: { userId: user.id, displayName: dto.displayName },
+      });
+    });
+
+    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    await this.storeRefreshToken(user.id, tokens.refreshToken);
+
+    return {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        displayName: dto.displayName,
+        avatarUrl: null,
+      },
+    };
   }
 
   private async generateTokens(userId: string, email: string, role: string) {

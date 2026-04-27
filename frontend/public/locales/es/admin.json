@@ -1,0 +1,11 @@
+{
+  "invite_user": "Invitar usuario",
+  "invite_email_label": "Correo electrónico",
+  "invite_role_label": "Rol inicial",
+  "invite_send": "Enviar invitación",
+  "invite_cancel": "Cancelar",
+  "invite_success": "Invitación enviada a {{email}}",
+  "invite_dev_url": "URL de activación (dev):",
+  "invite_error_conflict": "Este email ya está registrado.",
+  "invite_error_generic": "Error al enviar la invitación."
+}

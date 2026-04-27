@@ -12,4 +12,11 @@ export const validationSchema = Joi.object({
   JWT_REFRESH_EXPIRES_IN: Joi.string().default('7d'),
   SEED_ADMIN_EMAIL: Joi.string().default('admin@ariesferrus.local'),
   SEED_ADMIN_PASSWORD: Joi.string().default('changeme'),
+  APP_URL: Joi.string().default('http://localhost:5173'),
+  SMTP_HOST: Joi.string().optional(),
+  SMTP_PORT: Joi.number().default(587),
+  SMTP_USER: Joi.string().optional(),
+  SMTP_PASS: Joi.string().optional(),
+  SMTP_FROM: Joi.string().default('chuck.hansen.larp@gmail.com'),
+  INVITE_EXPIRES_HOURS: Joi.number().default(72),
 });

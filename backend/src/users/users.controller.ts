@@ -1,9 +1,10 @@
-import { Controller, Get, Patch, Param, Body } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Param, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from '../common/enums/role.enum';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
+import { InviteUserDto } from './dto/invite-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -31,5 +32,11 @@ export class UsersController {
   @Roles(Role.ADMIN)
   updateStatus(@Param('id') id: string, @Body() dto: UpdateUserStatusDto) {
     return this.usersService.updateStatus(id, dto);
+  }
+
+  @Post('invite')
+  @Roles(Role.ADMIN)
+  invite(@Body() dto: InviteUserDto) {
+    return this.usersService.invite(dto);
   }
 }

@@ -176,6 +176,6 @@ export class MembersService {
   }
 
   private isAdmin(role: Role): boolean {
-    return [Role.ADMIN, Role.SUPER_ADMIN, Role.AREA_MANAGER].includes(role);
+    return [Role.ADMIN, Role.SUPER_ADMIN].includes(role);
   }
 }

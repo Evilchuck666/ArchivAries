@@ -2,15 +2,24 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Role } from '../common/enums/role.enum';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
+import { InviteUserDto } from './dto/invite-user.dto';
+import { MailService } from '../mail/mail.service';
+import { ConfigService } from '@nestjs/config';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private mail: MailService,
+    private config: ConfigService,
+  ) {}
 
   findAll() {
     return this.prisma.user.findMany({
@@ -88,5 +97,40 @@ export class UsersService {
 
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
+  }
+
+  async invite(dto: InviteUserDto) {
+    const existing = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+    if (existing) throw new ConflictException('El email ya está en uso');
+
+    const plainToken = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto
+      .createHash('sha256')
+      .update(plainToken)
+      .digest('hex');
+
+    const expiresHours = this.config.get<number>('smtp.inviteExpiresHours') ?? 72;
+    const inviteExpiresAt = new Date(Date.now() + expiresHours * 60 * 60 * 1000);
+
+    const user = await this.prisma.user.create({
+      data: {
+        email: dto.email,
+        passwordHash: '',
+        isActive: false,
+        role: dto.role ?? Role.MEMBER,
+        inviteToken: tokenHash,
+        inviteExpiresAt,
+      },
+      select: { id: true, email: true, role: true },
+    });
+
+    const appUrl = this.config.get<string>('app.url') ?? 'http://localhost:5173';
+    const activationUrl = `${appUrl}/activate?token=${plainToken}`;
+
+    await this.mail.sendInvite(dto.email, activationUrl, expiresHours);
+
+    return { ...user, devActivationUrl: activationUrl };
   }
 }
