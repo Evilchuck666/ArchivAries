@@ -111,7 +111,7 @@ export class AuthService {
         },
       });
       await tx.member.create({
-        data: { userId: user.id, displayName: dto.displayName },
+        data: { userId: user.id, displayName: dto.displayName, status: 'ACTIVE' },
       });
     });
 
