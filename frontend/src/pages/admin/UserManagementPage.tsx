@@ -138,7 +138,7 @@ export function UserManagementPage() {
         </div>
       )}
 
-      <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden">
+      <div className="bg-slate-900 border border-slate-800 rounded-lg">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-800 text-slate-500 text-xs uppercase tracking-wide">
@@ -155,8 +155,8 @@ export function UserManagementPage() {
               const canChangeRole = isSuperAdmin || (me && ROLE_HIERARCHY.indexOf(me.role) > ROLE_HIERARCHY.indexOf(u.role));
 
               return (
-                <tr key={u.id} className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                  <td className="px-4 py-3">
+                <tr key={u.id} className="group border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
+                  <td className="px-4 py-3 relative">
                     <div className="flex items-center gap-2">
                       {u.member?.avatarUrl ? (
                         <img src={u.member.avatarUrl} className="w-7 h-7 rounded-full object-cover" alt="" />
@@ -168,6 +168,11 @@ export function UserManagementPage() {
                       <span className="text-slate-200">{u.member?.displayName ?? '—'}</span>
                       {isSelf && <span className="text-xs text-amber-600">({t('roles.you')})</span>}
                     </div>
+                    {u.member?.notes?.trim() && (
+                      <div className="absolute left-0 top-full mt-1 z-50 hidden group-hover:block bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded-md px-3 py-2 shadow-lg w-64 whitespace-normal break-words">
+                        {u.member.notes}
+                      </div>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-slate-400">{u.email}</td>
                   <td className="px-4 py-3">
