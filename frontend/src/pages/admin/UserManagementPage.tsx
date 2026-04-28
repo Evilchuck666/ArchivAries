@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { usersApi } from '../../api/users.api';
@@ -25,6 +26,7 @@ export function UserManagementPage() {
   const [inviteSuccess, setInviteSuccess] = useState<{ email: string; devUrl: string } | null>(null);
   const [inviteError, setInviteError] = useState('');
   const [pendingStatus, setPendingStatus] = useState<{ id: string; email: string; currentIsActive: boolean } | null>(null);
+  const [tooltip, setTooltip] = useState<{ notes: string; x: number; top?: number; bottom?: number } | null>(null);
 
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['admin-users'],
@@ -138,7 +140,7 @@ export function UserManagementPage() {
         </div>
       )}
 
-      <div className="bg-slate-900 border border-slate-800 rounded-lg">
+      <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-800 text-slate-500 text-xs uppercase tracking-wide">
@@ -155,8 +157,25 @@ export function UserManagementPage() {
               const canChangeRole = isSuperAdmin || (me && ROLE_HIERARCHY.indexOf(me.role) > ROLE_HIERARCHY.indexOf(u.role));
 
               return (
-                <tr key={u.id} className="group border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                  <td className="px-4 py-3 relative">
+                <tr
+                  key={u.id}
+                  className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors"
+                  onMouseEnter={(e) => {
+                    const notes = u.member?.notes?.trim();
+                    if (notes) {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const spaceAbove = rect.top;
+                      const spaceBelow = window.innerHeight - rect.bottom;
+                      if (spaceAbove >= spaceBelow) {
+                        setTooltip({ notes, x: rect.left + 16, bottom: window.innerHeight - rect.top + 4 });
+                      } else {
+                        setTooltip({ notes, x: rect.left + 16, top: rect.bottom + 4 });
+                      }
+                    }
+                  }}
+                  onMouseLeave={() => setTooltip(null)}
+                >
+                  <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       {u.member?.avatarUrl ? (
                         <img src={u.member.avatarUrl} className="w-7 h-7 rounded-full object-cover" alt="" />
@@ -168,11 +187,6 @@ export function UserManagementPage() {
                       <span className="text-slate-200">{u.member?.displayName ?? '—'}</span>
                       {isSelf && <span className="text-xs text-amber-600">({t('roles.you')})</span>}
                     </div>
-                    {u.member?.notes?.trim() && (
-                      <div className="absolute left-0 top-full mt-1 z-50 hidden group-hover:block bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded-md px-3 py-2 shadow-lg w-64 whitespace-normal break-words">
-                        {u.member.notes}
-                      </div>
-                    )}
                   </td>
                   <td className="px-4 py-3 text-slate-400">{u.email}</td>
                   <td className="px-4 py-3">
@@ -216,6 +230,16 @@ export function UserManagementPage() {
         </table>
       </div>
     </div>
+
+    {tooltip && createPortal(
+      <div
+        className="fixed z-[9999] bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded-md px-3 py-2 shadow-lg w-64 whitespace-normal break-words pointer-events-none"
+        style={{ left: tooltip.x, ...(tooltip.bottom !== undefined ? { bottom: tooltip.bottom } : { top: tooltip.top }) }}
+      >
+        {tooltip.notes}
+      </div>,
+      document.body
+    )}
 
     {pendingStatus && (
       <ConfirmStatusModal
