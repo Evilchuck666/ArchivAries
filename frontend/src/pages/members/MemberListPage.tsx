@@ -11,7 +11,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
 import type { MemberStatus } from '../../types/member.types';
 
-const STATUSES: MemberStatus[] = ['ACTIVE', 'ASPIRANT', 'INACTIVE', 'ALUMNI', 'COLLABORATOR'];
+const STATUSES: MemberStatus[] = ['ACTIVE', 'INACTIVE', 'ALUMNI', 'COLLABORATOR'];
 
 export function MemberListPage() {
   const { t } = useTranslation('members');

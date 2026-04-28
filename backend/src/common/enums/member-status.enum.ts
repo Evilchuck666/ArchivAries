@@ -1,6 +1,5 @@
 export enum MemberStatus {
   ACTIVE = 'ACTIVE',
-  ASPIRANT = 'ASPIRANT',
   INACTIVE = 'INACTIVE',
   ALUMNI = 'ALUMNI',
   COLLABORATOR = 'COLLABORATOR',

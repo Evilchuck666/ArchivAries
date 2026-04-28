@@ -29,7 +29,6 @@
   },
   "status": {
     "ACTIVE": "Activo",
-    "ASPIRANT": "Aspirante",
     "INACTIVE": "Inactivo",
     "ALUMNI": "Exmiembro",
     "COLLABORATOR": "Colaborador",

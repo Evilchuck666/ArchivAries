@@ -20,7 +20,6 @@ enum Role {
 
 enum MemberStatus {
   ACTIVE
-  ASPIRANT
   INACTIVE
   ALUMNI
   COLLABORATOR
@@ -89,7 +88,7 @@ model Member {
   realName      String?
   avatarUrl     String?
   bio           String?      @db.Text
-  status        MemberStatus @default(ASPIRANT)
+  status        MemberStatus @default(ACTIVE)
   joinedAt      DateTime     @default(now())
   phone         String?
   showPhone     Boolean      @default(false)

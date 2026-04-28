@@ -1,4 +1,4 @@
-export type MemberStatus = 'ACTIVE' | 'ASPIRANT' | 'INACTIVE' | 'ALUMNI' | 'COLLABORATOR';
+export type MemberStatus = 'ACTIVE' | 'INACTIVE' | 'ALUMNI' | 'COLLABORATOR';
 
 export interface Member {
   id: string;
