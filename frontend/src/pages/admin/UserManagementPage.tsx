@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { usersApi } from '../../api/users.api';
 import { Spinner } from '../../components/ui/Spinner';
 import { RoleBadge } from '../../components/shared/RoleBadge';
+import { ConfirmStatusModal } from '../../components/shared/ConfirmStatusModal';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuthStore } from '../../store/auth.store';
@@ -23,6 +24,7 @@ export function UserManagementPage() {
   const [inviteRole, setInviteRole] = useState<Role>('MEMBER');
   const [inviteSuccess, setInviteSuccess] = useState<{ email: string; devUrl: string } | null>(null);
   const [inviteError, setInviteError] = useState('');
+  const [pendingStatus, setPendingStatus] = useState<{ id: string; email: string; currentIsActive: boolean } | null>(null);
 
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['admin-users'],
@@ -36,8 +38,12 @@ export function UserManagementPage() {
   });
 
   const statusMutation = useMutation({
-    mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) => usersApi.updateStatus(id, isActive),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
+    mutationFn: ({ id, isActive, reason }: { id: string; isActive: boolean; reason: string }) =>
+      usersApi.updateStatus(id, isActive, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      setPendingStatus(null);
+    },
   });
 
   const inviteMutation = useMutation({
@@ -66,6 +72,7 @@ export function UserManagementPage() {
   if (isLoading) return <Spinner className="py-20" />;
 
   return (
+    <>
     <div className="max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -186,7 +193,7 @@ export function UserManagementPage() {
                   <td className="px-4 py-3">
                     {!isSelf && canChangeRole && (
                       <button
-                        onClick={() => statusMutation.mutate({ id: u.id, isActive: !u.isActive })}
+                        onClick={() => setPendingStatus({ id: u.id, email: u.email, currentIsActive: u.isActive })}
                         className={`text-xs px-2 py-1 rounded border transition-colors ${
                           u.isActive
                             ? 'border-red-800 text-red-400 hover:bg-red-900/30'
@@ -204,5 +211,16 @@ export function UserManagementPage() {
         </table>
       </div>
     </div>
+
+    {pendingStatus && (
+      <ConfirmStatusModal
+        email={pendingStatus.email}
+        currentIsActive={pendingStatus.currentIsActive}
+        onConfirm={(reason) => statusMutation.mutate({ id: pendingStatus.id, isActive: !pendingStatus.currentIsActive, reason })}
+        onCancel={() => setPendingStatus(null)}
+        isPending={statusMutation.isPending}
+      />
+    )}
+    </>
   );
 }

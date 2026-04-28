@@ -88,11 +88,18 @@ export class UsersService {
       }
     }
 
-    return this.prisma.user.update({
+    const updated = await this.prisma.user.update({
       where: { id },
       data: { isActive: dto.isActive },
       select: { id: true, email: true, isActive: true },
     });
+
+    await this.prisma.member.updateMany({
+      where: { userId: id },
+      data: { notes: dto.reason },
+    });
+
+    return updated;
   }
 
   async findByEmail(email: string) {

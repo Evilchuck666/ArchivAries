@@ -1,6 +1,10 @@
-import { IsBoolean } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateUserStatusDto {
   @IsBoolean()
-  isActive: boolean;
+  isActive!: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  reason!: string;
 }

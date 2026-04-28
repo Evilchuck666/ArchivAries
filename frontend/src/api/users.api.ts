@@ -22,8 +22,8 @@ export const usersApi = {
     apiClient.get<{ data: AdminUser[] }>('/users').then(unwrap),
   updateRole: (id: string, role: Role) =>
     apiClient.patch(`/users/${id}/role`, { role }).then(unwrap),
-  updateStatus: (id: string, isActive: boolean) =>
-    apiClient.patch(`/users/${id}/status`, { isActive }).then(unwrap),
+  updateStatus: (id: string, isActive: boolean, reason: string) =>
+    apiClient.patch(`/users/${id}/status`, { isActive, reason }).then(unwrap),
   invite: (email: string, role?: Role) =>
     apiClient.post<{ data: InviteResult }>('/users/invite', { email, role }).then(unwrap),
 };

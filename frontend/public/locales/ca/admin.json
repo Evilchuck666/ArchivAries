@@ -1,4 +1,11 @@
 {
+  "deactivate_modal_title": "Desactivar usuari",
+  "activate_modal_title": "Activar usuari",
+  "deactivate_modal_body": "Estàs segur que vols desactivar {{email}}?",
+  "activate_modal_body": "Estàs segur que vols activar {{email}}?",
+  "status_reason_label": "Motiu",
+  "status_reason_placeholder": "Escriu el motiu del canvi...",
+  "status_confirm": "Confirmar",
   "invite_user": "Convidar usuari",
   "invite_email_label": "Correu electrònic",
   "invite_role_label": "Rol inicial",
