@@ -29,7 +29,7 @@ export class UsersService {
         role: true,
         isActive: true,
         createdAt: true,
-        member: { select: { displayName: true, avatarUrl: true } },
+        member: { select: { displayName: true, avatarUrl: true, notes: true } },
       },
       orderBy: { createdAt: 'desc' },
     });

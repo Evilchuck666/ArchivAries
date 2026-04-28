@@ -7,7 +7,7 @@ export interface AdminUser {
   role: Role;
   isActive: boolean;
   createdAt: string;
-  member: { displayName: string; avatarUrl: string | null } | null;
+  member: { displayName: string; avatarUrl: string | null; notes: string | null } | null;
 }
 
 export interface InviteResult {
