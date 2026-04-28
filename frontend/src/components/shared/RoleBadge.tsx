@@ -2,10 +2,11 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '../ui/Badge';
 import type { Role } from '../../types/auth.types';
 
-const roleColors: Record<Role, 'gray' | 'blue' | 'amber' | 'red' | 'purple'> = {
+const roleColors: Record<Role, 'gray' | 'blue' | 'amber' | 'red' | 'purple' | 'green'> = {
   VISITOR: 'gray',
   MEMBER: 'blue',
   AREA_MANAGER: 'purple',
+  BOARD: 'green',
   ADMIN: 'amber',
   SUPER_ADMIN: 'red',
 };

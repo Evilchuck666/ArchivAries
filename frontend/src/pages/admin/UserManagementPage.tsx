@@ -9,8 +9,8 @@ import { Button } from '../../components/ui/Button';
 import { useAuthStore } from '../../store/auth.store';
 import type { Role } from '../../types/auth.types';
 
-const ROLES: Role[] = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
-const ROLE_HIERARCHY: Role[] = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLES: Role[] = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY: Role[] = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 export function UserManagementPage() {
   const { t } = useTranslation('common');

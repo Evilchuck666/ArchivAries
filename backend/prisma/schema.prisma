@@ -13,6 +13,7 @@ enum Role {
   VISITOR
   MEMBER
   AREA_MANAGER
+  BOARD
   ADMIN
   SUPER_ADMIN
 }
