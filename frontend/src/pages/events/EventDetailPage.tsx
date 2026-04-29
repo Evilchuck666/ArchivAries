@@ -31,6 +31,7 @@ export function EventDetailPage() {
     onSuccess: () => {
       setPendingAction(null);
       queryClient.invalidateQueries({ queryKey: ['event', id] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
     onError: () => setPendingAction(null),
