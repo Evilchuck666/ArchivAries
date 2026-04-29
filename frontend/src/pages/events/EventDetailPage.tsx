@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -22,14 +23,23 @@ export function EventDetailPage() {
     enabled: !!id,
   });
 
-  const { mutate: rsvp, isPending } = useMutation({
+  const [pendingAction, setPendingAction] = useState<'CONFIRMED' | 'DECLINED' | null>(null);
+
+  const { mutate: rsvpMutate, isPending } = useMutation({
     mutationFn: (status: 'CONFIRMED' | 'DECLINED') =>
       eventsApi.participate(id!, { status }),
     onSuccess: () => {
+      setPendingAction(null);
       queryClient.invalidateQueries({ queryKey: ['event', id] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
+    onError: () => setPendingAction(null),
   });
+
+  const rsvp = (status: 'CONFIRMED' | 'DECLINED') => {
+    setPendingAction(status);
+    rsvpMutate(status);
+  };
 
   if (isLoading) return <Spinner className="py-20" />;
   if (!event) return <p className="text-slate-500">{t('not_found')}</p>;
@@ -84,24 +94,33 @@ export function EventDetailPage() {
           )}
         </dl>
 
-        <div className="flex gap-2 pt-3 border-t border-slate-800">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => rsvp('CONFIRMED')}
-            loading={isPending}
-          >
-            ✓ {t('rsvp_confirm')}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => rsvp('DECLINED')}
-            disabled={isPending}
-          >
-            ✗ {t('rsvp_decline')}
-          </Button>
-        </div>
+        {(() => {
+          const myStatus = event.participations?.[0]?.status;
+          const isConfirmed = myStatus === 'CONFIRMED';
+          const isDeclined = myStatus === 'DECLINED';
+          return (
+            <div className="flex gap-2 pt-3 border-t border-slate-800">
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => rsvp('CONFIRMED')}
+                loading={isPending && pendingAction === 'CONFIRMED'}
+                disabled={isPending || isConfirmed}
+              >
+                ✓ {t('rsvp_confirm')}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => rsvp('DECLINED')}
+                loading={isPending && pendingAction === 'DECLINED'}
+                disabled={isPending || isDeclined}
+              >
+                ✗ {t('rsvp_decline')}
+              </Button>
+            </div>
+          );
+        })()}
       </Card>
 
       {event.description && (
