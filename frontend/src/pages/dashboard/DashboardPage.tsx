@@ -64,6 +64,13 @@ export function DashboardPage() {
                       <p className="text-sm font-medium text-slate-200 group-hover:text-amber-300 transition-colors truncate">{event.title}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         <EventStatusBadge status={event.status} />
+                        {(() => {
+                          const now = new Date();
+                          const isOngoing = new Date(event.startDate) < now
+                            && event.endDate !== null
+                            && new Date(event.endDate) >= now;
+                          return isOngoing ? <Badge color="yellow">{t('event_ongoing')}</Badge> : null;
+                        })()}
                         {rsvpMap[event.id] && (
                           <Badge color={rsvpMap[event.id] === 'CONFIRMED' ? 'green' : 'red'}>
                             {rsvpMap[event.id] === 'CONFIRMED' ? t('rsvp_confirmed') : t('rsvp_declined')}

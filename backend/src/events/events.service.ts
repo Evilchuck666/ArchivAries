@@ -35,10 +35,14 @@ export class EventsService {
   }
 
   findUpcoming(limit = 5) {
+    const now = new Date();
     return this.prisma.event.findMany({
       where: {
-        startDate: { gte: new Date() },
         status: { not: 'CANCELLED' },
+        OR: [
+          { startDate: { gte: now } },
+          { startDate: { lt: now }, endDate: { gte: now } },
+        ],
       },
       orderBy: { startDate: 'asc' },
       take: limit,
