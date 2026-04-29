@@ -27,6 +27,9 @@
   "calendar_view": "Vista calendario",
   "list_view": "Vista lista",
   "draft": "Borrador",
+  "edit_event": "Editar evento",
+  "delete_event": "Eliminar evento",
+  "delete_confirm_yes": "Confirmar eliminación",
   "rsvp_not_registered": "No te has apuntado",
   "rsvp_status": {
     "CONFIRMED": "✓ Confirmado",

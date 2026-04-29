@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
@@ -9,12 +9,16 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
+import { useAuthStore } from '../../store/auth.store';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 export function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('events');
+  const { t: tc } = useTranslation('common');
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data: event, isLoading } = useQuery({
@@ -24,6 +28,7 @@ export function EventDetailPage() {
   });
 
   const [pendingAction, setPendingAction] = useState<'CONFIRMED' | 'DECLINED' | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const { mutate: rsvpMutate, isPending } = useMutation({
     mutationFn: (status: 'CONFIRMED' | 'DECLINED') =>
@@ -37,6 +42,14 @@ export function EventDetailPage() {
     onError: () => setPendingAction(null),
   });
 
+  const { mutate: deleteEvent, isPending: isDeleting } = useMutation({
+    mutationFn: () => eventsApi.remove(id!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+      navigate('/app/events');
+    },
+  });
+
   const rsvp = (status: 'CONFIRMED' | 'DECLINED') => {
     setPendingAction(status);
     rsvpMutate(status);
@@ -45,11 +58,53 @@ export function EventDetailPage() {
   if (isLoading) return <Spinner className="py-20" />;
   if (!event) return <p className="text-slate-500">{t('not_found')}</p>;
 
+  const canEdit = user && (
+    user.id === event.creatorId ||
+    ['AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role)
+  );
+  const canDelete = user && (
+    user.id === event.creatorId ||
+    ['ADMIN', 'SUPER_ADMIN'].includes(user.role)
+  );
+
   return (
     <div className="max-w-3xl mx-auto">
-      <Link to="/app/events" className="text-sm text-slate-400 hover:text-amber-300 mb-6 inline-block">
-        {t('back_to_events')}
-      </Link>
+      <div className="flex items-center justify-between mb-6">
+        <Link to="/app/events" className="text-sm text-slate-400 hover:text-amber-300">
+          {t('back_to_events')}
+        </Link>
+        {(canEdit || canDelete) && (
+          <div className="flex items-center gap-2">
+            {canEdit && (
+              <Link to={`/app/events/${event.id}/edit`}>
+                <Button variant="ghost" size="sm">{tc('actions.edit')}</Button>
+              </Link>
+            )}
+            {canDelete && (
+              confirmDelete ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => deleteEvent()}
+                  loading={isDeleting}
+                  className="text-red-400 border-red-900 hover:bg-red-950"
+                >
+                  {t('delete_confirm_yes')}
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setConfirmDelete(true)}
+                  className="text-red-400 border-red-900 hover:bg-red-950"
+                >
+                  {tc('actions.delete')}
+                </Button>
+              )
+            )}
+          </div>
+        )}
+      </div>
 
       <Card className="mb-4">
         <div className="flex items-start justify-between gap-4 mb-4">

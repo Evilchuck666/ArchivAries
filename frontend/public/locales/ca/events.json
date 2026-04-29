@@ -27,6 +27,9 @@
   "calendar_view": "Vista calendari",
   "list_view": "Vista llista",
   "draft": "Esborrany",
+  "edit_event": "Editar esdeveniment",
+  "delete_event": "Eliminar esdeveniment",
+  "delete_confirm_yes": "Confirmar eliminació",
   "rsvp_not_registered": "No t'has apuntat",
   "rsvp_status": {
     "CONFIRMED": "✓ Confirmat",

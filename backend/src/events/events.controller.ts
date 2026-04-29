@@ -63,9 +63,13 @@ export class EventsController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(id);
+  @Roles(Role.AREA_MANAGER)
+  remove(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: Role,
+  ) {
+    return this.eventsService.remove(id, userId, role);
   }
 
   @Post(':id/participate')

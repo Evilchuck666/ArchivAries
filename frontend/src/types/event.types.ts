@@ -3,6 +3,7 @@ export type AttendanceStatus = 'CONFIRMED' | 'DECLINED' | 'PENDING';
 
 export interface Event {
   id: string;
+  creatorId: string;
   title: string;
   description: string | null;
   location: string | null;

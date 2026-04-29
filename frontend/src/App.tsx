@@ -23,6 +23,7 @@ import { EventListPage } from './pages/events/EventListPage';
 import { CalendarPage } from './pages/events/CalendarPage';
 import { EventDetailPage } from './pages/events/EventDetailPage';
 import { EventCreatePage } from './pages/events/EventCreatePage';
+import { EventEditPage } from './pages/events/EventEditPage';
 
 import { DocumentListPage } from './pages/documents/DocumentListPage';
 import { DocumentDetailPage } from './pages/documents/DocumentDetailPage';
@@ -75,6 +76,7 @@ export default function App() {
                 <Route path="/app/events/:id" element={<EventDetailPage />} />
                 <Route element={<RoleRoute minRole="AREA_MANAGER" />}>
                   <Route path="/app/events/create" element={<EventCreatePage />} />
+                  <Route path="/app/events/:id/edit" element={<EventEditPage />} />
                 </Route>
 
                 {/* Documents */}

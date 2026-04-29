@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Role } from '../common/enums/role.enum';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -105,8 +105,13 @@ export class EventsService {
     });
   }
 
-  async remove(id: string) {
-    await this.findOne(id);
+  async remove(id: string, userId: string, userRole: Role) {
+    const event = await this.findOne(id);
+    const isCreator = event.creatorId === userId;
+    const isAdmin = [Role.ADMIN, Role.SUPER_ADMIN].includes(userRole);
+    if (!isCreator && !isAdmin) {
+      throw new ForbiddenException('No tienes permiso para eliminar este evento');
+    }
     return this.prisma.event.delete({ where: { id } });
   }
 

@@ -9,6 +9,7 @@ export const ROUTES = {
   CALENDAR: '/app/events/calendar',
   EVENT_DETAIL: '/app/events/:id',
   EVENT_CREATE: '/app/events/create',
+  EVENT_EDIT: '/app/events/:id/edit',
   DOCUMENTS: '/app/documents',
   DOCUMENT_DETAIL: '/app/documents/:id',
   DOCUMENT_CREATE: '/app/documents/create',
