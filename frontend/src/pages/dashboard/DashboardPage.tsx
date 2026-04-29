@@ -72,11 +72,13 @@ export function DashboardPage() {
                             ? <Badge color="yellow">{t('event_ongoing')}</Badge>
                             : <EventStatusBadge status={event.status} />;
                         })()}
-                        {rsvpMap[event.id] && (
+                        {rsvpMap[event.id] ? (
                           <Badge color={rsvpMap[event.id] === 'CONFIRMED' ? 'green' : 'red'}>
                             {rsvpMap[event.id] === 'CONFIRMED' ? t('rsvp_confirmed') : t('rsvp_declined')}
                           </Badge>
-                        )}
+                        ) : event.status !== 'CANCELLED' && event.status !== 'FINISHED' ? (
+                          <Badge color="gray">{t('rsvp_not_registered')}</Badge>
+                        ) : null}
                       </div>
                     </div>
                   </Link>

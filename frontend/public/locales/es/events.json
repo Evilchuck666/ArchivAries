@@ -27,6 +27,7 @@
   "calendar_view": "Vista calendario",
   "list_view": "Vista lista",
   "draft": "Borrador",
+  "rsvp_not_registered": "No te has apuntado",
   "rsvp_status": {
     "CONFIRMED": "✓ Confirmado",
     "DECLINED": "✗ No asistiré",

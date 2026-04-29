@@ -12,5 +12,6 @@
   "my_rsvp": "Mi confirmación",
   "rsvp_confirmed": "✓ Confirmado",
   "rsvp_declined": "✗ No asiste",
-  "event_ongoing": "En curso"
+  "event_ongoing": "En curso",
+  "rsvp_not_registered": "No te has apuntado"
 }

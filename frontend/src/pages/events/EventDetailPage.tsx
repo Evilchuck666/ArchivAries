@@ -67,7 +67,7 @@ export function EventDetailPage() {
                 ? <Badge color="yellow">{t('event_ongoing')}</Badge>
                 : <EventStatusBadge status={event.status} />;
             })()}
-            {event.participations?.[0] && (
+            {event.participations?.[0] ? (
               <Badge color={
                 event.participations[0].status === 'CONFIRMED' ? 'green'
                 : event.participations[0].status === 'DECLINED' ? 'red'
@@ -75,7 +75,9 @@ export function EventDetailPage() {
               }>
                 {t(`rsvp_status.${event.participations[0].status}`)}
               </Badge>
-            )}
+            ) : event.status !== 'CANCELLED' && event.status !== 'FINISHED' ? (
+              <Badge color="gray">{t('rsvp_not_registered')}</Badge>
+            ) : null}
           </div>
         </div>
 

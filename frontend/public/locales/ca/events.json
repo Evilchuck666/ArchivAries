@@ -27,6 +27,7 @@
   "calendar_view": "Vista calendari",
   "list_view": "Vista llista",
   "draft": "Esborrany",
+  "rsvp_not_registered": "No t'has apuntat",
   "rsvp_status": {
     "CONFIRMED": "✓ Confirmat",
     "DECLINED": "✗ No assistiré",
