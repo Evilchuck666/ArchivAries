@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
+import { DateTimeInput } from '../../components/ui/DateTimeInput';
 
 interface FormData {
   title: string;
@@ -23,7 +24,7 @@ export function EventCreatePage() {
   const { t: tc } = useTranslation('common');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, control } = useForm<FormData>();
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: FormData) => eventsApi.create(data),
@@ -41,8 +42,21 @@ export function EventCreatePage() {
           <Input label={t('event_name')} {...register('title', { required: true })} />
           <Input label={t('event_type')} {...register('eventType', { required: true })} placeholder={t('event_type_placeholder')} />
           <div className="grid grid-cols-2 gap-4">
-            <Input label={t('start_date')} type="datetime-local" {...register('startDate', { required: true })} />
-            <Input label={t('end_date')} type="datetime-local" {...register('endDate')} />
+            <Controller
+              control={control}
+              name="startDate"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <DateTimeInput label={t('start_date')} value={field.value} onChange={field.onChange} required />
+              )}
+            />
+            <Controller
+              control={control}
+              name="endDate"
+              render={({ field }) => (
+                <DateTimeInput label={t('end_date')} value={field.value} onChange={field.onChange} />
+              )}
+            />
           </div>
           <Input label={t('location')} {...register('location')} />
           <div className="flex flex-col gap-1">

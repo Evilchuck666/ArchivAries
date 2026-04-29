@@ -29,6 +29,71 @@
   --color-slate-950: oklch(18% 0.005 15);
 }
 
+/* react-datepicker dark theme */
+.react-datepicker {
+  background-color: oklch(20% 0.006 15) !important;
+  border-color: oklch(32% 0.008 15) !important;
+  font-family: inherit !important;
+  color: oklch(76% 0.008 15) !important;
+}
+.react-datepicker__header {
+  background-color: oklch(30% 0.008 15) !important;
+  border-bottom-color: oklch(32% 0.008 15) !important;
+}
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker__day-name {
+  color: oklch(87% 0.008 15) !important;
+}
+.react-datepicker__day {
+  color: oklch(76% 0.008 15) !important;
+}
+.react-datepicker__day:hover {
+  background-color: oklch(32% 0.008 15) !important;
+  color: oklch(97% 0.004 15) !important;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: oklch(48% 0.135 15) !important;
+  color: oklch(97% 0.004 15) !important;
+}
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: oklch(70% 0.095 15) !important;
+}
+.react-datepicker__day--outside-month {
+  color: oklch(42% 0.008 15) !important;
+}
+.react-datepicker__navigation-icon::before {
+  border-color: oklch(63% 0.008 15) !important;
+}
+.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: oklch(87% 0.008 15) !important;
+}
+.react-datepicker__time-container {
+  border-left-color: oklch(32% 0.008 15) !important;
+}
+.react-datepicker__time-container .react-datepicker__time {
+  background-color: oklch(20% 0.006 15) !important;
+}
+.react-datepicker__time-container .react-datepicker__time-list-item {
+  color: oklch(76% 0.008 15) !important;
+}
+.react-datepicker__time-container .react-datepicker__time-list-item:hover {
+  background-color: oklch(32% 0.008 15) !important;
+  color: oklch(97% 0.004 15) !important;
+}
+.react-datepicker__time-container .react-datepicker__time-list-item--selected {
+  background-color: oklch(48% 0.135 15) !important;
+  color: oklch(97% 0.004 15) !important;
+}
+.react-datepicker__triangle {
+  display: none !important;
+}
+.react-datepicker-popper {
+  z-index: 50 !important;
+}
+
 @layer base {
   :root {
     color-scheme: dark;
