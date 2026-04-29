@@ -1,6 +1,6 @@
 import DatePicker from 'react-datepicker';
 import { es } from 'date-fns/locale';
-import { format, parse, isValid } from 'date-fns';
+import { formatISO, isValid } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props {
@@ -10,11 +10,9 @@ interface Props {
   required?: boolean;
 }
 
-const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm";
-
 export function DateTimeInput({ label, value, onChange, required }: Props) {
-  const parsed = value ? parse(value, ISO_FORMAT, new Date()) : null;
-  const selected = parsed && isValid(parsed) ? parsed : null;
+  // new Date() handles any ISO format: with Z, with offset (+02:00), or naive local string
+  const selected = value ? (() => { const d = new Date(value); return isValid(d) ? d : null; })() : null;
 
   return (
     <div className="flex flex-col gap-1">
@@ -22,7 +20,7 @@ export function DateTimeInput({ label, value, onChange, required }: Props) {
       <DatePicker
         locale={es}
         selected={selected}
-        onChange={(date: Date | null) => onChange(date ? format(date, ISO_FORMAT) : '')}
+        onChange={(date: Date | null) => onChange(date ? formatISO(date) : '')}
         showTimeSelect
         timeFormat="HH:mm"
         timeIntervals={15}

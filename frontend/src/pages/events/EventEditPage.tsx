@@ -41,8 +41,8 @@ export function EventEditPage() {
       reset({
         title: event.title,
         eventType: event.eventType,
-        startDate: event.startDate.slice(0, 16),
-        endDate: event.endDate ? event.endDate.slice(0, 16) : '',
+        startDate: event.startDate,
+        endDate: event.endDate ?? '',
         location: event.location ?? '',
         description: event.description ?? '',
         practicalInfo: event.practicalInfo ?? '',
