@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
+import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
@@ -45,7 +46,26 @@ export function EventDetailPage() {
             <h1 className="text-2xl font-serif text-amber-200">{event.title}</h1>
             <p className="text-slate-500 text-sm mt-1">{event.eventType}</p>
           </div>
-          <EventStatusBadge status={event.status} />
+          <div className="flex items-center gap-2 shrink-0">
+            {(() => {
+              const now = new Date();
+              const isOngoing = new Date(event.startDate) < now
+                && event.endDate !== null
+                && new Date(event.endDate) >= now;
+              return isOngoing
+                ? <Badge color="yellow">{t('event_ongoing')}</Badge>
+                : <EventStatusBadge status={event.status} />;
+            })()}
+            {event.participations?.[0] && (
+              <Badge color={
+                event.participations[0].status === 'CONFIRMED' ? 'green'
+                : event.participations[0].status === 'DECLINED' ? 'red'
+                : 'gray'
+              }>
+                {t(`rsvp_status.${event.participations[0].status}`)}
+              </Badge>
+            )}
+          </div>
         </div>
 
         <dl className="grid sm:grid-cols-2 gap-3 mb-4">

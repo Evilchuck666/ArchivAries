@@ -22,10 +22,16 @@
   "no_events": "No hi ha esdeveniments",
   "not_found": "Esdeveniment no trobat",
   "back_to_events": "← Tornar a esdeveniments",
+  "event_ongoing": "En curs",
   "all_statuses": "Tots els estats",
   "calendar_view": "Vista calendari",
   "list_view": "Vista llista",
   "draft": "Esborrany",
+  "rsvp_status": {
+    "CONFIRMED": "✓ Confirmat",
+    "DECLINED": "✗ No assistiré",
+    "PENDING": "Pendent"
+  },
   "types": {
     "training": "Entrenament",
     "fair": "Fira medieval",

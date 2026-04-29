@@ -14,7 +14,7 @@ export class EventsService {
     dateFrom?: string;
     dateTo?: string;
     isPublic?: boolean;
-  }) {
+  }, userId?: string) {
     const where: any = {};
     if (filters.status) where.status = filters.status;
     if (filters.isPublic !== undefined) where.isPublic = filters.isPublic;
@@ -30,6 +30,13 @@ export class EventsService {
       include: {
         creator: { select: { member: { select: { displayName: true } } } },
         _count: { select: { participations: true } },
+        ...(userId && {
+          participations: {
+            where: { userId },
+            select: { status: true },
+            take: 1,
+          },
+        }),
       },
     });
   }
@@ -56,12 +63,19 @@ export class EventsService {
     return this.findAll({ isPublic: true });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId?: string) {
     const event = await this.prisma.event.findUnique({
       where: { id },
       include: {
         creator: { select: { member: { select: { displayName: true } } } },
         _count: { select: { participations: true } },
+        ...(userId && {
+          participations: {
+            where: { userId },
+            select: { status: true },
+            take: 1,
+          },
+        }),
       },
     });
     if (!event) throw new NotFoundException('Evento no encontrado');

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
+import { Badge } from '../../components/ui/Badge';
 import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { useAuthStore } from '../../store/auth.store';
@@ -75,9 +76,30 @@ export function EventListPage() {
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">{event.title}</h3>
                 {event.location && <p className="text-xs text-slate-500 mt-0.5">📍 {event.location}</p>}
-                <div className="flex items-center gap-2 mt-2">
-                  <EventStatusBadge status={event.status} />
-                  <span className="text-xs text-slate-500">{event.eventType}</span>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  {(() => {
+                    const now = new Date();
+                    const isOngoing = new Date(event.startDate) < now
+                      && event.endDate !== null
+                      && new Date(event.endDate) >= now;
+                    return isOngoing
+                      ? <Badge color="yellow">{t('event_ongoing')}</Badge>
+                      : <EventStatusBadge status={event.status} />;
+                  })()}
+                  {event.participations?.[0] && (
+                    <Badge color={
+                      event.participations[0].status === 'CONFIRMED' ? 'green'
+                      : event.participations[0].status === 'DECLINED' ? 'red'
+                      : 'gray'
+                    }>
+                      {t(`rsvp_status.${event.participations[0].status}`)}
+                    </Badge>
+                  )}
+                  {event.eventType && (
+                    <span className="text-xs text-slate-400 bg-slate-800 border border-slate-700 px-1.5 py-0.5 rounded">
+                      {event.eventType}
+                    </span>
+                  )}
                   {event._count && <span className="text-xs text-slate-500">👥 {event._count.participations}</span>}
                 </div>
               </div>

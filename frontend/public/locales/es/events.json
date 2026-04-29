@@ -22,10 +22,16 @@
   "no_events": "No hay eventos",
   "not_found": "Evento no encontrado",
   "back_to_events": "← Volver a eventos",
+  "event_ongoing": "En curso",
   "all_statuses": "Todos los estados",
   "calendar_view": "Vista calendario",
   "list_view": "Vista lista",
   "draft": "Borrador",
+  "rsvp_status": {
+    "CONFIRMED": "✓ Confirmado",
+    "DECLINED": "✗ No asistiré",
+    "PENDING": "Pendiente"
+  },
   "types": {
     "training": "Entrenamiento",
     "fair": "Feria medieval",

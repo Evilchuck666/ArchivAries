@@ -14,6 +14,7 @@ export interface Event {
   practicalInfo: string | null;
   createdAt: string;
   _count?: { participations: number };
+  participations?: { status: AttendanceStatus }[];
 }
 
 export interface EventParticipation {

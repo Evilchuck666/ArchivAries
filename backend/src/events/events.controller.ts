@@ -24,11 +24,12 @@ export class EventsController {
   @Get()
   @Roles(Role.MEMBER)
   findAll(
+    @CurrentUser('id') userId: string,
     @Query('status') status?: string,
     @Query('dateFrom') dateFrom?: string,
     @Query('dateTo') dateTo?: string,
   ) {
-    return this.eventsService.findAll({ status, dateFrom, dateTo });
+    return this.eventsService.findAll({ status, dateFrom, dateTo }, userId);
   }
 
   @Get('upcoming')
@@ -45,8 +46,8 @@ export class EventsController {
 
   @Get(':id')
   @Roles(Role.MEMBER)
-  findOne(@Param('id') id: string) {
-    return this.eventsService.findOne(id);
+  findOne(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.eventsService.findOne(id, userId);
   }
 
   @Post()
