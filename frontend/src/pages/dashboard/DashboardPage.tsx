@@ -77,7 +77,7 @@ export function DashboardPage() {
                             {rsvpMap[event.id] === 'CONFIRMED' ? t('rsvp_confirmed') : t('rsvp_declined')}
                           </Badge>
                         ) : event.status !== 'CANCELLED' && event.status !== 'FINISHED' ? (
-                          <Badge color="gray">{t('rsvp_not_registered')}</Badge>
+                          <Badge color="amber">{t('rsvp_not_registered')}</Badge>
                         ) : null}
                       </div>
                     </div>

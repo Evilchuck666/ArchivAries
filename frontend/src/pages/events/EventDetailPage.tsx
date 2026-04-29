@@ -76,7 +76,7 @@ export function EventDetailPage() {
                 {t(`rsvp_status.${event.participations[0].status}`)}
               </Badge>
             ) : event.status !== 'CANCELLED' && event.status !== 'FINISHED' ? (
-              <Badge color="gray">{t('rsvp_not_registered')}</Badge>
+              <Badge color="amber">{t('rsvp_not_registered')}</Badge>
             ) : null}
           </div>
         </div>
