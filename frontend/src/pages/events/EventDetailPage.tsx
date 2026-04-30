@@ -130,7 +130,7 @@ export function EventDetailPage() {
                 : event.participations[0].status === 'DECLINED' ? 'red'
                 : 'gray'
               }>
-                {t(`rsvp_status.${event.participations[0].status}`)}
+                {t(`${isPast ? 'rsvp_status_past' : 'rsvp_status'}.${event.participations[0].status}`)}
               </Badge>
             ) : (
               event.status !== 'CANCELLED' && event.status !== 'FINISHED'

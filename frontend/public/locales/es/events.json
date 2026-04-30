@@ -42,6 +42,11 @@
     "DECLINED": "✗ No asistiré",
     "PENDING": "Pendiente"
   },
+  "rsvp_status_past": {
+    "CONFIRMED": "✓ Asistí",
+    "DECLINED": "✗ No asistí",
+    "PENDING": "Pendiente"
+  },
   "types": {
     "training": "Entrenamiento",
     "fair": "Feria medieval",
