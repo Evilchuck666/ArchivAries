@@ -1,12 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { eventsApi } from '../../api/events.api';
 
+const EVENT_PALETTE = [
+  { bg: '#1e3a5f', border: '#1d4ed8' },
+  { bg: '#14532d', border: '#15803d' },
+  { bg: '#3b0764', border: '#7c3aed' },
+  { bg: '#7c2d12', border: '#c2410c' },
+  { bg: '#0f3460', border: '#0e7490' },
+  { bg: '#4a1942', border: '#a21caf' },
+  { bg: '#1c3828', border: '#059669' },
+  { bg: '#312e81', border: '#4f46e5' },
+  { bg: '#713f12', border: '#d97706' },
+  { bg: '#134e4a', border: '#0d9488' },
+];
+
+function hashEventColor(id: string) {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) & 0x7fffffff;
+  return EVENT_PALETTE[h % EVENT_PALETTE.length];
+}
+
 export function CalendarPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
 
   const { data: events = [] } = useQuery({
     queryKey: ['events-all'],
@@ -14,18 +35,17 @@ export function CalendarPage() {
     staleTime: 60_000,
   });
 
-  const calEvents = events.map((e) => ({
-    id: e.id,
-    title: e.title,
-    start: e.startDate,
-    end: e.endDate ?? undefined,
-    backgroundColor: e.status === 'CANCELLED' ? '#7f1d1d' : e.status === 'CONFIRMED' ? '#14532d' : '#1e3a5f',
-    borderColor: e.status === 'CANCELLED' ? '#991b1b' : e.status === 'CONFIRMED' ? '#166534' : '#1d4ed8',
-  }));
+  const calEvents = events.map((e) => {
+    if (e.status === 'CANCELLED') {
+      return { id: e.id, title: e.title, start: e.startDate, end: e.endDate ?? undefined, backgroundColor: '#7f1d1d', borderColor: '#991b1b' };
+    }
+    const color = hashEventColor(e.id);
+    return { id: e.id, title: e.title, start: e.startDate, end: e.endDate ?? undefined, backgroundColor: color.bg, borderColor: color.border };
+  });
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-2xl font-serif text-amber-200 mb-6">Calendario</h1>
+      <h1 className="text-2xl font-serif text-amber-200 mb-6">{t('nav.calendar')}</h1>
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 [&_.fc-theme-standard_.fc-scrollgrid]:border-slate-700 [&_.fc-col-header-cell-cushion]:text-slate-400 [&_.fc-daygrid-day-number]:text-slate-400 [&_.fc-toolbar-title]:text-amber-200 [&_.fc-toolbar-title]:font-serif [&_.fc-button]:bg-slate-700 [&_.fc-button]:border-slate-600 [&_.fc-button]:text-slate-200 [&_.fc-button:hover]:bg-slate-600 [&_.fc-button-active]:bg-amber-700 [&_.fc-day-today]:bg-amber-900/10">
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
