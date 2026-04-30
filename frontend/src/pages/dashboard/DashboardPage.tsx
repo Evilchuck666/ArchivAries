@@ -80,9 +80,10 @@ export function DashboardPage() {
                         ) : (() => {
                           const end = event.endDate ? new Date(event.endDate) : null;
                           const isPast = end ? end < new Date() : new Date(event.startDate) < new Date();
-                          return !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
-                            ? <Badge color="amber">{t('rsvp_not_registered')}</Badge>
-                            : null;
+                          if (event.status === 'CANCELLED' || event.status === 'FINISHED') return null;
+                          return isPast
+                            ? <Badge color="amber">{t('rsvp_not_registered_past')}</Badge>
+                            : <Badge color="amber">{t('rsvp_not_registered')}</Badge>;
                         })()}
                       </div>
                     </div>

@@ -133,8 +133,10 @@ export function EventDetailPage() {
                 {t(`rsvp_status.${event.participations[0].status}`)}
               </Badge>
             ) : (
-              !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
-                ? <Badge color="amber">{t('rsvp_not_registered')}</Badge>
+              event.status !== 'CANCELLED' && event.status !== 'FINISHED'
+                ? isPast
+                  ? <Badge color="amber">{t('rsvp_not_registered_past')}</Badge>
+                  : <Badge color="amber">{t('rsvp_not_registered')}</Badge>
                 : null
             )}
           </div>

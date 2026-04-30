@@ -98,9 +98,10 @@ export function EventListPage() {
                   ) : (() => {
                     const end = event.endDate ? new Date(event.endDate) : null;
                     const isPast = end ? end < new Date() : new Date(event.startDate) < new Date();
-                    return !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
-                      ? <Badge color="amber">{t('rsvp_not_registered')}</Badge>
-                      : null;
+                    if (event.status === 'CANCELLED' || event.status === 'FINISHED') return null;
+                    return isPast
+                      ? <Badge color="amber">{t('rsvp_not_registered_past')}</Badge>
+                      : <Badge color="amber">{t('rsvp_not_registered')}</Badge>;
                   })()}
                   {event.eventType && (
                     <span className="text-xs text-slate-400 bg-slate-800 border border-slate-700 px-1.5 py-0.5 rounded">

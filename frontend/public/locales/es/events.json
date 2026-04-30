@@ -34,6 +34,7 @@
   "delete_event": "Eliminar evento",
   "delete_confirm_yes": "Confirmar eliminación",
   "rsvp_not_registered": "No te has apuntado",
+  "rsvp_not_registered_past": "No te apuntaste",
   "rsvp_status": {
     "CONFIRMED": "✓ Confirmado",
     "DECLINED": "✗ No asistiré",
