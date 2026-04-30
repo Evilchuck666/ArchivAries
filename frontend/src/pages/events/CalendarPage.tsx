@@ -19,12 +19,6 @@ const EVENT_PALETTE = [
   { bg: '#134e4a', border: '#0d9488' },
 ];
 
-function hashEventColor(id: string) {
-  let h = 0;
-  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) & 0x7fffffff;
-  return EVENT_PALETTE[h % EVENT_PALETTE.length];
-}
-
 export function CalendarPage() {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
@@ -35,11 +29,22 @@ export function CalendarPage() {
     staleTime: 60_000,
   });
 
+  // Sort by id for a stable order, then assign palette colors sequentially
+  const sorted = [...events].sort((a, b) => a.id.localeCompare(b.id));
+  let paletteIndex = 0;
+  const colorById = new Map<string, (typeof EVENT_PALETTE)[number]>();
+  for (const e of sorted) {
+    if (e.status !== 'CANCELLED') {
+      colorById.set(e.id, EVENT_PALETTE[paletteIndex % EVENT_PALETTE.length]);
+      paletteIndex++;
+    }
+  }
+
   const calEvents = events.map((e) => {
     if (e.status === 'CANCELLED') {
       return { id: e.id, title: e.title, start: e.startDate, end: e.endDate ?? undefined, backgroundColor: '#7f1d1d', borderColor: '#991b1b' };
     }
-    const color = hashEventColor(e.id);
+    const color = colorById.get(e.id)!;
     return { id: e.id, title: e.title, start: e.startDate, end: e.endDate ?? undefined, backgroundColor: color.bg, borderColor: color.border };
   });
 
