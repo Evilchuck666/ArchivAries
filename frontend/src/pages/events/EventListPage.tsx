@@ -79,12 +79,13 @@ export function EventListPage() {
                 <div className="flex items-center gap-2 mt-2 flex-wrap">
                   {(() => {
                     const now = new Date();
-                    const isOngoing = new Date(event.startDate) < now
-                      && event.endDate !== null
-                      && new Date(event.endDate) >= now;
-                    return isOngoing
-                      ? <Badge color="yellow">{t('event_ongoing')}</Badge>
-                      : <EventStatusBadge status={event.status} />;
+                    const end = event.endDate ? new Date(event.endDate) : null;
+                    const isOngoing = new Date(event.startDate) < now && end !== null && end >= now;
+                    const isPast = end ? end < now : new Date(event.startDate) < now;
+                    const isActiveStatus = event.status !== 'CANCELLED' && event.status !== 'FINISHED';
+                    if (isOngoing) return <Badge color="yellow">{t('event_ongoing')}</Badge>;
+                    if (isPast && isActiveStatus) return <Badge color="gray">{t('event_past')}</Badge>;
+                    return <EventStatusBadge status={event.status} />;
                   })()}
                   {event.participations?.[0] ? (
                     <Badge color={
@@ -94,9 +95,13 @@ export function EventListPage() {
                     }>
                       {t(`rsvp_status.${event.participations[0].status}`)}
                     </Badge>
-                  ) : event.status !== 'CANCELLED' && event.status !== 'FINISHED' ? (
-                    <Badge color="amber">{t('rsvp_not_registered')}</Badge>
-                  ) : null}
+                  ) : (() => {
+                    const end = event.endDate ? new Date(event.endDate) : null;
+                    const isPast = end ? end < new Date() : new Date(event.startDate) < new Date();
+                    return !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
+                      ? <Badge color="amber">{t('rsvp_not_registered')}</Badge>
+                      : null;
+                  })()}
                   {event.eventType && (
                     <span className="text-xs text-slate-400 bg-slate-800 border border-slate-700 px-1.5 py-0.5 rounded">
                       {event.eventType}

@@ -65,20 +65,25 @@ export function DashboardPage() {
                       <div className="flex items-center gap-2 mt-0.5">
                         {(() => {
                           const now = new Date();
-                          const isOngoing = new Date(event.startDate) < now
-                            && event.endDate !== null
-                            && new Date(event.endDate) >= now;
-                          return isOngoing
-                            ? <Badge color="yellow">{t('event_ongoing')}</Badge>
-                            : <EventStatusBadge status={event.status} />;
+                          const end = event.endDate ? new Date(event.endDate) : null;
+                          const isOngoing = new Date(event.startDate) < now && end !== null && end >= now;
+                          const isPast = end ? end < now : new Date(event.startDate) < now;
+                          const isActiveStatus = event.status !== 'CANCELLED' && event.status !== 'FINISHED';
+                          if (isOngoing) return <Badge color="yellow">{t('event_ongoing')}</Badge>;
+                          if (isPast && isActiveStatus) return <Badge color="gray">{t('event_past')}</Badge>;
+                          return <EventStatusBadge status={event.status} />;
                         })()}
                         {rsvpMap[event.id] ? (
                           <Badge color={rsvpMap[event.id] === 'CONFIRMED' ? 'green' : 'red'}>
                             {rsvpMap[event.id] === 'CONFIRMED' ? t('rsvp_confirmed') : t('rsvp_declined')}
                           </Badge>
-                        ) : event.status !== 'CANCELLED' && event.status !== 'FINISHED' ? (
-                          <Badge color="amber">{t('rsvp_not_registered')}</Badge>
-                        ) : null}
+                        ) : (() => {
+                          const end = event.endDate ? new Date(event.endDate) : null;
+                          const isPast = end ? end < new Date() : new Date(event.startDate) < new Date();
+                          return !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
+                            ? <Badge color="amber">{t('rsvp_not_registered')}</Badge>
+                            : null;
+                        })()}
                       </div>
                     </div>
                   </Link>

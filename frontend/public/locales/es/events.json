@@ -23,6 +23,7 @@
   "not_found": "Evento no encontrado",
   "back_to_events": "← Volver a eventos",
   "event_ongoing": "En curso",
+  "event_past": "Pasado",
   "all_statuses": "Todos los estados",
   "calendar_view": "Vista calendario",
   "list_view": "Vista lista",
