@@ -84,7 +84,7 @@ export function EventListPage() {
                     const isPast = end ? end < now : new Date(event.startDate) < now;
                     const isActiveStatus = event.status !== 'CANCELLED' && event.status !== 'FINISHED';
                     if (isOngoing) return <Badge color="yellow">{t('event_ongoing')}</Badge>;
-                    if (isPast && isActiveStatus) return <Badge color="gray">{t('event_past')}</Badge>;
+                    if (isPast && isActiveStatus) return <Badge color="purple">{t('event_past')}</Badge>;
                     return <EventStatusBadge status={event.status} />;
                   })()}
                   {event.participations?.[0] ? (
