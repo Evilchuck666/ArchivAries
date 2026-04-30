@@ -30,6 +30,7 @@ export function EventListPage() {
   const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
   const [filter, setFilter] = useState('');
+  const [rsvpFilter, setRsvpFilter] = useState('');
   const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
 
   const { data: allEvents = [], isLoading } = useQuery({
@@ -38,7 +39,10 @@ export function EventListPage() {
     staleTime: 30_000,
   });
 
-  const events = filter ? allEvents.filter((e) => computeDisplayStatus(e) === filter) : allEvents;
+  const statusFiltered = filter ? allEvents.filter((e) => computeDisplayStatus(e) === filter) : allEvents;
+  const events = rsvpFilter
+    ? statusFiltered.filter((e) => (e.participations?.[0]?.status ?? 'NO_RSVP') === rsvpFilter)
+    : statusFiltered;
 
   const filterLabel = (f: string) => {
     if (f === 'ONGOING') return t('event_ongoing');
@@ -64,16 +68,28 @@ export function EventListPage() {
         </div>
       </div>
 
-      <select
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="mb-4 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-      >
-        <option value="">{t('all_statuses')}</option>
-        {FILTER_OPTIONS.map((f) => (
-          <option key={f} value={f}>{filterLabel(f)}</option>
-        ))}
-      </select>
+      <div className="flex gap-3 mb-4">
+        <select
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+        >
+          <option value="">{t('all_statuses')}</option>
+          {FILTER_OPTIONS.map((f) => (
+            <option key={f} value={f}>{filterLabel(f)}</option>
+          ))}
+        </select>
+        <select
+          value={rsvpFilter}
+          onChange={(e) => setRsvpFilter(e.target.value)}
+          className="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+        >
+          <option value="">{t('rsvp_filter_all')}</option>
+          <option value="CONFIRMED">{t('rsvp_status.CONFIRMED')}</option>
+          <option value="DECLINED">{t('rsvp_status.DECLINED')}</option>
+          <option value="NO_RSVP">{t('rsvp_filter_no_rsvp')}</option>
+        </select>
+      </div>
 
       {isLoading ? (
         <Spinner className="py-20" />

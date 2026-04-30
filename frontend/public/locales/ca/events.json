@@ -33,6 +33,8 @@
   "edit_event": "Editar esdeveniment",
   "delete_event": "Eliminar esdeveniment",
   "delete_confirm_yes": "Confirmar eliminació",
+  "rsvp_filter_all": "La meva assistència",
+  "rsvp_filter_no_rsvp": "Sense resposta",
   "rsvp_not_registered": "No t'has apuntat",
   "rsvp_not_registered_past": "No et vas apuntar",
   "rsvp_status": {

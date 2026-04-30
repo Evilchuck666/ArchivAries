@@ -33,6 +33,8 @@
   "edit_event": "Editar evento",
   "delete_event": "Eliminar evento",
   "delete_confirm_yes": "Confirmar eliminación",
+  "rsvp_filter_all": "Mi asistencia",
+  "rsvp_filter_no_rsvp": "Sin respuesta",
   "rsvp_not_registered": "No te has apuntado",
   "rsvp_not_registered_past": "No te apuntaste",
   "rsvp_status": {
