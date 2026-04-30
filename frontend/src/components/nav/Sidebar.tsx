@@ -42,7 +42,7 @@ export function Sidebar() {
         sidebarOpen ? 'w-56' : 'w-14'
       } min-h-screen shrink-0`}
     >
-      <div className={`flex items-center gap-2 px-4 py-4 border-b border-slate-800 ${sidebarOpen ? '' : 'justify-center'}`}>
+      <div className={`flex items-center gap-2 px-4 h-14 border-b border-slate-800 ${sidebarOpen ? '' : 'justify-center'}`}>
         <span className="text-2xl">🐐</span>
         {sidebarOpen && (
           <div>
