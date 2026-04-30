@@ -17,6 +17,16 @@ const EVENT_PALETTE = [
   { bg: '#312e81', border: '#4f46e5' },
   { bg: '#713f12', border: '#d97706' },
   { bg: '#134e4a', border: '#0d9488' },
+  { bg: '#4c1d24', border: '#e11d48' },
+  { bg: '#1a2e05', border: '#65a30d' },
+  { bg: '#0c2340', border: '#0284c7' },
+  { bg: '#2d1b69', border: '#8b5cf6' },
+  { bg: '#3d1515', border: '#ef4444' },
+  { bg: '#042f2e', border: '#14b8a6' },
+  { bg: '#1e1b4b', border: '#818cf8' },
+  { bg: '#451a03', border: '#f97316' },
+  { bg: '#1a1a2e', border: '#a78bfa' },
+  { bg: '#052e16', border: '#22c55e' },
 ];
 
 export function CalendarPage() {
