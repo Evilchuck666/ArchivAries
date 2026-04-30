@@ -12,19 +12,37 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const FILTER_OPTIONS = ['ONGOING', 'PLANNED', 'CONFIRMED', 'CANCELLED', 'FINISHED'];
+
+function computeDisplayStatus(event: { status: string; startDate: string; endDate?: string | null }): string {
+  if (event.status === 'CANCELLED') return 'CANCELLED';
+  if (event.status === 'FINISHED') return 'FINISHED';
+  const now = new Date();
+  const end = event.endDate ? new Date(event.endDate) : null;
+  if (new Date(event.startDate) < now && end !== null && end >= now) return 'ONGOING';
+  // Keep DB status (PLANNED / CONFIRMED) for filtering, regardless of date
+  return event.status;
+}
 
 export function EventListPage() {
   const { t } = useTranslation('events');
   const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
-  const [status, setStatus] = useState('');
+  const [filter, setFilter] = useState('');
   const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
 
-  const { data: events = [], isLoading } = useQuery({
-    queryKey: ['events', status],
-    queryFn: () => eventsApi.getAll({ status: status || undefined }),
+  const { data: allEvents = [], isLoading } = useQuery({
+    queryKey: ['events'],
+    queryFn: () => eventsApi.getAll(),
     staleTime: 30_000,
   });
+
+  const events = filter ? allEvents.filter((e) => computeDisplayStatus(e) === filter) : allEvents;
+
+  const filterLabel = (f: string) => {
+    if (f === 'ONGOING') return t('event_ongoing');
+    return tc(`status.${f}`);
+  };
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -46,13 +64,13 @@ export function EventListPage() {
       </div>
 
       <select
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
         className="mb-4 bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
       >
         <option value="">{t('all_statuses')}</option>
-        {['PLANNED', 'CONFIRMED', 'CANCELLED', 'FINISHED'].map((s) => (
-          <option key={s} value={s}>{tc(`status.${s}`)}</option>
+        {FILTER_OPTIONS.map((f) => (
+          <option key={f} value={f}>{filterLabel(f)}</option>
         ))}
       </select>
 

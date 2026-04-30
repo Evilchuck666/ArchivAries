@@ -13,7 +13,7 @@
   "rsvp_confirmed": "✓ Confirmado",
   "rsvp_declined": "✗ No asiste",
   "event_ongoing": "En curso",
-  "event_past": "Pasado",
+  "event_past": "Finalizado",
   "rsvp_not_registered": "No te has apuntado",
   "rsvp_not_registered_past": "No te apuntaste"
 }
