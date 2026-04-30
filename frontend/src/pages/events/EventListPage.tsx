@@ -16,12 +16,13 @@ const FILTER_OPTIONS = ['ONGOING', 'PLANNED', 'CONFIRMED', 'CANCELLED', 'FINISHE
 
 function computeDisplayStatus(event: { status: string; startDate: string; endDate?: string | null }): string {
   if (event.status === 'CANCELLED') return 'CANCELLED';
-  if (event.status === 'FINISHED') return 'FINISHED';
   const now = new Date();
   const end = event.endDate ? new Date(event.endDate) : null;
-  if (new Date(event.startDate) < now && end !== null && end >= now) return 'ONGOING';
-  // Keep DB status (PLANNED / CONFIRMED) for filtering, regardless of date
-  return event.status;
+  const isOngoing = new Date(event.startDate) < now && end !== null && end >= now;
+  if (isOngoing) return 'ONGOING';
+  const isPast = end ? end < now : new Date(event.startDate) < now;
+  if (event.status === 'FINISHED' || isPast) return 'FINISHED';
+  return event.status; // PLANNED or CONFIRMED for future events only
 }
 
 export function EventListPage() {
