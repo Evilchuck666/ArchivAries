@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
-const FILTER_OPTIONS = ['ONGOING', 'PLANNED', 'CONFIRMED', 'CANCELLED', 'FINISHED'];
+const FILTER_OPTIONS = ['ONGOING', 'PLANNED', 'CANCELLED', 'FINISHED'];
 
 function computeDisplayStatus(event: { status: string; startDate: string; endDate?: string | null }): string {
   if (event.status === 'CANCELLED') return 'CANCELLED';
