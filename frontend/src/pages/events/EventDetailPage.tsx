@@ -58,6 +58,10 @@ export function EventDetailPage() {
   if (isLoading) return <Spinner className="py-20" />;
   if (!event) return <p className="text-slate-500">{t('not_found')}</p>;
 
+  const now = new Date();
+  const _end = event.endDate ? new Date(event.endDate) : null;
+  const isPast = _end ? _end < now : new Date(event.startDate) < now;
+
   const canEdit = user && (
     user.id === event.creatorId ||
     ['AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role)
@@ -114,10 +118,7 @@ export function EventDetailPage() {
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {(() => {
-              const now = new Date();
-              const end = event.endDate ? new Date(event.endDate) : null;
-              const isOngoing = new Date(event.startDate) < now && end !== null && end >= now;
-              const isPast = end ? end < now : new Date(event.startDate) < now;
+              const isOngoing = new Date(event.startDate) < now && _end !== null && _end >= now;
               const isActiveStatus = event.status !== 'CANCELLED' && event.status !== 'FINISHED';
               if (isOngoing) return <Badge color="yellow">{t('event_ongoing')}</Badge>;
               if (isPast && isActiveStatus) return <Badge color="purple">{t('event_past')}</Badge>;
@@ -131,13 +132,11 @@ export function EventDetailPage() {
               }>
                 {t(`rsvp_status.${event.participations[0].status}`)}
               </Badge>
-            ) : (() => {
-              const end = event.endDate ? new Date(event.endDate) : null;
-              const isPast = end ? end < new Date() : new Date(event.startDate) < new Date();
-              return !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
+            ) : (
+              !isPast && event.status !== 'CANCELLED' && event.status !== 'FINISHED'
                 ? <Badge color="amber">{t('rsvp_not_registered')}</Badge>
-                : null;
-            })()}
+                : null
+            )}
           </div>
         </div>
 
@@ -161,6 +160,7 @@ export function EventDetailPage() {
           const myStatus = event.participations?.[0]?.status;
           const isConfirmed = myStatus === 'CONFIRMED';
           const isDeclined = myStatus === 'DECLINED';
+          const lockRsvp = isPast && (isConfirmed || isDeclined);
           return (
             <div className="flex gap-2 pt-3 border-t border-slate-800">
               <Button
@@ -168,18 +168,18 @@ export function EventDetailPage() {
                 size="sm"
                 onClick={() => rsvp('CONFIRMED')}
                 loading={isPending && pendingAction === 'CONFIRMED'}
-                disabled={isPending || isConfirmed}
+                disabled={isPending || isConfirmed || lockRsvp}
               >
-                ✓ {t('rsvp_confirm')}
+                ✓ {isPast ? t('rsvp_confirm_past') : t('rsvp_confirm')}
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => rsvp('DECLINED')}
                 loading={isPending && pendingAction === 'DECLINED'}
-                disabled={isPending || isDeclined}
+                disabled={isPending || isDeclined || lockRsvp}
               >
-                ✗ {t('rsvp_decline')}
+                ✗ {isPast ? t('rsvp_decline_past') : t('rsvp_decline')}
               </Button>
             </div>
           );

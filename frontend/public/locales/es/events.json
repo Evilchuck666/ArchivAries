@@ -18,6 +18,8 @@
   "my_rsvp": "Mi asistencia",
   "rsvp_confirm": "Confirmar asistencia",
   "rsvp_decline": "No puedo asistir",
+  "rsvp_confirm_past": "Asistí",
+  "rsvp_decline_past": "No asistí",
   "rsvp_pending": "Pendiente de confirmar",
   "no_events": "No hay eventos",
   "not_found": "Evento no encontrado",

@@ -18,6 +18,8 @@
   "my_rsvp": "La meva assistència",
   "rsvp_confirm": "Confirmar assistència",
   "rsvp_decline": "No puc assistir",
+  "rsvp_confirm_past": "Vaig assistir",
+  "rsvp_decline_past": "No vaig assistir",
   "rsvp_pending": "Pendent de confirmar",
   "no_events": "No hi ha esdeveniments",
   "not_found": "Esdeveniment no trobat",
