@@ -27,6 +27,7 @@ import { EventEditPage } from './pages/events/EventEditPage';
 import { DocumentListPage } from './pages/documents/DocumentListPage';
 import { DocumentDetailPage } from './pages/documents/DocumentDetailPage';
 import { DocumentCreatePage } from './pages/documents/DocumentCreatePage';
+import { DocumentEditPage } from './pages/documents/DocumentEditPage';
 
 import { NewsListPage } from './pages/news/NewsListPage';
 import { NewsDetailPage } from './pages/news/NewsDetailPage';
@@ -82,6 +83,7 @@ export default function App() {
                 <Route path="/app/documents/:id" element={<DocumentDetailPage />} />
                 <Route element={<RoleRoute minRole="AREA_MANAGER" />}>
                   <Route path="/app/documents/create" element={<DocumentCreatePage />} />
+                  <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
                 </Route>
 
                 {/* News */}
