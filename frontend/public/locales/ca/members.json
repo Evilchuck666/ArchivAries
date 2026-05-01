@@ -54,5 +54,6 @@
   "dni_placeholder": "12345678A",
   "address": "Adreça",
   "address_placeholder": "Carrer, número, ciutat...",
-  "admin_only": "Només visible per a administradors"
+  "admin_only": "Només visible per a administradors",
+  "notes_placeholder": "Notes internes sobre aquest membre..."
 }

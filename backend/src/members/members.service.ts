@@ -84,30 +84,30 @@ export class MembersService {
     }
     if (status) where.status = status;
 
-    const isAdmin = this.isAdmin(viewerRole);
+    const privileged = this.isBoardOrAbove(viewerRole);
     const members = await this.prisma.member.findMany({
       where,
-      select: isAdmin ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
+      select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
       orderBy: { displayName: 'asc' },
     });
-    return isAdmin ? members : members.map(applyPublicVisibility);
+    return privileged ? members : members.map(applyPublicVisibility);
   }
 
   async findOne(id: string, viewerRole: Role) {
-    const isAdmin = this.isAdmin(viewerRole);
+    const privileged = this.isBoardOrAbove(viewerRole);
     const member = await this.prisma.member.findUnique({
       where: { id },
-      select: isAdmin ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
+      select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
     });
     if (!member) throw new NotFoundException('Miembro no encontrado');
-    return isAdmin ? member : applyPublicVisibility(member);
+    return privileged ? member : applyPublicVisibility(member);
   }
 
   async findByUserId(userId: string, viewerRole: Role) {
-    const isAdmin = this.isAdmin(viewerRole);
+    const privileged = this.isBoardOrAbove(viewerRole);
     const member = await this.prisma.member.findUnique({
       where: { userId },
-      select: isAdmin ? ADMIN_MEMBER_SELECT : SELF_MEMBER_SELECT,
+      select: privileged ? ADMIN_MEMBER_SELECT : SELF_MEMBER_SELECT,
     });
     if (!member) throw new NotFoundException('Perfil no encontrado');
     return member;
@@ -154,13 +154,15 @@ export class MembersService {
     if (!this.isAdmin(viewerRole)) {
       delete data.status;
       delete data.rank;
+    }
+    if (!this.isBoardOrAbove(viewerRole)) {
       delete data.notes;
     }
 
     return this.prisma.member.update({
       where: { id },
       data,
-      select: this.isAdmin(viewerRole) ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
+      select: this.isBoardOrAbove(viewerRole) ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
     });
   }
 
@@ -179,5 +181,9 @@ export class MembersService {
 
   private isAdmin(role: Role): boolean {
     return [Role.ADMIN, Role.SUPER_ADMIN].includes(role);
+  }
+
+  private isBoardOrAbove(role: Role): boolean {
+    return [Role.BOARD, Role.ADMIN, Role.SUPER_ADMIN].includes(role);
   }
 }

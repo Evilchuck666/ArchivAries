@@ -96,7 +96,7 @@ export class MembersController {
   }
 
   @Patch(':id')
-  @Roles(Role.ADMIN)
+  @Roles(Role.BOARD)
   update(
     @Param('id') id: string,
     @Body() dto: UpdateMemberDto,

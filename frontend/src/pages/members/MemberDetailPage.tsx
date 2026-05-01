@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { membersApi } from '../../api/members.api';
 import { useAuthStore } from '../../store/auth.store';
 import { MemberStatusBadge } from '../../components/shared/MemberStatusBadge';
 import { RoleBadge } from '../../components/shared/RoleBadge';
+import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { format } from 'date-fns';
@@ -14,7 +16,9 @@ import type { Role } from '../../types/auth.types';
 export function MemberDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('members');
+  const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
 
   const isMeRoute = id === 'me';
 
@@ -24,10 +28,22 @@ export function MemberDetailPage() {
     enabled: isMeRoute || !!id,
   });
 
+  const [editingNotes, setEditingNotes] = useState(false);
+  const [notesValue, setNotesValue] = useState('');
+
+  const { mutate: saveNotes, isPending: savingNotes } = useMutation({
+    mutationFn: (notes: string) => membersApi.update(member!.id, { notes }),
+    onSuccess: () => {
+      setEditingNotes(false);
+      queryClient.invalidateQueries({ queryKey: ['member', isMeRoute ? 'me' : id] });
+    },
+  });
+
   if (isLoading) return <Spinner className="py-20" />;
   if (!member) return <p className="text-slate-500">{t('not_found')}</p>;
 
   const isSelf = isMeRoute || member.userId === user?.id;
+  const canEditNotes = !isSelf && !!user && ['BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role);
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -123,9 +139,44 @@ export function MemberDetailPage() {
           </dl>
         </Card>
 
-        {member.notes && (
-          <Card title={t('notes')}>
-            <p className="text-slate-300 text-sm leading-relaxed">{member.notes}</p>
+        {(canEditNotes || member.notes) && (
+          <Card
+            title={t('notes')}
+            action={
+              canEditNotes && !editingNotes ? (
+                <button
+                  onClick={() => { setNotesValue(member.notes ?? ''); setEditingNotes(true); }}
+                  className="text-xs text-slate-400 hover:text-amber-300 transition-colors"
+                >
+                  {tc('actions.edit')}
+                </button>
+              ) : undefined
+            }
+          >
+            {editingNotes ? (
+              <div className="flex flex-col gap-2">
+                <textarea
+                  value={notesValue}
+                  onChange={(e) => setNotesValue(e.target.value)}
+                  rows={4}
+                  autoFocus
+                  placeholder={t('notes_placeholder')}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
+                />
+                <div className="flex gap-2 justify-end">
+                  <Button variant="ghost" size="sm" onClick={() => setEditingNotes(false)}>
+                    {tc('actions.cancel')}
+                  </Button>
+                  <Button size="sm" loading={savingNotes} onClick={() => saveNotes(notesValue)}>
+                    {tc('actions.save')}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
+                {member.notes || <span className="text-slate-600 italic">{t('notes_placeholder')}</span>}
+              </p>
+            )}
           </Card>
         )}
       </div>
