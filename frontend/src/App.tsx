@@ -65,7 +65,6 @@ export default function App() {
 
                 {/* Members */}
                 <Route path="/app/members" element={<MemberListPage />} />
-                <Route path="/app/members/me" element={<MemberDetailPage />} />
                 <Route path="/app/members/:id" element={<MemberDetailPage />} />
                 <Route path="/app/members/me/edit" element={<MemberEditPage />} />
 
