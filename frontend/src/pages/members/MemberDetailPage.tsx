@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { membersApi } from '../../api/members.api';
+import { useAuthStore } from '../../store/auth.store';
 import { MemberStatusBadge } from '../../components/shared/MemberStatusBadge';
 import { RoleBadge } from '../../components/shared/RoleBadge';
 import { Card } from '../../components/ui/Card';
@@ -13,21 +14,36 @@ import type { Role } from '../../types/auth.types';
 export function MemberDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('members');
+  const { user } = useAuthStore();
+
+  const isMeRoute = id === 'me';
 
   const { data: member, isLoading } = useQuery({
-    queryKey: ['member', id],
-    queryFn: () => membersApi.getOne(id!),
-    enabled: !!id,
+    queryKey: ['member', isMeRoute ? 'me' : id],
+    queryFn: isMeRoute ? membersApi.getMe : () => membersApi.getOne(id!),
+    enabled: isMeRoute || !!id,
   });
 
   if (isLoading) return <Spinner className="py-20" />;
   if (!member) return <p className="text-slate-500">{t('not_found')}</p>;
 
+  const isSelf = isMeRoute || member.userId === user?.id;
+
   return (
     <div className="max-w-2xl mx-auto">
-      <Link to="/app/members" className="text-sm text-slate-400 hover:text-amber-300 mb-6 inline-block">
-        {t('back_to_members')}
-      </Link>
+      <div className="flex items-center justify-between mb-6">
+        <Link to="/app/members" className="text-sm text-slate-400 hover:text-amber-300 transition-colors">
+          ← {t('title')}
+        </Link>
+        {isSelf && (
+          <Link
+            to="/app/members/me/edit"
+            className="bg-amber-600 hover:bg-amber-500 text-white text-sm px-3 py-1.5 rounded-md transition-colors border border-amber-500"
+          >
+            {t('edit_profile')}
+          </Link>
+        )}
+      </div>
 
       <Card className="mb-4">
         <div className="flex items-center gap-4">
@@ -52,12 +68,12 @@ export function MemberDetailPage() {
       <div className="grid gap-4">
         {member.bio && (
           <Card title={t('bio')}>
-            <p className="text-slate-300 text-sm leading-relaxed">{member.bio}</p>
+            <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{member.bio}</p>
           </Card>
         )}
 
         <Card title={t('information')}>
-          <dl className="grid gap-2">
+          <dl className="grid gap-3">
             {member.realName && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('real_name')}</dt>
@@ -66,7 +82,7 @@ export function MemberDetailPage() {
             )}
             <div className="flex justify-between text-sm">
               <dt className="text-slate-500">{t('joined')}</dt>
-              <dd className="text-slate-300">{format(new Date(member.joinedAt), 'd MMMM yyyy', { locale: es })}</dd>
+              <dd className="text-slate-300">{format(new Date(member.joinedAt), "d 'de' MMMM yyyy", { locale: es })}</dd>
             </div>
             {member.discordHandle && (
               <div className="flex justify-between text-sm">
@@ -83,7 +99,7 @@ export function MemberDetailPage() {
             {member.birthDate && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('birth_date')}</dt>
-                <dd className="text-slate-300">{format(new Date(member.birthDate), 'd MMMM yyyy', { locale: es })}</dd>
+                <dd className="text-slate-300">{format(new Date(member.birthDate), "d 'de' MMMM yyyy", { locale: es })}</dd>
               </div>
             )}
             {member.dni && (
@@ -96,6 +112,12 @@ export function MemberDetailPage() {
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('address')}</dt>
                 <dd className="text-slate-300 text-right max-w-[60%]">{member.address}</dd>
+              </div>
+            )}
+            {isSelf && member.user?.email && (
+              <div className="flex justify-between text-sm">
+                <dt className="text-slate-500">{t('email')}</dt>
+                <dd className="text-slate-300">{member.user.email}</dd>
               </div>
             )}
           </dl>
