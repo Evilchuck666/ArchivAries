@@ -29,6 +29,7 @@ export function EventDetailPage() {
 
   const [pendingAction, setPendingAction] = useState<'CONFIRMED' | 'DECLINED' | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
 
   const { mutate: rsvpMutate, isPending } = useMutation({
     mutationFn: (status: 'CONFIRMED' | 'DECLINED') =>
@@ -50,6 +51,17 @@ export function EventDetailPage() {
     },
   });
 
+  const { mutate: cancelEvent, isPending: isCancelling } = useMutation({
+    mutationFn: () => eventsApi.update(id!, { status: 'CANCELLED' }),
+    onSuccess: () => {
+      setConfirmCancel(false);
+      queryClient.invalidateQueries({ queryKey: ['event', id] });
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+    onError: () => setConfirmCancel(false),
+  });
+
   const rsvp = (status: 'CONFIRMED' | 'DECLINED') => {
     setPendingAction(status);
     rsvpMutate(status);
@@ -66,6 +78,7 @@ export function EventDetailPage() {
     user.id === event.creatorId ||
     ['AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role)
   );
+  const canCancel = canEdit && event.status !== 'CANCELLED' && event.status !== 'FINISHED';
   const canDelete = user && (
     user.id === event.creatorId ||
     ['ADMIN', 'SUPER_ADMIN'].includes(user.role)
@@ -77,12 +90,34 @@ export function EventDetailPage() {
         <Link to="/app/events" className="text-sm text-slate-400 hover:text-amber-300">
           {t('back_to_events')}
         </Link>
-        {(canEdit || canDelete) && (
+        {(canEdit || canCancel || canDelete) && (
           <div className="flex items-center gap-2">
             {canEdit && (
               <Link to={`/app/events/${event.id}/edit`}>
                 <Button variant="ghost" size="sm">{tc('actions.edit')}</Button>
               </Link>
+            )}
+            {canCancel && (
+              confirmCancel ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => cancelEvent()}
+                  loading={isCancelling}
+                  className="text-orange-400 border-orange-900 hover:bg-orange-950"
+                >
+                  {t('cancel_confirm_yes')}
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setConfirmCancel(true)}
+                  className="text-orange-400 border-orange-900 hover:bg-orange-950"
+                >
+                  {t('cancel_event')}
+                </Button>
+              )
             )}
             {canDelete && (
               confirmDelete ? (

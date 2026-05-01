@@ -31,6 +31,8 @@
   "list_view": "Vista lista",
   "draft": "Borrador",
   "edit_event": "Editar evento",
+  "cancel_event": "Cancelar evento",
+  "cancel_confirm_yes": "Confirmar cancelación",
   "delete_event": "Eliminar evento",
   "delete_confirm_yes": "Confirmar eliminación",
   "rsvp_filter_all": "Mi asistencia",

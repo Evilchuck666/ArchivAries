@@ -31,6 +31,8 @@
   "list_view": "Vista llista",
   "draft": "Esborrany",
   "edit_event": "Editar esdeveniment",
+  "cancel_event": "Cancel·lar esdeveniment",
+  "cancel_confirm_yes": "Confirmar cancel·lació",
   "delete_event": "Eliminar esdeveniment",
   "delete_confirm_yes": "Confirmar eliminació",
   "rsvp_filter_all": "La meva assistència",
