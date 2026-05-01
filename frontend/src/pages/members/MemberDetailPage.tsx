@@ -43,7 +43,7 @@ export function MemberDetailPage() {
   if (!member) return <p className="text-slate-500">{t('not_found')}</p>;
 
   const isSelf = isMeRoute || member.userId === user?.id;
-  const canEditNotes = !isSelf && !!user && ['BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role);
+  const canEditNotes = !!user && ['BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role);
 
   return (
     <div className="max-w-2xl mx-auto">
