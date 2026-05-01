@@ -78,7 +78,7 @@ export function EventDetailPage() {
     user.id === event.creatorId ||
     ['AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role)
   );
-  const canCancel = canEdit && event.status !== 'CANCELLED' && event.status !== 'FINISHED';
+  const canCancel = canEdit && event.status === 'PLANNED' && !isPast;
   const canDelete = user && (
     user.id === event.creatorId ||
     ['ADMIN', 'SUPER_ADMIN'].includes(user.role)
