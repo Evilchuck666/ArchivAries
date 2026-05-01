@@ -16,6 +16,8 @@
   "all_statuses": "Tots els estats",
   "create_member": "Afegir membre",
   "edit_profile": "Editar perfil",
+  "edit_member": "Editar membre",
+  "back_to_member": "← Tornar al membre",
   "no_members": "No s'han trobat membres",
   "not_found": "Membre no trobat",
   "no_profile_yet": "Encara no tens una fitxa de membre.",

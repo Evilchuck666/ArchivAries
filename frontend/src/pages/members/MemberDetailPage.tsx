@@ -45,6 +45,7 @@ export function MemberDetailPage() {
 
   const isSelf = isMeRoute || member.userId === user?.id;
   const canEditNotes = !!user && ['BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role);
+  const canEditMember = !!user && ['ADMIN', 'SUPER_ADMIN'].includes(user.role) && !isSelf;
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -52,14 +53,24 @@ export function MemberDetailPage() {
         <Link to="/app/members" className="text-sm text-slate-400 hover:text-amber-300 transition-colors">
           ← {t('title')}
         </Link>
-        {isSelf && (
-          <Link
-            to="/app/members/me/edit"
-            className="bg-amber-600 hover:bg-amber-500 text-white text-sm px-3 py-1.5 rounded-md transition-colors border border-amber-500"
-          >
-            {t('edit_profile')}
-          </Link>
-        )}
+        <div className="flex gap-2">
+          {isSelf && (
+            <Link
+              to="/app/members/me/edit"
+              className="bg-amber-600 hover:bg-amber-500 text-white text-sm px-3 py-1.5 rounded-md transition-colors border border-amber-500"
+            >
+              {t('edit_profile')}
+            </Link>
+          )}
+          {canEditMember && (
+            <Link
+              to={`/app/members/${member.id}/edit`}
+              className="bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm px-3 py-1.5 rounded-md transition-colors border border-slate-600"
+            >
+              {t('edit_member')}
+            </Link>
+          )}
+        </div>
       </div>
 
       <Card className="mb-4">

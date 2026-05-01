@@ -16,6 +16,8 @@
   "all_statuses": "Todos los estados",
   "create_member": "Añadir miembro",
   "edit_profile": "Editar perfil",
+  "edit_member": "Editar miembro",
+  "back_to_member": "← Volver al miembro",
   "no_members": "No se han encontrado miembros",
   "not_found": "Miembro no encontrado",
   "no_profile_yet": "Todavía no tienes una ficha de miembro.",
