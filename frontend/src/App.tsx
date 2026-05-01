@@ -17,7 +17,6 @@ import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { MemberListPage } from './pages/members/MemberListPage';
 import { MemberDetailPage } from './pages/members/MemberDetailPage';
 import { MemberEditPage } from './pages/members/MemberEditPage';
-import { MemberAdminEditPage } from './pages/members/MemberAdminEditPage';
 
 import { EventListPage } from './pages/events/EventListPage';
 import { CalendarPage } from './pages/events/CalendarPage';
@@ -103,7 +102,7 @@ export default function App() {
 
                 {/* Admin */}
                 <Route element={<RoleRoute minRole="ADMIN" />}>
-                  <Route path="/app/members/:id/edit" element={<MemberAdminEditPage />} />
+                  <Route path="/app/members/:id/edit" element={<MemberEditPage />} />
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
                 </Route>
