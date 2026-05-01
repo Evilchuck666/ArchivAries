@@ -8,6 +8,7 @@ import { MemberStatusBadge } from '../../components/shared/MemberStatusBadge';
 import { RoleBadge } from '../../components/shared/RoleBadge';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
+import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
 import { Spinner } from '../../components/ui/Spinner';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -155,13 +156,12 @@ export function MemberDetailPage() {
           >
             {editingNotes ? (
               <div className="flex flex-col gap-2">
-                <textarea
+                <MarkdownEditor
                   value={notesValue}
                   onChange={(e) => setNotesValue(e.target.value)}
                   rows={4}
                   autoFocus
                   placeholder={t('notes_placeholder')}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
                 />
                 <div className="flex gap-2 justify-end">
                   <Button variant="ghost" size="sm" onClick={() => setEditingNotes(false)}>

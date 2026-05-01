@@ -9,6 +9,7 @@ import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
+import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
 import { ROUTES } from '../../router/routes';
 
 interface ProfileFormData {
@@ -203,11 +204,10 @@ export function MemberEditPage() {
 
           <div>
             <label className="block text-sm text-slate-400 mb-1">{t('bio')}</label>
-            <textarea
+            <MarkdownEditor
               {...profileForm.register('bio')}
               rows={3}
               placeholder={t('bio_placeholder')}
-              className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm resize-y"
             />
           </div>
 

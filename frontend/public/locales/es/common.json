@@ -83,6 +83,11 @@
     "events_desc": "Crear y gestionar eventos",
     "lore_desc": "Gestionar entradas del lore"
   },
+  "markdown_editor": {
+    "write": "Editar",
+    "preview": "Vista previa",
+    "empty": "Nada que previsualizar."
+  },
   "landing": {
     "company_description": "Compañía de Rol en Vivo y Recreación Medieval",
     "hero_description": "Una compañía de aventureros unidos por la camaradería, el honor y la pasión por el juego de rol en vivo.",

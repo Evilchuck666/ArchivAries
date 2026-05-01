@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { newsApi } from '../../api/news.api';
 import { Input } from '../../components/ui/Input';
+import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
 
 export function NewsCreatePage() {
   const { t } = useTranslation('news');
@@ -39,12 +40,11 @@ export function NewsCreatePage() {
         </div>
 
         <div>
-          <label className="block text-sm text-slate-400 mb-1">{t('form.content')} (Markdown)</label>
-          <textarea
+          <label className="block text-sm text-slate-400 mb-1">{t('form.content')}</label>
+          <MarkdownEditor
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={14}
-            className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-500 resize-y"
           />
         </div>
 

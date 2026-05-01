@@ -83,6 +83,11 @@
     "events_desc": "Crear i gestionar esdeveniments",
     "lore_desc": "Gestionar entrades del lore"
   },
+  "markdown_editor": {
+    "write": "Editar",
+    "preview": "Vista prèvia",
+    "empty": "Res per previsualitzar."
+  },
   "landing": {
     "company_description": "Companyia de Rol en Viu i Recreació Medieval",
     "hero_description": "Una companyia d'aventurers units per la camaraderia, l'honor i la passió pel joc de rol en viu.",

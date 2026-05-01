@@ -7,6 +7,7 @@ import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { DateTimeInput } from '../../components/ui/DateTimeInput';
+import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
 
 interface FormData {
   title: string;
@@ -61,11 +62,11 @@ export function EventCreatePage() {
           <Input label={t('location')} {...register('location')} />
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-slate-300">{t('description_markdown')}</label>
-            <textarea {...register('description')} rows={5} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none" />
+            <MarkdownEditor {...register('description')} rows={5} />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-slate-300">{t('practical_info')}</label>
-            <textarea {...register('practicalInfo')} rows={3} className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none" />
+            <MarkdownEditor {...register('practicalInfo')} rows={3} />
           </div>
           <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
             <input type="checkbox" {...register('isPublic')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />

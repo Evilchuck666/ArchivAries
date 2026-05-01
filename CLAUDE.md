@@ -33,6 +33,24 @@
    - Roles: `t('roles.MEMBER')`…
    - Para usarlos desde otro namespace: `t('actions.cancel', { ns: 'common' })` o `const { t: tc } = useTranslation('common')`
 
+## Editor Markdown
+
+**Regla obligatoria:** Cualquier `<textarea>` destinado a contenido enriquecido (descripciones, biografías, notas, contenido de documentos/avisos/lore…) DEBE usar el componente `MarkdownEditor` en lugar de un `<textarea>` nativo.
+
+```tsx
+// ❌ Mal
+<textarea value={content} onChange={...} rows={5} className="..." />
+
+// ✅ Bien
+import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
+<MarkdownEditor value={content} onChange={...} rows={5} />
+```
+
+- Compatible con `react-hook-form` (spread de `register`) y con estado local (`useState`).
+- **Excepción:** Campos de texto corto sin formato (dirección postal, teléfono, etc.) pueden seguir usando `<textarea>` nativo si es realmente apropiado.
+
+---
+
 ### Lo que NO está permitido
 
 ```tsx
