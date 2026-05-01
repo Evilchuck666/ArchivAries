@@ -9,7 +9,7 @@ import { useAuthStore } from '../../store/auth.store';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 export function NewsDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -18,7 +18,7 @@ export function NewsDetailPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const canEdit = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
+  const canEdit = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
 
   const { data: item, isLoading } = useQuery({
     queryKey: ['news', id],

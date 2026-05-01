@@ -10,7 +10,7 @@ import { Badge } from '../../components/ui/Badge';
 import { useAuthStore } from '../../store/auth.store';
 import type { LoreCategory } from '../../types/lore.types';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 const LORE_CATEGORIES: LoreCategory[] = [
   'HISTORY', 'SYMBOLS', 'ENEMIES', 'FACTIONS', 'PLACES', 'CHARACTERS', 'CHRONICLES', 'OTHER',
@@ -26,7 +26,7 @@ export function LoreListPage() {
   const { user } = useAuthStore();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<LoreCategory | ''>('');
-  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
+  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ['lore', search, category],

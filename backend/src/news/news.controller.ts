@@ -47,13 +47,13 @@ export class NewsController {
   }
 
   @Post()
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   create(@Body() dto: CreateNewsDto, @CurrentUser('id') userId: string) {
     return this.newsService.create(dto, userId);
   }
 
   @Patch(':id')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   update(@Param('id') id: string, @Body() dto: UpdateNewsDto) {
     return this.newsService.update(id, dto);
   }

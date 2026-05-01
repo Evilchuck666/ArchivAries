@@ -8,7 +8,7 @@ import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
 import { useAuthStore } from '../../store/auth.store';
 import type { LoreCategory } from '../../types/lore.types';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 const CATEGORY_ICONS: Record<LoreCategory, string> = {
   HISTORY: '📜', SYMBOLS: '🐐', ENEMIES: '⚔️', FACTIONS: '🏰',
@@ -22,7 +22,7 @@ export function LoreDetailPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const canEdit = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
+  const canEdit = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
 
   const { data: entry, isLoading } = useQuery({
     queryKey: ['lore', id],

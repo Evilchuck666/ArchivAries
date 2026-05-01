@@ -64,13 +64,13 @@ export class DocumentsController {
   }
 
   @Post('documents')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   create(@Body() dto: CreateDocumentDto, @CurrentUser('id') userId: string) {
     return this.documentsService.create(dto, userId);
   }
 
   @Patch('documents/:id')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   update(@Param('id') id: string, @Body() dto: UpdateDocumentDto) {
     return this.documentsService.update(id, dto);
   }

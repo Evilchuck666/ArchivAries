@@ -11,14 +11,14 @@ import { useAuthStore } from '../../store/auth.store';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 export function DocumentListPage() {
   const { t } = useTranslation('documents');
   const { user } = useAuthStore();
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
+  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
 
   const { data: categories = [] } = useQuery({
     queryKey: ['document-categories'],

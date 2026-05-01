@@ -51,19 +51,19 @@ export class EventsController {
   }
 
   @Post()
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   create(@Body() dto: CreateEventDto, @CurrentUser('id') userId: string) {
     return this.eventsService.create(dto, userId);
   }
 
   @Patch(':id')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
     return this.eventsService.update(id, dto);
   }
 
   @Delete(':id')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   remove(
     @Param('id') id: string,
     @CurrentUser('id') userId: string,
@@ -83,7 +83,7 @@ export class EventsController {
   }
 
   @Get(':id/participants')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   getParticipants(
     @Param('id') eventId: string,
     @CurrentUser('role') role: Role,

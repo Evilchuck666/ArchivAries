@@ -10,13 +10,13 @@ import { useAuthStore } from '../../store/auth.store';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 export function NewsListPage() {
   const { t } = useTranslation('news');
   const { user } = useAuthStore();
   const [page, setPage] = useState(1);
-  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('AREA_MANAGER');
+  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
 
   const { data: news = [], isLoading } = useQuery({
     queryKey: ['news', page],

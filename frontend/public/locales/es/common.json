@@ -47,7 +47,7 @@
   "roles": {
     "VISITOR": "Visitante",
     "MEMBER": "Miembro",
-    "AREA_MANAGER": "Responsable",
+    "CONTENT_MANAGER": "Gestor de contenidos",
     "BOARD": "Junta",
     "ADMIN": "Administrador",
     "SUPER_ADMIN": "Super-Administrador",

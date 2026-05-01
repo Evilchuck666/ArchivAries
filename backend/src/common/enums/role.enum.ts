@@ -1,7 +1,7 @@
 export enum Role {
   VISITOR = 'VISITOR',
   MEMBER = 'MEMBER',
-  AREA_MANAGER = 'AREA_MANAGER',
+  CONTENT_MANAGER = 'CONTENT_MANAGER',
   BOARD = 'BOARD',
   ADMIN = 'ADMIN',
   SUPER_ADMIN = 'SUPER_ADMIN',
@@ -10,7 +10,7 @@ export enum Role {
 export const ROLE_HIERARCHY: Role[] = [
   Role.VISITOR,
   Role.MEMBER,
-  Role.AREA_MANAGER,
+  Role.CONTENT_MANAGER,
   Role.BOARD,
   Role.ADMIN,
   Role.SUPER_ADMIN,

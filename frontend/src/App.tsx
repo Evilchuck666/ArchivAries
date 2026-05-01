@@ -73,7 +73,7 @@ export default function App() {
                 <Route path="/app/events" element={<EventListPage />} />
                 <Route path="/app/events/calendar" element={<CalendarPage />} />
                 <Route path="/app/events/:id" element={<EventDetailPage />} />
-                <Route element={<RoleRoute minRole="AREA_MANAGER" />}>
+                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
                   <Route path="/app/events/create" element={<EventCreatePage />} />
                   <Route path="/app/events/:id/edit" element={<EventEditPage />} />
                 </Route>
@@ -81,7 +81,7 @@ export default function App() {
                 {/* Documents */}
                 <Route path="/app/documents" element={<DocumentListPage />} />
                 <Route path="/app/documents/:id" element={<DocumentDetailPage />} />
-                <Route element={<RoleRoute minRole="AREA_MANAGER" />}>
+                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
                   <Route path="/app/documents/create" element={<DocumentCreatePage />} />
                   <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
                 </Route>
@@ -89,14 +89,14 @@ export default function App() {
                 {/* News */}
                 <Route path="/app/news" element={<NewsListPage />} />
                 <Route path="/app/news/:id" element={<NewsDetailPage />} />
-                <Route element={<RoleRoute minRole="AREA_MANAGER" />}>
+                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
                   <Route path="/app/news/create" element={<NewsCreatePage />} />
                 </Route>
 
                 {/* Lore */}
                 <Route path="/app/lore" element={<LoreListPage />} />
                 <Route path="/app/lore/:id" element={<LoreDetailPage />} />
-                <Route element={<RoleRoute minRole="AREA_MANAGER" />}>
+                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
                   <Route path="/app/lore/create" element={<LoreCreatePage />} />
                 </Route>
 

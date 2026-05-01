@@ -37,13 +37,13 @@ export class LoreController {
   }
 
   @Post()
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   create(@Body() dto: CreateLoreEntryDto, @CurrentUser('id') userId: string) {
     return this.loreService.create(dto, userId);
   }
 
   @Patch(':id')
-  @Roles(Role.AREA_MANAGER)
+  @Roles(Role.CONTENT_MANAGER)
   update(@Param('id') id: string, @Body() dto: UpdateLoreEntryDto) {
     return this.loreService.update(id, dto);
   }

@@ -30,7 +30,7 @@ export class DocumentsService {
   }
 
   findAll(viewerRole: Role, categoryId?: string, search?: string) {
-    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.AREA_MANAGER].includes(viewerRole);
+    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
     const where: any = { isPublished: true };
 
     if (!isRestricted) where.visibility = 'ALL_MEMBERS';
@@ -60,7 +60,7 @@ export class DocumentsService {
   }
 
   findRecent(viewerRole: Role, limit = 5) {
-    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.AREA_MANAGER].includes(viewerRole);
+    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
     const where: any = { isPublished: true };
     if (!isRestricted) where.visibility = 'ALL_MEMBERS';
 
@@ -79,7 +79,7 @@ export class DocumentsService {
   }
 
   async findOne(id: string, viewerRole: Role) {
-    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.AREA_MANAGER].includes(viewerRole);
+    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
     const doc = await this.prisma.document.findUnique({
       where: { id },
       include: {

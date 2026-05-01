@@ -12,7 +12,7 @@ datasource db {
 enum Role {
   VISITOR
   MEMBER
-  AREA_MANAGER
+  CONTENT_MANAGER
   BOARD
   ADMIN
   SUPER_ADMIN

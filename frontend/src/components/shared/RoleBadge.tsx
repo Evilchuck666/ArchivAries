@@ -5,7 +5,7 @@ import type { Role } from '../../types/auth.types';
 const roleColors: Record<Role, 'gray' | 'blue' | 'amber' | 'red' | 'purple' | 'green'> = {
   VISITOR: 'gray',
   MEMBER: 'blue',
-  AREA_MANAGER: 'purple',
+  CONTENT_MANAGER: 'purple',
   BOARD: 'green',
   ADMIN: 'amber',
   SUPER_ADMIN: 'red',

@@ -5,7 +5,7 @@ import { useUiStore } from '../../store/ui.store';
 import { ROUTES } from '../../router/routes';
 import type { Role } from '../../types/auth.types';
 
-const ROLE_HIERARCHY: Role[] = ['VISITOR', 'MEMBER', 'AREA_MANAGER', 'ADMIN', 'SUPER_ADMIN'];
+const ROLE_HIERARCHY: Role[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 function hasRole(userRole: Role, minRole: Role) {
   return ROLE_HIERARCHY.indexOf(userRole) >= ROLE_HIERARCHY.indexOf(minRole);
