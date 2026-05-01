@@ -74,12 +74,12 @@ export function EventDetailPage() {
   const _end = event.endDate ? new Date(event.endDate) : null;
   const isPast = _end ? _end < now : new Date(event.startDate) < now;
 
-  const canEdit = user && (
+  const canEdit = !isPast && user && (
     user.id === event.creatorId ||
     ['AREA_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role)
   );
-  const canCancel = canEdit && event.status === 'PLANNED' && !isPast;
-  const canDelete = user && (
+  const canCancel = canEdit && event.status === 'PLANNED';
+  const canDelete = !isPast && user && (
     user.id === event.creatorId ||
     ['ADMIN', 'SUPER_ADMIN'].includes(user.role)
   );
