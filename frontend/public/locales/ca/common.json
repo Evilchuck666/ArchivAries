@@ -86,7 +86,17 @@
   "markdown_editor": {
     "write": "Editar",
     "preview": "Vista prèvia",
-    "empty": "Res per previsualitzar."
+    "empty": "Res per previsualitzar.",
+    "toolbar": {
+      "bold": "Negreta",
+      "italic": "Cursiva",
+      "h1": "Encapçalament 1",
+      "h2": "Encapçalament 2",
+      "h3": "Encapçalament 3",
+      "code": "Codi",
+      "quote": "Cita",
+      "ul": "Llista"
+    }
   },
   "landing": {
     "company_description": "Companyia de Rol en Viu i Recreació Medieval",

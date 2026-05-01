@@ -86,7 +86,17 @@
   "markdown_editor": {
     "write": "Editar",
     "preview": "Vista previa",
-    "empty": "Nada que previsualizar."
+    "empty": "Nada que previsualizar.",
+    "toolbar": {
+      "bold": "Negrita",
+      "italic": "Cursiva",
+      "h1": "Encabezado 1",
+      "h2": "Encabezado 2",
+      "h3": "Encabezado 3",
+      "code": "Código",
+      "quote": "Cita",
+      "ul": "Lista"
+    }
   },
   "landing": {
     "company_description": "Compañía de Rol en Vivo y Recreación Medieval",
