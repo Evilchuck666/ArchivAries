@@ -58,7 +58,7 @@ export class MembersController {
   }
 
   @Get('me')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.edit_own')
   getMe(@CurrentUser() user: { id: string; role: Role }) {
     return this.membersService.findByUserId(user.id, user.role);
   }
