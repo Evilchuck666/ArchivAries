@@ -1,0 +1,39 @@
+{
+  "title": "Gestió de permisos",
+  "subtitle": "Configura què pot fer cada rol",
+  "save_error": "Error en desar el permís",
+  "groups": {
+    "events": "Esdeveniments",
+    "calendar": "Calendari",
+    "lore": "Lore",
+    "documents": "Documents",
+    "news": "Avisos",
+    "members": "Membres"
+  },
+  "permissions": {
+    "events.read": "Veure esdeveniments",
+    "events.rsvp": "Apuntar-se a esdeveniments",
+    "events.create": "Crear esdeveniments",
+    "events.edit": "Editar esdeveniments",
+    "events.delete": "Eliminar esdeveniments",
+    "calendar.read": "Veure calendari",
+    "lore.read": "Veure lore",
+    "lore.create": "Crear entrades de lore",
+    "lore.edit": "Editar lore",
+    "lore.delete": "Eliminar lore",
+    "documents.read": "Veure documents",
+    "documents.read_restricted": "Veure documents restringits",
+    "documents.create": "Crear documents",
+    "documents.edit": "Editar documents",
+    "documents.delete": "Eliminar documents",
+    "news.read": "Veure avisos",
+    "news.create": "Crear avisos",
+    "news.edit": "Editar avisos",
+    "news.delete": "Eliminar avisos",
+    "members.read": "Veure llista de membres",
+    "members.read_sensitive": "Veure dades sensibles",
+    "members.edit_own": "Editar el propi perfil",
+    "members.edit_any": "Editar el perfil de qualsevol membre",
+    "members.edit_notes": "Editar notes internes"
+  }
+}

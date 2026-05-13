@@ -5,10 +5,8 @@ import { loreApi } from '../../api/lore.api';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
-import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import type { LoreCategory } from '../../types/lore.types';
-
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 const CATEGORY_ICONS: Record<LoreCategory, string> = {
   HISTORY: '📜', SYMBOLS: '🐐', ENEMIES: '⚔️', FACTIONS: '🏰',
@@ -18,11 +16,11 @@ const CATEGORY_ICONS: Record<LoreCategory, string> = {
 export function LoreDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('lore');
-  const { user } = useAuthStore();
+  const { can } = usePermissions();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const canEdit = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
+  const canEdit = can('lore.edit');
 
   const { data: entry, isLoading } = useQuery({
     queryKey: ['lore', id],

@@ -7,11 +7,10 @@ import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
 import { Badge } from '../../components/ui/Badge';
 import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
-import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 const FILTER_OPTIONS = ['ONGOING', 'PLANNED', 'CANCELLED', 'FINISHED'];
 
 function computeDisplayStatus(event: { status: string; startDate: string; endDate?: string | null }): string {
@@ -28,10 +27,10 @@ function computeDisplayStatus(event: { status: string; startDate: string; endDat
 export function EventListPage() {
   const { t } = useTranslation('events');
   const { t: tc } = useTranslation('common');
-  const { user } = useAuthStore();
+  const { can } = usePermissions();
   const [filter, setFilter] = useState('');
   const [rsvpFilter, setRsvpFilter] = useState('');
-  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
+  const canCreate = can('events.create');
 
   const { data: allEvents = [], isLoading } = useQuery({
     queryKey: ['events'],

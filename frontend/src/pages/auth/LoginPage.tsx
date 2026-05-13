@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { authApi } from '../../api/auth.api';
+import { permissionsApi } from '../../api/permissions.api';
 import { useAuthStore } from '../../store/auth.store';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -10,7 +11,7 @@ import { ROUTES } from '../../router/routes';
 export function LoginPage() {
   const { t } = useTranslation('auth');
   const navigate = useNavigate();
-  const { setAuth, isAuthenticated } = useAuthStore();
+  const { setAuth, setPermissions, isAuthenticated } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,6 +26,8 @@ export function LoginPage() {
     try {
       const { user, accessToken, refreshToken } = await authApi.login(email, password);
       setAuth(user, accessToken, refreshToken);
+      const permissions = await permissionsApi.getMyPermissions().catch(() => []);
+      setPermissions(permissions);
       navigate(ROUTES.DASHBOARD, { replace: true });
     } catch (err: any) {
       const status = err.response?.status;

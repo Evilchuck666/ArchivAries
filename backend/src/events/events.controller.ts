@@ -13,6 +13,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ParticipationDto } from './dto/participation.dto';
 import { Roles } from '../common/decorators/roles.decorator';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
@@ -22,7 +23,7 @@ export class EventsController {
   constructor(private eventsService: EventsService) {}
 
   @Get()
-  @Roles(Role.MEMBER)
+  @RequiresPermission('events.read')
   findAll(
     @CurrentUser('id') userId: string,
     @Query('status') status?: string,
@@ -33,7 +34,7 @@ export class EventsController {
   }
 
   @Get('upcoming')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('events.read')
   findUpcoming(@Query('limit') limit?: string) {
     return this.eventsService.findUpcoming(limit ? parseInt(limit) : 5);
   }
@@ -45,25 +46,25 @@ export class EventsController {
   }
 
   @Get(':id')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('events.read')
   findOne(@Param('id') id: string, @CurrentUser('id') userId: string) {
     return this.eventsService.findOne(id, userId);
   }
 
   @Post()
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('events.create')
   create(@Body() dto: CreateEventDto, @CurrentUser('id') userId: string) {
     return this.eventsService.create(dto, userId);
   }
 
   @Patch(':id')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('events.edit')
   update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
     return this.eventsService.update(id, dto);
   }
 
   @Delete(':id')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('events.delete')
   remove(
     @Param('id') id: string,
     @CurrentUser('id') userId: string,
@@ -73,7 +74,7 @@ export class EventsController {
   }
 
   @Post(':id/participate')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('events.rsvp')
   participate(
     @Param('id') eventId: string,
     @CurrentUser('id') userId: string,
@@ -83,7 +84,7 @@ export class EventsController {
   }
 
   @Get(':id/participants')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('events.edit')
   getParticipants(
     @Param('id') eventId: string,
     @CurrentUser('role') role: Role,

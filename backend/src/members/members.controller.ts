@@ -18,6 +18,7 @@ import { MembersService } from './members.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { Roles } from '../common/decorators/roles.decorator';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
 
@@ -47,7 +48,7 @@ export class MembersController {
   constructor(private membersService: MembersService) {}
 
   @Get()
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.read')
   findAll(
     @CurrentUser('role') role: Role,
     @Query('search') search?: string,
@@ -63,7 +64,7 @@ export class MembersController {
   }
 
   @Get(':id')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.read')
   findOne(@Param('id') id: string, @CurrentUser('role') role: Role) {
     return this.membersService.findOne(id, role);
   }
@@ -75,7 +76,7 @@ export class MembersController {
   }
 
   @Post('me/avatar')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.edit_own')
   @UseInterceptors(avatarInterceptor)
   uploadAvatar(
     @CurrentUser('id') userId: string,
@@ -87,7 +88,7 @@ export class MembersController {
   }
 
   @Patch('me')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.edit_own')
   updateMe(
     @CurrentUser('id') userId: string,
     @Body() dto: UpdateMemberDto,
@@ -96,7 +97,7 @@ export class MembersController {
   }
 
   @Patch(':id')
-  @Roles(Role.BOARD)
+  @RequiresPermission('members.edit_any')
   update(
     @Param('id') id: string,
     @Body() dto: UpdateMemberDto,

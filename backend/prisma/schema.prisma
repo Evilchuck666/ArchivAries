@@ -205,6 +205,18 @@ model NewsAnnouncement {
   @@map("news_announcements")
 }
 
+// ─── RolePermission ───────────────────────────────────────────────────────────
+
+model RolePermission {
+  id         String  @id @default(cuid())
+  role       Role
+  permission String
+  granted    Boolean @default(true)
+
+  @@unique([role, permission])
+  @@map("role_permissions")
+}
+
 // ─── LoreEntry ────────────────────────────────────────────────────────────────
 
 model LoreEntry {

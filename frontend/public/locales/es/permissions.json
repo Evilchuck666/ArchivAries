@@ -1,0 +1,39 @@
+{
+  "title": "Gestión de permisos",
+  "subtitle": "Configura qué puede hacer cada rol",
+  "save_error": "Error al guardar el permiso",
+  "groups": {
+    "events": "Eventos",
+    "calendar": "Calendario",
+    "lore": "Lore",
+    "documents": "Documentos",
+    "news": "Avisos",
+    "members": "Miembros"
+  },
+  "permissions": {
+    "events.read": "Ver eventos",
+    "events.rsvp": "Apuntarse a eventos",
+    "events.create": "Crear eventos",
+    "events.edit": "Editar eventos",
+    "events.delete": "Eliminar eventos",
+    "calendar.read": "Ver calendario",
+    "lore.read": "Ver lore",
+    "lore.create": "Crear entradas de lore",
+    "lore.edit": "Editar lore",
+    "lore.delete": "Eliminar lore",
+    "documents.read": "Ver documentos",
+    "documents.read_restricted": "Ver documentos restringidos",
+    "documents.create": "Crear documentos",
+    "documents.edit": "Editar documentos",
+    "documents.delete": "Eliminar documentos",
+    "news.read": "Ver avisos",
+    "news.create": "Crear avisos",
+    "news.edit": "Editar avisos",
+    "news.delete": "Eliminar avisos",
+    "members.read": "Ver lista de miembros",
+    "members.read_sensitive": "Ver datos sensibles",
+    "members.edit_own": "Editar propio perfil",
+    "members.edit_any": "Editar perfil de cualquier miembro",
+    "members.edit_notes": "Editar notas internas"
+  }
+}

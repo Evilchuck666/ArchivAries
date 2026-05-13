@@ -10,6 +10,7 @@ import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
 import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
@@ -18,6 +19,7 @@ export function EventDetailPage() {
   const { t } = useTranslation('events');
   const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
+  const { can } = usePermissions();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -74,15 +76,9 @@ export function EventDetailPage() {
   const _end = event.endDate ? new Date(event.endDate) : null;
   const isPast = _end ? _end < now : new Date(event.startDate) < now;
 
-  const canEdit = !isPast && user && (
-    user.id === event.creatorId ||
-    ['CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role)
-  );
+  const canEdit = !isPast && (user?.id === event.creatorId || can('events.edit'));
   const canCancel = canEdit && event.status === 'PLANNED';
-  const canDelete = !isPast && user && (
-    user.id === event.creatorId ||
-    ['ADMIN', 'SUPER_ADMIN'].includes(user.role)
-  );
+  const canDelete = !isPast && (user?.id === event.creatorId || can('events.delete'));
 
   return (
     <div className="max-w-3xl mx-auto">

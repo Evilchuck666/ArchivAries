@@ -2,39 +2,40 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../store/auth.store';
 import { useUiStore } from '../../store/ui.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import { ROUTES } from '../../router/routes';
 import type { Role } from '../../types/auth.types';
 
-const ROLE_HIERARCHY: Role[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
-
-function hasRole(userRole: Role, minRole: Role) {
-  return ROLE_HIERARCHY.indexOf(userRole) >= ROLE_HIERARCHY.indexOf(minRole);
-}
+const ADMIN_ROLES: Role[] = ['ADMIN', 'SUPER_ADMIN'];
 
 interface NavItem {
   to: string;
   label: string;
   icon: string;
-  minRole?: Role;
+  permission?: string;
+  adminOnly?: boolean;
 }
 
 export function Sidebar() {
   const { t } = useTranslation('common');
   const { user } = useAuthStore();
   const { sidebarOpen } = useUiStore();
+  const { can } = usePermissions();
 
   const navItems: NavItem[] = [
     { to: ROUTES.DASHBOARD, label: t('nav.dashboard'), icon: '⚔️' },
-    { to: ROUTES.MEMBERS, label: t('nav.members'), icon: '🛡️', minRole: 'MEMBER' },
-    { to: ROUTES.EVENTS, label: t('nav.events'), icon: '📅', minRole: 'MEMBER' },
-    { to: ROUTES.CALENDAR, label: t('nav.calendar'), icon: '🗓️', minRole: 'MEMBER' },
-    { to: ROUTES.DOCUMENTS, label: t('nav.documents'), icon: '📜', minRole: 'MEMBER' },
-    { to: ROUTES.NEWS, label: t('nav.news'), icon: '📢', minRole: 'MEMBER' },
-    { to: ROUTES.LORE, label: t('nav.lore'), icon: '🔮', minRole: 'MEMBER' },
-    { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', minRole: 'ADMIN' },
+    { to: ROUTES.MEMBERS, label: t('nav.members'), icon: '🛡️', permission: 'members.read' },
+    { to: ROUTES.EVENTS, label: t('nav.events'), icon: '📅', permission: 'events.read' },
+    { to: ROUTES.CALENDAR, label: t('nav.calendar'), icon: '🗓️', permission: 'calendar.read' },
+    { to: ROUTES.DOCUMENTS, label: t('nav.documents'), icon: '📜', permission: 'documents.read' },
+    { to: ROUTES.NEWS, label: t('nav.news'), icon: '📢', permission: 'news.read' },
+    { to: ROUTES.LORE, label: t('nav.lore'), icon: '🔮', permission: 'lore.read' },
+    { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', adminOnly: true },
   ];
 
   if (!user) return null;
+
+  const isAdmin = ADMIN_ROLES.includes(user.role);
 
   return (
     <aside
@@ -54,7 +55,11 @@ export function Sidebar() {
 
       <nav className="flex-1 py-4 flex flex-col gap-0.5">
         {navItems
-          .filter((item) => !item.minRole || hasRole(user.role, item.minRole))
+          .filter((item) => {
+            if (item.adminOnly) return isAdmin;
+            if (item.permission) return can(item.permission);
+            return true;
+          })
           .map((item) => (
             <NavLink
               key={item.to}

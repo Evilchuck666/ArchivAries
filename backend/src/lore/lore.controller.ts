@@ -11,7 +11,7 @@ import {
 import { LoreService } from './lore.service';
 import { CreateLoreEntryDto } from './dto/create-lore-entry.dto';
 import { UpdateLoreEntryDto } from './dto/update-lore-entry.dto';
-import { Roles } from '../common/decorators/roles.decorator';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
 
@@ -20,7 +20,7 @@ export class LoreController {
   constructor(private loreService: LoreService) {}
 
   @Get()
-  @Roles(Role.MEMBER)
+  @RequiresPermission('lore.read')
   findAll(
     @CurrentUser('role') role: Role,
     @Query('category') category?: string,
@@ -31,25 +31,25 @@ export class LoreController {
   }
 
   @Get(':id')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('lore.read')
   findOne(@Param('id') id: string, @CurrentUser('role') role: Role) {
     return this.loreService.findOne(id, role);
   }
 
   @Post()
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('lore.create')
   create(@Body() dto: CreateLoreEntryDto, @CurrentUser('id') userId: string) {
     return this.loreService.create(dto, userId);
   }
 
   @Patch(':id')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('lore.edit')
   update(@Param('id') id: string, @Body() dto: UpdateLoreEntryDto) {
     return this.loreService.update(id, dto);
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @RequiresPermission('lore.delete')
   remove(@Param('id') id: string) {
     return this.loreService.remove(id);
   }

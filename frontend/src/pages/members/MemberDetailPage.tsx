@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { membersApi } from '../../api/members.api';
 import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import { MemberStatusBadge } from '../../components/shared/MemberStatusBadge';
 import { RoleBadge } from '../../components/shared/RoleBadge';
 import { Button } from '../../components/ui/Button';
@@ -19,6 +20,7 @@ export function MemberDetailPage() {
   const { t } = useTranslation('members');
   const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
+  const { can } = usePermissions();
   const queryClient = useQueryClient();
 
   const isMeRoute = id === 'me';
@@ -44,8 +46,8 @@ export function MemberDetailPage() {
   if (!member) return <p className="text-slate-500">{t('not_found')}</p>;
 
   const isSelf = isMeRoute || member.userId === user?.id;
-  const canEditNotes = !!user && ['BOARD', 'ADMIN', 'SUPER_ADMIN'].includes(user.role);
-  const canEditMember = !!user && ['ADMIN', 'SUPER_ADMIN'].includes(user.role) && !isSelf;
+  const canEditNotes = can('members.edit_notes');
+  const canEditMember = can('members.edit_any') && !isSelf;
 
   return (
     <div className="max-w-2xl mx-auto">

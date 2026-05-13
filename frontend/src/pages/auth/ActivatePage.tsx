@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { authApi } from '../../api/auth.api';
+import { permissionsApi } from '../../api/permissions.api';
 import { useAuthStore } from '../../store/auth.store';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -14,7 +15,7 @@ export function ActivatePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') ?? '';
-  const { setAuth } = useAuthStore();
+  const { setAuth, setPermissions } = useAuthStore();
 
   const [displayName, setDisplayName] = useState('');
   const [password, setPassword] = useState('');
@@ -30,8 +31,10 @@ export function ActivatePage() {
 
   const activateMutation = useMutation({
     mutationFn: () => authApi.activate(token, displayName, password),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setAuth(data.user, data.accessToken, data.refreshToken);
+      const permissions = await permissionsApi.getMyPermissions().catch(() => []);
+      setPermissions(permissions);
       navigate(ROUTES.MEMBER_ME, { replace: true });
     },
   });

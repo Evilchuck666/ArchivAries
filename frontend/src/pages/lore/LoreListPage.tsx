@@ -7,10 +7,8 @@ import { Input } from '../../components/ui/Input';
 import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Badge } from '../../components/ui/Badge';
-import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import type { LoreCategory } from '../../types/lore.types';
-
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 const LORE_CATEGORIES: LoreCategory[] = [
   'HISTORY', 'SYMBOLS', 'ENEMIES', 'FACTIONS', 'PLACES', 'CHARACTERS', 'CHRONICLES', 'OTHER',
@@ -23,10 +21,10 @@ const CATEGORY_ICONS: Record<LoreCategory, string> = {
 
 export function LoreListPage() {
   const { t } = useTranslation('lore');
-  const { user } = useAuthStore();
+  const { can } = usePermissions();
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState<LoreCategory | ''>('');
-  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
+  const canCreate = can('lore.create');
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ['lore', search, category],

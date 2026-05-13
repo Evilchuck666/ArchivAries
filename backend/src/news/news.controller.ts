@@ -11,16 +11,15 @@ import {
 import { NewsService } from './news.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
-import { Roles } from '../common/decorators/roles.decorator';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Role } from '../common/enums/role.enum';
 
 @Controller('news')
 export class NewsController {
   constructor(private newsService: NewsService) {}
 
   @Get()
-  @Roles(Role.MEMBER)
+  @RequiresPermission('news.read')
   findAll(@Query('page') page?: string, @Query('limit') limit?: string) {
     return this.newsService.findAll(
       page ? parseInt(page) : 1,
@@ -29,37 +28,37 @@ export class NewsController {
   }
 
   @Get('important')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('news.read')
   findImportant() {
     return this.newsService.findImportant();
   }
 
   @Get('recent')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('news.read')
   findRecent(@Query('limit') limit?: string) {
     return this.newsService.findRecent(limit ? parseInt(limit) : 5);
   }
 
   @Get(':id')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('news.read')
   findOne(@Param('id') id: string) {
     return this.newsService.findOne(id);
   }
 
   @Post()
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('news.create')
   create(@Body() dto: CreateNewsDto, @CurrentUser('id') userId: string) {
     return this.newsService.create(dto, userId);
   }
 
   @Patch(':id')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('news.edit')
   update(@Param('id') id: string, @Body() dto: UpdateNewsDto) {
     return this.newsService.update(id, dto);
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @RequiresPermission('news.delete')
   remove(@Param('id') id: string) {
     return this.newsService.remove(id);
   }

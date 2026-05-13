@@ -81,7 +81,9 @@
     "documents_desc": "Gestionar documentación interna",
     "news_desc": "Publicar y gestionar avisos",
     "events_desc": "Crear y gestionar eventos",
-    "lore_desc": "Gestionar entradas del lore"
+    "lore_desc": "Gestionar entradas del lore",
+    "permissions": "Permisos de roles",
+    "permissions_desc": "Configurar qué puede hacer cada rol"
   },
   "markdown_editor": {
     "write": "Editar",

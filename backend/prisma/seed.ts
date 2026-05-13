@@ -49,6 +49,66 @@ async function main() {
   }
   console.log(`Seeded ${categories.length} document categories`);
 
+  // ── Default permission matrix ──────────────────────────────────────────────
+  type RoleKey = 'VISITOR' | 'MEMBER' | 'CONTENT_MANAGER' | 'BOARD' | 'ADMIN' | 'SUPER_ADMIN';
+
+  const ALL_PERMISSIONS: string[] = [
+    'events.read', 'events.rsvp', 'events.create', 'events.edit', 'events.delete',
+    'calendar.read',
+    'lore.read', 'lore.create', 'lore.edit', 'lore.delete',
+    'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit', 'documents.delete',
+    'news.read', 'news.create', 'news.edit', 'news.delete',
+    'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_any', 'members.edit_notes',
+  ];
+
+  const GRANTED: Record<RoleKey, string[]> = {
+    VISITOR: [
+      'events.read', 'calendar.read',
+      'lore.read',
+    ],
+    MEMBER: [
+      'events.read', 'events.rsvp', 'calendar.read',
+      'lore.read',
+      'documents.read',
+      'news.read',
+      'members.read', 'members.edit_own',
+    ],
+    CONTENT_MANAGER: [
+      'events.read', 'events.rsvp', 'events.create', 'events.edit', 'calendar.read',
+      'lore.read', 'lore.create', 'lore.edit',
+      'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit',
+      'news.read', 'news.create', 'news.edit',
+      'members.read', 'members.edit_own',
+    ],
+    BOARD: [
+      'events.read', 'events.rsvp', 'events.create', 'events.edit', 'calendar.read',
+      'lore.read', 'lore.create', 'lore.edit',
+      'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit',
+      'news.read', 'news.create', 'news.edit',
+      'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_notes',
+    ],
+    ADMIN: [
+      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete'].includes(p)),
+      'events.delete', 'lore.delete', 'documents.delete', 'news.delete',
+    ],
+    SUPER_ADMIN: [...ALL_PERMISSIONS],
+  };
+
+  const roles: RoleKey[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
+  let permCount = 0;
+  for (const role of roles) {
+    const granted = new Set(GRANTED[role]);
+    for (const permission of ALL_PERMISSIONS) {
+      await prisma.rolePermission.upsert({
+        where: { role_permission: { role, permission } },
+        update: { granted: granted.has(permission) },
+        create: { role, permission, granted: granted.has(permission) },
+      });
+      permCount++;
+    }
+  }
+  console.log(`Seeded ${permCount} role permissions`);
+
   console.log('Seed complete.');
 }
 

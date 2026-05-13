@@ -7,18 +7,16 @@ import { Input } from '../../components/ui/Input';
 import { Spinner } from '../../components/ui/Spinner';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Badge } from '../../components/ui/Badge';
-import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
-
 export function DocumentListPage() {
   const { t } = useTranslation('documents');
-  const { user } = useAuthStore();
+  const { can } = usePermissions();
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const canCreate = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
+  const canCreate = can('documents.create');
 
   const { data: categories = [] } = useQuery({
     queryKey: ['document-categories'],

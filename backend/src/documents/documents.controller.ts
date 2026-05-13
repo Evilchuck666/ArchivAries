@@ -13,6 +13,7 @@ import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentCategoryDto } from './dto/create-document-category.dto';
 import { Roles } from '../common/decorators/roles.decorator';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
 
@@ -21,7 +22,7 @@ export class DocumentsController {
   constructor(private documentsService: DocumentsService) {}
 
   @Get('document-categories')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('documents.read')
   getCategories() {
     return this.documentsService.findAllCategories();
   }
@@ -42,7 +43,7 @@ export class DocumentsController {
   }
 
   @Get('documents')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('documents.read')
   findAll(
     @CurrentUser('role') role: Role,
     @Query('categoryId') categoryId?: string,
@@ -52,31 +53,31 @@ export class DocumentsController {
   }
 
   @Get('documents/recent')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('documents.read')
   findRecent(@CurrentUser('role') role: Role, @Query('limit') limit?: string) {
     return this.documentsService.findRecent(role, limit ? parseInt(limit) : 5);
   }
 
   @Get('documents/:id')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('documents.read')
   findOne(@Param('id') id: string, @CurrentUser('role') role: Role) {
     return this.documentsService.findOne(id, role);
   }
 
   @Post('documents')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('documents.create')
   create(@Body() dto: CreateDocumentDto, @CurrentUser('id') userId: string) {
     return this.documentsService.create(dto, userId);
   }
 
   @Patch('documents/:id')
-  @Roles(Role.CONTENT_MANAGER)
+  @RequiresPermission('documents.edit')
   update(@Param('id') id: string, @Body() dto: UpdateDocumentDto) {
     return this.documentsService.update(id, dto);
   }
 
   @Delete('documents/:id')
-  @Roles(Role.ADMIN)
+  @RequiresPermission('documents.delete')
   remove(@Param('id') id: string) {
     return this.documentsService.remove(id);
   }

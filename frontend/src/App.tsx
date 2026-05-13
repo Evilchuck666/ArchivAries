@@ -39,6 +39,7 @@ import { LoreCreatePage } from './pages/lore/LoreCreatePage';
 
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { UserManagementPage } from './pages/admin/UserManagementPage';
+import { PermissionsPage } from './pages/admin/PermissionsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -72,39 +73,32 @@ export default function App() {
                 {/* Events */}
                 <Route path="/app/events" element={<EventListPage />} />
                 <Route path="/app/events/calendar" element={<CalendarPage />} />
+                <Route path="/app/events/create" element={<EventCreatePage />} />
                 <Route path="/app/events/:id" element={<EventDetailPage />} />
-                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
-                  <Route path="/app/events/create" element={<EventCreatePage />} />
-                  <Route path="/app/events/:id/edit" element={<EventEditPage />} />
-                </Route>
+                <Route path="/app/events/:id/edit" element={<EventEditPage />} />
 
                 {/* Documents */}
                 <Route path="/app/documents" element={<DocumentListPage />} />
+                <Route path="/app/documents/create" element={<DocumentCreatePage />} />
                 <Route path="/app/documents/:id" element={<DocumentDetailPage />} />
-                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
-                  <Route path="/app/documents/create" element={<DocumentCreatePage />} />
-                  <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
-                </Route>
+                <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
 
                 {/* News */}
                 <Route path="/app/news" element={<NewsListPage />} />
+                <Route path="/app/news/create" element={<NewsCreatePage />} />
                 <Route path="/app/news/:id" element={<NewsDetailPage />} />
-                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
-                  <Route path="/app/news/create" element={<NewsCreatePage />} />
-                </Route>
 
                 {/* Lore */}
                 <Route path="/app/lore" element={<LoreListPage />} />
+                <Route path="/app/lore/create" element={<LoreCreatePage />} />
                 <Route path="/app/lore/:id" element={<LoreDetailPage />} />
-                <Route element={<RoleRoute minRole="CONTENT_MANAGER" />}>
-                  <Route path="/app/lore/create" element={<LoreCreatePage />} />
-                </Route>
 
                 {/* Admin */}
                 <Route element={<RoleRoute minRole="ADMIN" />}>
                   <Route path="/app/members/:id/edit" element={<MemberEditPage />} />
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
+                  <Route path="/app/admin/permissions" element={<PermissionsPage />} />
                 </Route>
               </Route>
             </Route>

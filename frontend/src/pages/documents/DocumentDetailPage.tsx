@@ -5,20 +5,18 @@ import { documentsApi } from '../../api/documents.api';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
-import { useAuthStore } from '../../store/auth.store';
+import { usePermissions } from '../../hooks/usePermissions';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-
-const ROLE_HIERARCHY = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 export function DocumentDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('documents');
-  const { user } = useAuthStore();
+  const { can } = usePermissions();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const canEdit = user && ROLE_HIERARCHY.indexOf(user.role) >= ROLE_HIERARCHY.indexOf('CONTENT_MANAGER');
+  const canEdit = can('documents.edit');
 
   const { data: doc, isLoading } = useQuery({
     queryKey: ['document', id],

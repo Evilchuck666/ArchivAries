@@ -7,6 +7,7 @@ export function AdminDashboardPage() {
 
   const sections = [
     { to: '/app/admin/users', icon: '👥', label: t('admin.users'), desc: t('admin.users_desc') },
+    { to: '/app/admin/permissions', icon: '🔑', label: t('admin.permissions'), desc: t('admin.permissions_desc') },
     { to: '/app/documents', icon: '📜', label: t('nav.documents'), desc: t('admin.documents_desc') },
     { to: '/app/news', icon: '📢', label: t('nav.news'), desc: t('admin.news_desc') },
     { to: '/app/events', icon: '📅', label: t('nav.events'), desc: t('admin.events_desc') },
