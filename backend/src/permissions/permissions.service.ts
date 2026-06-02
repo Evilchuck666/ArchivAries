@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Role } from '../common/enums/role.enum';
 import { PrismaService } from '../prisma/prisma.service';
 
-const CACHE_TTL_MS = 5 * 60 * 1000;
+const CACHE_TTL_MS = 1 * 60 * 1000;
 
 @Injectable()
 export class PermissionsService {
