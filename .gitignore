@@ -27,8 +27,6 @@ yarn-error.log*
 *.swo
 .DS_Store
 
-# Prisma
-backend/prisma/migrations/
 
 # Docker volumes
 postgres_data/
