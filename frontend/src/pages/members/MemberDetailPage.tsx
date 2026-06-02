@@ -153,7 +153,7 @@ export function MemberDetailPage() {
           </dl>
         </Card>
 
-        {(canEditNotes || member.notes) && (
+        {canEditNotes && (
           <Card
             title={t('notes')}
             action={

@@ -7,6 +7,7 @@ import { PublicLayout } from './layouts/PublicLayout';
 import { AppLayout } from './layouts/AppLayout';
 import { ProtectedRoute } from './router/ProtectedRoute';
 import { RoleRoute } from './router/RoleRoute';
+import { PermissionRoute } from './router/PermissionRoute';
 
 import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/auth/LoginPage';
@@ -66,9 +67,11 @@ export default function App() {
                 <Route path="/app" element={<DashboardPage />} />
 
                 {/* Members */}
-                <Route path="/app/members" element={<MemberListPage />} />
-                <Route path="/app/members/:id" element={<MemberDetailPage />} />
-                <Route path="/app/members/me/edit" element={<MemberEditPage />} />
+                <Route element={<PermissionRoute permission="members.read" />}>
+                  <Route path="/app/members" element={<MemberListPage />} />
+                  <Route path="/app/members/:id" element={<MemberDetailPage />} />
+                  <Route path="/app/members/me/edit" element={<MemberEditPage />} />
+                </Route>
 
                 {/* Events */}
                 <Route path="/app/events" element={<EventListPage />} />
