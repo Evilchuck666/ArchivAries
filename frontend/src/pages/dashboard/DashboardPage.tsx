@@ -8,6 +8,7 @@ import { Badge } from '../../components/ui/Badge';
 import { Spinner } from '../../components/ui/Spinner';
 import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
 import { ROUTES } from '../../router/routes';
+import { usePermissions } from '../../hooks/usePermissions';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import type { Event } from '../../types/event.types';
@@ -18,6 +19,7 @@ export function DashboardPage() {
   const { t } = useTranslation('dashboard');
   const { t: tc } = useTranslation('common');
   const { user } = useAuthStore();
+  const { can } = usePermissions();
 
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard'],
@@ -151,11 +153,13 @@ export function DashboardPage() {
         <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wide mb-3">{t('quick_links')}</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { to: ROUTES.MEMBERS, icon: '🛡️', label: tc('nav.members') },
-            { to: ROUTES.CALENDAR, icon: '🗓️', label: tc('nav.calendar') },
-            { to: ROUTES.LORE, icon: '🔮', label: tc('nav.lore') },
-            { to: ROUTES.MEMBER_ME, icon: '👤', label: tc('nav.profile') },
-          ].map((item) => (
+            { to: ROUTES.MEMBERS,   icon: '🛡️', label: tc('nav.members'),  permission: 'members.read' },
+            { to: ROUTES.CALENDAR,  icon: '🗓️', label: tc('nav.calendar'), permission: 'calendar.read' },
+            { to: ROUTES.LORE,      icon: '🔮', label: tc('nav.lore'),     permission: 'lore.read' },
+            { to: ROUTES.MEMBER_ME, icon: '👤', label: tc('nav.profile'),  permission: 'members.edit_own' },
+          ]
+            .filter((item) => !item.permission || can(item.permission))
+            .map((item) => (
             <Link
               key={item.to}
               to={item.to}
