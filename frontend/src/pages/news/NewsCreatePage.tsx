@@ -16,7 +16,8 @@ export function NewsCreatePage() {
   const [isImportant, setIsImportant] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: () => newsApi.create({ title, content, isImportant }),
+    mutationFn: (isPublished: boolean) =>
+      newsApi.create({ title, content, isImportant, isPublished }),
     onSuccess: (item) => {
       queryClient.invalidateQueries({ queryKey: ['news'] });
       navigate(`/app/news/${item.id}`);
@@ -26,7 +27,7 @@ export function NewsCreatePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title) return;
-    mutation.mutate();
+    mutation.mutate(true);
   };
 
   return (
@@ -67,6 +68,14 @@ export function NewsCreatePage() {
             className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm px-4 py-2 rounded-md transition-colors border border-amber-500"
           >
             {mutation.isPending ? t('form.saving') : t('form.publish')}
+          </button>
+          <button
+            type="button"
+            disabled={mutation.isPending || !title}
+            onClick={() => { if (!title) return; mutation.mutate(false); }}
+            className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors disabled:opacity-50"
+          >
+            {t('form.save_draft')}
           </button>
           <button
             type="button"

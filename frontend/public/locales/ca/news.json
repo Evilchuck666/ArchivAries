@@ -28,6 +28,7 @@
     "publish": "Publicar avís",
     "cancel": "Cancel·lar",
     "mark_published": "Publicar",
+    "save_draft": "Desar com a esborrany",
     "save_error": "S'ha produït un error en desar."
   }
 }

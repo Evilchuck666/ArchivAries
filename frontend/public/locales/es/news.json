@@ -28,6 +28,7 @@
     "publish": "Publicar aviso",
     "cancel": "Cancelar",
     "mark_published": "Publicar",
+    "save_draft": "Guardar como borrador",
     "save_error": "Ha ocurrido un error al guardar."
   }
 }
