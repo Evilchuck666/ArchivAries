@@ -33,6 +33,7 @@ import { DocumentEditPage } from './pages/documents/DocumentEditPage';
 import { NewsListPage } from './pages/news/NewsListPage';
 import { NewsDetailPage } from './pages/news/NewsDetailPage';
 import { NewsCreatePage } from './pages/news/NewsCreatePage';
+import { NewsEditPage } from './pages/news/NewsEditPage';
 
 import { LoreListPage } from './pages/lore/LoreListPage';
 import { LoreDetailPage } from './pages/lore/LoreDetailPage';
@@ -90,6 +91,9 @@ export default function App() {
                 <Route path="/app/news" element={<NewsListPage />} />
                 <Route path="/app/news/create" element={<NewsCreatePage />} />
                 <Route path="/app/news/:id" element={<NewsDetailPage />} />
+                <Route element={<PermissionRoute permission="news.edit" />}>
+                  <Route path="/app/news/:id/edit" element={<NewsEditPage />} />
+                </Route>
 
                 {/* Lore */}
                 <Route path="/app/lore" element={<LoreListPage />} />

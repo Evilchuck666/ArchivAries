@@ -16,6 +16,7 @@ export const ROUTES = {
   NEWS: '/app/news',
   NEWS_DETAIL: '/app/news/:id',
   NEWS_CREATE: '/app/news/create',
+  NEWS_EDIT: '/app/news/:id/edit',
   LORE: '/app/lore',
   LORE_DETAIL: '/app/lore/:id',
   LORE_CREATE: '/app/lore/create',

@@ -18,6 +18,7 @@
   "next": "Siguiente",
   "page": "Página",
   "draft": "Borrador",
+  "edit_news": "Editar aviso",
   "form": {
     "title": "Título",
     "content": "Contenido",
@@ -25,6 +26,8 @@
     "error": "Ha ocurrido un error al publicar.",
     "saving": "Publicando...",
     "publish": "Publicar aviso",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "mark_published": "Publicar",
+    "save_error": "Ha ocurrido un error al guardar."
   }
 }
