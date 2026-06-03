@@ -1,15 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsService } from '../permissions/permissions.service';
+import { Role } from '../common/enums/role.enum';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 
 @Injectable()
 export class NewsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private permissionsService: PermissionsService,
+  ) {}
 
-  findAll(page = 1, limit = 10) {
+  async findAll(page = 1, limit = 10, viewerRole?: Role) {
+    const canSeeDrafts = viewerRole
+      ? await this.permissionsService.hasPermission(viewerRole, 'news.edit')
+      : false;
+
     return this.prisma.newsAnnouncement.findMany({
-      where: { isPublished: true },
+      where: canSeeDrafts ? {} : { isPublished: true },
       orderBy: { publishedAt: 'desc' },
       skip: (page - 1) * limit,
       take: limit,
@@ -17,6 +26,7 @@ export class NewsService {
         id: true,
         title: true,
         isImportant: true,
+        isPublished: true,
         publishedAt: true,
         creator: { select: { member: { select: { displayName: true } } } },
       },

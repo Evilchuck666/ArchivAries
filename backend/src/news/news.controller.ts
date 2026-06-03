@@ -13,6 +13,7 @@ import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { Role } from '../common/enums/role.enum';
 
 @Controller('news')
 export class NewsController {
@@ -20,10 +21,15 @@ export class NewsController {
 
   @Get()
   @RequiresPermission('news.read')
-  findAll(@Query('page') page?: string, @Query('limit') limit?: string) {
+  findAll(
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+    @CurrentUser('role') role?: Role,
+  ) {
     return this.newsService.findAll(
       page ? parseInt(page) : 1,
       limit ? parseInt(limit) : 10,
+      role,
     );
   }
 
