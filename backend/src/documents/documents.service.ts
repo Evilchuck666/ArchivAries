@@ -35,7 +35,8 @@ export class DocumentsService {
 
   async findAll(viewerRole: Role, categoryId?: string, search?: string) {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
-    const where: any = { isPublished: true };
+    const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'documents.edit');
+    const where: any = canSeeDrafts ? {} : { isPublished: true };
 
     if (!canReadRestricted) where.visibility = 'ALL_MEMBERS';
     if (categoryId) where.categoryId = categoryId;
@@ -84,6 +85,7 @@ export class DocumentsService {
 
   async findOne(id: string, viewerRole: Role) {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
+    const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'documents.edit');
     const doc = await this.prisma.document.findUnique({
       where: { id },
       include: {
@@ -93,7 +95,7 @@ export class DocumentsService {
     });
 
     if (!doc) throw new NotFoundException('Documento no encontrado');
-    if (!doc.isPublished && !canReadRestricted) throw new ForbiddenException();
+    if (!doc.isPublished && !canSeeDrafts) throw new ForbiddenException();
     if (doc.visibility === 'RESTRICTED' && !canReadRestricted) throw new ForbiddenException();
 
     return doc;

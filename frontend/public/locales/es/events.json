@@ -48,6 +48,11 @@
     "DECLINED": "✗ No asistí",
     "PENDING": "Pendiente"
   },
+  "form": {
+    "save_draft": "Guardar como borrador",
+    "mark_published": "Publicar",
+    "save_error": "Ha ocurrido un error al guardar."
+  },
   "types": {
     "training": "Entrenamiento",
     "fair": "Feria medieval",

@@ -41,6 +41,10 @@ export class UpdateEventDto {
   isPublic?: boolean;
 
   @IsOptional()
+  @IsBoolean()
+  isPublished?: boolean;
+
+  @IsOptional()
   @IsString()
   practicalInfo?: string;
 }

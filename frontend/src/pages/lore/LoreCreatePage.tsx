@@ -23,9 +23,9 @@ export function LoreCreatePage() {
   const [tagsInput, setTagsInput] = useState('');
 
   const mutation = useMutation({
-    mutationFn: () => {
+    mutationFn: (isPublished: boolean) => {
       const tags = tagsInput.split(',').map((t) => t.trim()).filter(Boolean);
-      return loreApi.create({ title, content, summary: summary || undefined, category, tags });
+      return loreApi.create({ title, content, summary: summary || undefined, category, tags, isPublished });
     },
     onSuccess: (entry) => {
       queryClient.invalidateQueries({ queryKey: ['lore'] });
@@ -36,7 +36,7 @@ export function LoreCreatePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title) return;
-    mutation.mutate();
+    mutation.mutate(true);
   };
 
   return (
@@ -90,6 +90,14 @@ export function LoreCreatePage() {
             className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm px-4 py-2 rounded-md transition-colors border border-amber-500"
           >
             {mutation.isPending ? t('form.saving') : t('form.save')}
+          </button>
+          <button
+            type="button"
+            disabled={mutation.isPending || !title}
+            onClick={() => { if (!title) return; mutation.mutate(false); }}
+            className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors disabled:opacity-50"
+          >
+            {t('form.save_draft')}
           </button>
           <button
             type="button"

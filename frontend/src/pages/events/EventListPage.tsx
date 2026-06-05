@@ -118,6 +118,7 @@ export function EventListPage() {
                   <h3 className="font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">{event.title}</h3>
                   {event.location && <p className="text-xs text-slate-500 mt-0.5">📍 {event.location}</p>}
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    {!event.isPublished && <Badge color="gray">{t('draft')}</Badge>}
                     {isOngoing
                       ? <Badge color="yellow">{t('event_ongoing')}</Badge>
                       : isPast && isActiveStatus

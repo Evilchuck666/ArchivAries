@@ -35,11 +35,14 @@ export function EventCreatePage() {
     },
   });
 
+  const onPublish = handleSubmit((d) => mutate({ ...d, isPublished: true }));
+  const onDraft   = handleSubmit((d) => mutate({ ...d, isPublished: false }));
+
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-serif text-amber-200 mb-6">{t('create_event')}</h1>
       <Card>
-        <form onSubmit={handleSubmit((d) => mutate(d))} className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4">
           <Input label={t('event_name')} {...register('title', { required: true })} />
           <Input label={t('event_type')} {...register('eventType', { required: true })} placeholder={t('event_type_placeholder')} />
           <div className="grid grid-cols-2 gap-4">
@@ -74,7 +77,11 @@ export function EventCreatePage() {
           </label>
           <div className="flex gap-3 justify-end pt-2">
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
-            <Button type="submit" loading={isPending}>{t('create_event')}</Button>
+            <Button type="button" disabled={isPending} onClick={onDraft}
+              className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors disabled:opacity-50">
+              {t('form.save_draft')}
+            </Button>
+            <Button type="button" loading={isPending} onClick={onPublish}>{t('create_event')}</Button>
           </div>
         </form>
       </Card>

@@ -38,6 +38,10 @@ export class CreateEventDto {
   isPublic?: boolean;
 
   @IsOptional()
+  @IsBoolean()
+  isPublished?: boolean;
+
+  @IsOptional()
   @IsString()
   practicalInfo?: string;
 }

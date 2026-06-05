@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -31,6 +31,7 @@ export function NewsEditPage() {
   });
 
   const { register, handleSubmit, reset } = useForm<FormData>();
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (item) {
@@ -40,6 +41,7 @@ export function NewsEditPage() {
         isImportant: item.isImportant,
         isPublished: item.isPublished,
       });
+      setInitialized(true);
     }
   }, [item, reset]);
 
@@ -52,7 +54,7 @@ export function NewsEditPage() {
     },
   });
 
-  if (isLoading) return <Spinner className="py-20" />;
+  if (isLoading || !initialized) return <Spinner className="py-20" />;
   if (!item) return <p className="text-slate-500">{t('not_found')}</p>;
 
   return (

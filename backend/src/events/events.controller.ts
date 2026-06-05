@@ -26,11 +26,12 @@ export class EventsController {
   @RequiresPermission('events.read')
   findAll(
     @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: Role,
     @Query('status') status?: string,
     @Query('dateFrom') dateFrom?: string,
     @Query('dateTo') dateTo?: string,
   ) {
-    return this.eventsService.findAll({ status, dateFrom, dateTo }, userId);
+    return this.eventsService.findAll({ status, dateFrom, dateTo }, userId, role);
   }
 
   @Get('upcoming')
@@ -47,8 +48,12 @@ export class EventsController {
 
   @Get(':id')
   @RequiresPermission('events.read')
-  findOne(@Param('id') id: string, @CurrentUser('id') userId: string) {
-    return this.eventsService.findOne(id, userId);
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: Role,
+  ) {
+    return this.eventsService.findOne(id, userId, role);
   }
 
   @Post()

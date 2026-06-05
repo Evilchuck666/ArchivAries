@@ -31,6 +31,8 @@ export function DocumentEditPage() {
   const [categoryId, setCategoryId] = useState('');
   const [visibility, setVisibility] = useState<'ALL_MEMBERS' | 'RESTRICTED'>('ALL_MEMBERS');
   const [isPinned, setIsPinned] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (doc) {
@@ -40,6 +42,8 @@ export function DocumentEditPage() {
       setCategoryId(doc.category.id);
       setVisibility(doc.visibility);
       setIsPinned(doc.isPinned);
+      setIsPublished(doc.isPublished);
+      setInitialized(true);
     }
   }, [doc]);
 
@@ -52,6 +56,7 @@ export function DocumentEditPage() {
         categoryId,
         visibility,
         isPinned,
+        isPublished,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['document', id] });
@@ -66,7 +71,7 @@ export function DocumentEditPage() {
     mutation.mutate();
   };
 
-  if (isLoading) return <Spinner className="py-20" />;
+  if (isLoading || !initialized) return <Spinner className="py-20" />;
   if (!doc) return <p className="text-slate-400">{t('not_found')}</p>;
 
   return (
@@ -131,6 +136,16 @@ export function DocumentEditPage() {
             <span className="text-sm text-slate-400">{t('form.pin')}</span>
           </label>
         </div>
+
+        <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isPublished}
+            onChange={(e) => setIsPublished(e.target.checked)}
+            className="rounded border-slate-600 bg-slate-800 text-amber-600"
+          />
+          {t('form.mark_published')}
+        </label>
 
         {mutation.isError && (
           <p className="text-red-400 text-sm">{t('form.error')}</p>

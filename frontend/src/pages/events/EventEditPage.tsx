@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, Controller } from 'react-hook-form';
@@ -20,6 +20,7 @@ interface FormData {
   description: string;
   practicalInfo: string;
   isPublic: boolean;
+  isPublished: boolean;
 }
 
 export function EventEditPage() {
@@ -36,6 +37,7 @@ export function EventEditPage() {
   });
 
   const { register, handleSubmit, reset, control } = useForm<FormData>();
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (event) {
@@ -48,7 +50,9 @@ export function EventEditPage() {
         description: event.description ?? '',
         practicalInfo: event.practicalInfo ?? '',
         isPublic: event.isPublic,
+        isPublished: event.isPublished,
       });
+      setInitialized(true);
     }
   }, [event, reset]);
 
@@ -61,7 +65,7 @@ export function EventEditPage() {
     },
   });
 
-  if (isLoading) return <Spinner className="py-20" />;
+  if (isLoading || !initialized) return <Spinner className="py-20" />;
   if (!event) return <p className="text-slate-500">{t('not_found')}</p>;
 
   return (
@@ -100,6 +104,10 @@ export function EventEditPage() {
           <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
             <input type="checkbox" {...register('isPublic')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
             {t('is_public')}
+          </label>
+          <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+            <input type="checkbox" {...register('isPublished')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
+            {t('form.mark_published')}
           </label>
           <div className="flex gap-3 justify-end pt-2">
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>

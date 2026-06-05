@@ -48,6 +48,11 @@
     "DECLINED": "✗ No vaig assistir",
     "PENDING": "Pendent"
   },
+  "form": {
+    "save_draft": "Desar com a esborrany",
+    "mark_published": "Publicar",
+    "save_error": "S'ha produït un error en desar."
+  },
   "types": {
     "training": "Entrenament",
     "fair": "Fira medieval",

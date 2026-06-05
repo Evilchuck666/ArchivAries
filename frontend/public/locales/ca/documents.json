@@ -34,7 +34,10 @@
     "error": "S'ha produït un error en desar.",
     "saving": "Desant...",
     "save": "Desar document",
-    "cancel": "Cancel·lar"
+    "cancel": "Cancel·lar",
+    "save_draft": "Desar com a esborrany",
+    "mark_published": "Publicar",
+    "save_error": "S'ha produït un error en desar."
   },
   "draft": "Esborrany",
   "visibility": {

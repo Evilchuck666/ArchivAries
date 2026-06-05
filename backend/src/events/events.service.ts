@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsService } from '../permissions/permissions.service';
 import { Role } from '../common/enums/role.enum';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -7,15 +8,22 @@ import { ParticipationDto } from './dto/participation.dto';
 
 @Injectable()
 export class EventsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private permissionsService: PermissionsService,
+  ) {}
 
-  findAll(filters: {
+  async findAll(filters: {
     status?: string;
     dateFrom?: string;
     dateTo?: string;
     isPublic?: boolean;
-  }, userId?: string) {
+  }, userId?: string, viewerRole?: Role) {
+    const canSeeDrafts = viewerRole
+      ? await this.permissionsService.hasPermission(viewerRole, 'events.edit')
+      : false;
     const where: any = {};
+    if (!canSeeDrafts) where.isPublished = true;
     if (filters.status) where.status = filters.status;
     if (filters.isPublic !== undefined) where.isPublic = filters.isPublic;
     if (filters.dateFrom || filters.dateTo) {
@@ -45,6 +53,7 @@ export class EventsService {
     const now = new Date();
     return this.prisma.event.findMany({
       where: {
+        isPublished: true,
         status: { not: 'CANCELLED' },
         OR: [
           { startDate: { gte: now } },
@@ -60,10 +69,20 @@ export class EventsService {
   }
 
   findPublic() {
-    return this.findAll({ isPublic: true });
+    return this.prisma.event.findMany({
+      where: { isPublic: true, isPublished: true },
+      orderBy: { startDate: 'asc' },
+      include: {
+        creator: { select: { member: { select: { displayName: true } } } },
+        _count: { select: { participations: true } },
+      },
+    });
   }
 
-  async findOne(id: string, userId?: string) {
+  async findOne(id: string, userId?: string, viewerRole?: Role) {
+    const canSeeDrafts = viewerRole
+      ? await this.permissionsService.hasPermission(viewerRole, 'events.edit')
+      : false;
     const event = await this.prisma.event.findUnique({
       where: { id },
       include: {
@@ -79,6 +98,7 @@ export class EventsService {
       },
     });
     if (!event) throw new NotFoundException('Evento no encontrado');
+    if (!event.isPublished && !canSeeDrafts) throw new ForbiddenException();
     return event;
   }
 

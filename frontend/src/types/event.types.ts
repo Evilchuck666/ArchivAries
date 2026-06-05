@@ -12,6 +12,7 @@ export interface Event {
   eventType: string;
   status: EventStatus;
   isPublic: boolean;
+  isPublished: boolean;
   practicalInfo: string | null;
   createdAt: string;
   _count?: { participations: number };

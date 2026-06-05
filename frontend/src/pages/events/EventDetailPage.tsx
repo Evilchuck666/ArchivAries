@@ -148,6 +148,7 @@ export function EventDetailPage() {
             <p className="text-slate-500 text-sm mt-1">{event.eventType}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
+            {!event.isPublished && <Badge color="gray">{t('draft')}</Badge>}
             {(() => {
               const isOngoing = new Date(event.startDate) < now && _end !== null && _end >= now;
               const isActiveStatus = event.status !== 'CANCELLED' && event.status !== 'FINISHED';

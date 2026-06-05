@@ -117,6 +117,7 @@ model Event {
   eventType     String
   status        EventStatus @default(PLANNED)
   isPublic      Boolean     @default(false)
+  isPublished   Boolean     @default(true)
   practicalInfo String?     @db.Text
   creatorId     String
   creator       User        @relation("EventCreator", fields: [creatorId], references: [id])

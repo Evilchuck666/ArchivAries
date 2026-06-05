@@ -26,7 +26,8 @@ export function LoreEditPage() {
   const [summary, setSummary] = useState('');
   const [category, setCategory] = useState<LoreCategory>('OTHER');
   const [tagsInput, setTagsInput] = useState('');
-  const [isPublished, setIsPublished] = useState(true);
+  const [isPublished, setIsPublished] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const { data: entry, isLoading } = useQuery({
     queryKey: ['lore', id],
@@ -42,6 +43,7 @@ export function LoreEditPage() {
       setCategory(entry.category);
       setTagsInput(entry.tags.join(', '));
       setIsPublished(entry.isPublished);
+      setInitialized(true);
     }
   }, [entry]);
 
@@ -63,7 +65,7 @@ export function LoreEditPage() {
     mutate();
   };
 
-  if (isLoading) return <Spinner className="py-20" />;
+  if (isLoading || !initialized) return <Spinner className="py-20" />;
   if (!entry) return <p className="text-slate-500">{t('not_found')}</p>;
 
   return (

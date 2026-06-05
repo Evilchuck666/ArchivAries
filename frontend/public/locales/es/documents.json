@@ -34,7 +34,10 @@
     "error": "Ha ocurrido un error al guardar.",
     "saving": "Guardando...",
     "save": "Guardar documento",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "save_draft": "Guardar como borrador",
+    "mark_published": "Publicar",
+    "save_error": "Ha ocurrido un error al guardar."
   },
   "draft": "Borrador",
   "visibility": {

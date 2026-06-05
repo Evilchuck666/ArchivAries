@@ -25,7 +25,7 @@ export function DocumentCreatePage() {
   });
 
   const mutation = useMutation({
-    mutationFn: () => documentsApi.create({ title, content, summary: summary || undefined, categoryId, visibility, isPinned }),
+    mutationFn: (isPublished: boolean) => documentsApi.create({ title, content, summary: summary || undefined, categoryId, visibility, isPinned, isPublished }),
     onSuccess: (doc) => {
       queryClient.invalidateQueries({ queryKey: ['documents'] });
       navigate(`/app/documents/${doc.id}`);
@@ -35,7 +35,7 @@ export function DocumentCreatePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !categoryId) return;
-    mutation.mutate();
+    mutation.mutate(true);
   };
 
   return (
@@ -110,6 +110,14 @@ export function DocumentCreatePage() {
             className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm px-4 py-2 rounded-md transition-colors border border-amber-500"
           >
             {mutation.isPending ? t('form.saving') : t('form.save')}
+          </button>
+          <button
+            type="button"
+            disabled={mutation.isPending || !title || !categoryId}
+            onClick={() => { if (!title || !categoryId) return; mutation.mutate(false); }}
+            className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors disabled:opacity-50"
+          >
+            {t('form.save_draft')}
           </button>
           <button
             type="button"
