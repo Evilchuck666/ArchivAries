@@ -1,0 +1,27 @@
+================================================================================
+PENDIENTE DE IMPLEMENTAR
+================================================================================
+
+[EVENTOS] Ver asistentes de un evento
+----------------------------------------
+Actualmente los miembros solo pueden ver el total de personas que han respondido.
+Se quiere que los miembros puedan ver QUIÉN asiste al evento.
+Los que han votado "no asisto" (DECLINED) NO deben aparecer en la lista.
+
+Requisitos:
+  - Crear permiso nuevo: 'events.read_assistants'
+  - Valor por defecto por rol:
+      VISITOR          → false
+      MEMBER           → true
+      CONTENT_MANAGER  → true
+      BOARD            → true
+      ADMIN            → true
+      SUPER_ADMIN      → true
+  - Backend: nuevo endpoint o adaptar el existente GET /events/:id/participants
+    para que sea accesible con 'events.read_assistants' (no 'events.edit')
+    y filtre solo participaciones con status = 'CONFIRMED'
+  - Frontend: mostrar la lista de asistentes confirmados en EventDetailPage
+    cuando el usuario tiene 'events.read_assistants'
+  - Migración: añadir el permiso a la tabla role_permissions para todos los roles
+
+================================================================================
