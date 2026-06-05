@@ -20,6 +20,7 @@ export const ROUTES = {
   LORE: '/app/lore',
   LORE_DETAIL: '/app/lore/:id',
   LORE_CREATE: '/app/lore/create',
+  LORE_EDIT: '/app/lore/:id/edit',
   ADMIN: '/app/admin',
   ADMIN_USERS: '/app/admin/users',
   ACTIVATE: '/activate',

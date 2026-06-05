@@ -16,6 +16,7 @@ const CATEGORY_ICONS: Record<LoreCategory, string> = {
 export function LoreDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('lore');
+  const { t: tc } = useTranslation('common');
   const { can } = usePermissions();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -69,6 +70,11 @@ export function LoreDetailPage() {
 
           {canEdit && (
             <div className="flex gap-2 shrink-0">
+              <Link to={`/app/lore/${id}/edit`}>
+                <button className="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors">
+                  {tc('actions.edit')}
+                </button>
+              </Link>
               <button
                 onClick={() => {
                   if (confirm(t('confirm_delete'))) deleteMutation.mutate();

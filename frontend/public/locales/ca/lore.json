@@ -25,6 +25,7 @@
     "OTHER": "Altres"
   },
   "draft": "Esborrany",
+  "edit_entry": "Editar entrada",
   "form": {
     "title": "Títol",
     "category": "Categoria",
@@ -36,6 +37,8 @@
     "error": "S'ha produït un error en desar.",
     "saving": "Desant...",
     "save": "Desar entrada",
-    "cancel": "Cancel·lar"
+    "cancel": "Cancel·lar",
+    "mark_published": "Publicar",
+    "save_error": "S'ha produït un error en desar."
   }
 }

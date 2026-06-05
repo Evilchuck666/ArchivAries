@@ -38,6 +38,7 @@ import { NewsEditPage } from './pages/news/NewsEditPage';
 import { LoreListPage } from './pages/lore/LoreListPage';
 import { LoreDetailPage } from './pages/lore/LoreDetailPage';
 import { LoreCreatePage } from './pages/lore/LoreCreatePage';
+import { LoreEditPage } from './pages/lore/LoreEditPage';
 
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { UserManagementPage } from './pages/admin/UserManagementPage';
@@ -99,6 +100,9 @@ export default function App() {
                 <Route path="/app/lore" element={<LoreListPage />} />
                 <Route path="/app/lore/create" element={<LoreCreatePage />} />
                 <Route path="/app/lore/:id" element={<LoreDetailPage />} />
+                <Route element={<PermissionRoute permission="lore.edit" />}>
+                  <Route path="/app/lore/:id/edit" element={<LoreEditPage />} />
+                </Route>
 
                 {/* Admin */}
                 <Route element={<RoleRoute minRole="ADMIN" />}>

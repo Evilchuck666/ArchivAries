@@ -25,6 +25,7 @@
     "OTHER": "Otros"
   },
   "draft": "Borrador",
+  "edit_entry": "Editar entrada",
   "form": {
     "title": "Título",
     "category": "Categoría",
@@ -36,6 +37,8 @@
     "error": "Ha ocurrido un error al guardar.",
     "saving": "Guardando...",
     "save": "Guardar entrada",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "mark_published": "Publicar",
+    "save_error": "Ha ocurrido un error al guardar."
   }
 }
