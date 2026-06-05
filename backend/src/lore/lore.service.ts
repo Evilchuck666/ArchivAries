@@ -1,22 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsService } from '../permissions/permissions.service';
 import { Role } from '../common/enums/role.enum';
 import { CreateLoreEntryDto } from './dto/create-lore-entry.dto';
 import { UpdateLoreEntryDto } from './dto/update-lore-entry.dto';
 
 @Injectable()
 export class LoreService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private permissionsService: PermissionsService,
+  ) {}
 
-  findAll(
+  async findAll(
     viewerRole: Role,
     category?: string,
     tag?: string,
     search?: string,
   ) {
-    const isAdmin = [Role.ADMIN, Role.SUPER_ADMIN].includes(viewerRole);
+    const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'lore.edit');
     const where: any = {};
-    if (!isAdmin) where.isPublished = true;
+    if (!canSeeDrafts) where.isPublished = true;
     if (category) where.category = category;
     if (tag) where.tags = { has: tag };
     if (search) {
@@ -43,7 +47,7 @@ export class LoreService {
   }
 
   async findOne(id: string, viewerRole: Role) {
-    const isAdmin = [Role.ADMIN, Role.SUPER_ADMIN].includes(viewerRole);
+    const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'lore.edit');
     const entry = await this.prisma.loreEntry.findUnique({
       where: { id },
       include: {
@@ -51,7 +55,7 @@ export class LoreService {
       },
     });
     if (!entry) throw new NotFoundException('Entrada de lore no encontrada');
-    if (!entry.isPublished && !isAdmin) throw new NotFoundException('Entrada de lore no encontrada');
+    if (!entry.isPublished && !canSeeDrafts) throw new NotFoundException('Entrada de lore no encontrada');
     return entry;
   }
 
