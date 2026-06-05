@@ -4,6 +4,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsService } from '../permissions/permissions.service';
 import { Role } from '../common/enums/role.enum';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
@@ -11,7 +12,10 @@ import { CreateDocumentCategoryDto } from './dto/create-document-category.dto';
 
 @Injectable()
 export class DocumentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private permissionsService: PermissionsService,
+  ) {}
 
   findAllCategories() {
     return this.prisma.documentCategory.findMany({
@@ -29,11 +33,11 @@ export class DocumentsService {
     return this.prisma.documentCategory.update({ where: { id }, data: dto });
   }
 
-  findAll(viewerRole: Role, categoryId?: string, search?: string) {
-    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
+  async findAll(viewerRole: Role, categoryId?: string, search?: string) {
+    const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const where: any = { isPublished: true };
 
-    if (!isRestricted) where.visibility = 'ALL_MEMBERS';
+    if (!canReadRestricted) where.visibility = 'ALL_MEMBERS';
     if (categoryId) where.categoryId = categoryId;
     if (search) {
       where.OR = [
@@ -59,10 +63,10 @@ export class DocumentsService {
     });
   }
 
-  findRecent(viewerRole: Role, limit = 5) {
-    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
+  async findRecent(viewerRole: Role, limit = 5) {
+    const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const where: any = { isPublished: true };
-    if (!isRestricted) where.visibility = 'ALL_MEMBERS';
+    if (!canReadRestricted) where.visibility = 'ALL_MEMBERS';
 
     return this.prisma.document.findMany({
       where,
@@ -79,7 +83,7 @@ export class DocumentsService {
   }
 
   async findOne(id: string, viewerRole: Role) {
-    const isRestricted = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
+    const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const doc = await this.prisma.document.findUnique({
       where: { id },
       include: {
@@ -89,8 +93,8 @@ export class DocumentsService {
     });
 
     if (!doc) throw new NotFoundException('Documento no encontrado');
-    if (!doc.isPublished && !isRestricted) throw new ForbiddenException();
-    if (doc.visibility === 'RESTRICTED' && !isRestricted) throw new ForbiddenException();
+    if (!doc.isPublished && !canReadRestricted) throw new ForbiddenException();
+    if (doc.visibility === 'RESTRICTED' && !canReadRestricted) throw new ForbiddenException();
 
     return doc;
   }
