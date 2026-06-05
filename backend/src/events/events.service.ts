@@ -132,16 +132,15 @@ export class EventsService {
     });
   }
 
-  async getParticipants(eventId: string, viewerRole: Role) {
+  async getParticipants(eventId: string) {
     await this.findOne(eventId);
-    const isAdmin = [Role.ADMIN, Role.SUPER_ADMIN, Role.CONTENT_MANAGER].includes(viewerRole);
 
     return this.prisma.eventParticipation.findMany({
       where: { eventId },
       select: {
         status: true,
         role: true,
-        notes: isAdmin,
+        notes: true,
         confirmedAt: true,
         user: {
           select: {

@@ -85,10 +85,7 @@ export class EventsController {
 
   @Get(':id/participants')
   @RequiresPermission('events.edit')
-  getParticipants(
-    @Param('id') eventId: string,
-    @CurrentUser('role') role: Role,
-  ) {
-    return this.eventsService.getParticipants(eventId, role);
+  getParticipants(@Param('id') eventId: string) {
+    return this.eventsService.getParticipants(eventId);
   }
 }
