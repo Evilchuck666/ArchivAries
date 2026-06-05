@@ -6,6 +6,5 @@ WHERE
             'documents.create'
         ,   'documents.delete'
         ,   'documents.edit'
-        ,   'documents.read'
         ,   'documents.read_restricted'
     );
