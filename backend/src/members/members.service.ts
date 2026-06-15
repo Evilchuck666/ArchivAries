@@ -4,6 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsService } from '../permissions/permissions.service';
 import { Role } from '../common/enums/role.enum';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
@@ -68,7 +69,10 @@ function normalizeDates(dto: UpdateMemberDto): UpdateMemberDto {
 
 @Injectable()
 export class MembersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private permissionsService: PermissionsService,
+  ) {}
 
   async findAll(
     viewerRole: Role,
@@ -84,7 +88,7 @@ export class MembersService {
     }
     if (status) where.status = status;
 
-    const privileged = this.isBoardOrAbove(viewerRole);
+    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
     const members = await this.prisma.member.findMany({
       where,
       select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
@@ -94,7 +98,7 @@ export class MembersService {
   }
 
   async findOne(id: string, viewerRole: Role) {
-    const privileged = this.isBoardOrAbove(viewerRole);
+    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
     const member = await this.prisma.member.findUnique({
       where: { id },
       select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
@@ -104,7 +108,7 @@ export class MembersService {
   }
 
   async findByUserId(userId: string, viewerRole: Role) {
-    const privileged = this.isBoardOrAbove(viewerRole);
+    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
     const member = await this.prisma.member.findUnique({
       where: { userId },
       select: privileged ? ADMIN_MEMBER_SELECT : SELF_MEMBER_SELECT,
@@ -155,14 +159,15 @@ export class MembersService {
       delete data.status;
       delete data.rank;
     }
-    if (!this.isBoardOrAbove(viewerRole)) {
+    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
+    if (!privileged) {
       delete data.notes;
     }
 
     return this.prisma.member.update({
       where: { id },
       data,
-      select: this.isBoardOrAbove(viewerRole) ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
+      select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
     });
   }
 
@@ -181,9 +186,5 @@ export class MembersService {
 
   private isAdmin(role: Role): boolean {
     return [Role.ADMIN, Role.SUPER_ADMIN].includes(role);
-  }
-
-  private isBoardOrAbove(role: Role): boolean {
-    return [Role.BOARD, Role.ADMIN, Role.SUPER_ADMIN].includes(role);
   }
 }
