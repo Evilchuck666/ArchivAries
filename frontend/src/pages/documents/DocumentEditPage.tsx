@@ -124,6 +124,7 @@ export function DocumentEditPage() {
               <option value="ALL_MEMBERS">{t('visibility.all_members')}</option>
               <option value="RESTRICTED">{t('visibility.restricted')}</option>
             </select>
+            <p className="text-xs text-slate-500 mt-1">{t('visibility.restricted_note')}</p>
           </div>
 
           <label className="flex items-center gap-2 cursor-pointer self-end pb-2">

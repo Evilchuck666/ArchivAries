@@ -42,6 +42,7 @@
   "draft": "Esborrany",
   "visibility": {
     "all_members": "Tots els membres",
-    "restricted": "Restringit"
+    "restricted": "Restringit *",
+    "restricted_note": "* Només visible per a usuaris amb rol de Junta i administradors"
   }
 }

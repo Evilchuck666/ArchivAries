@@ -42,6 +42,7 @@
   "draft": "Borrador",
   "visibility": {
     "all_members": "Todos los miembros",
-    "restricted": "Restringido"
+    "restricted": "Restringido *",
+    "restricted_note": "* Solo visible para usuarios con rol de Junta y administradores"
   }
 }
