@@ -96,12 +96,12 @@ export function EventEditPage() {
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-slate-300">{t('description_markdown')}</label>
             <MarkdownEditor {...register('description')} rows={5} placeholder={t('description_placeholder')} />
-            <p className="text-xs text-slate-500">{t('description_placeholder')}</p>
+            <p className="text-xs text-slate-500">{t('description_note')}</p>
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-slate-300">{t('practical_info')}</label>
             <MarkdownEditor {...register('practicalInfo')} rows={3} placeholder={t('practical_info_placeholder')} />
-            <p className="text-xs text-slate-500">{t('practical_info_placeholder')}</p>
+            <p className="text-xs text-slate-500">{t('practical_info_note')}</p>
           </div>
           <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
             <input type="checkbox" {...register('isPublic')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
