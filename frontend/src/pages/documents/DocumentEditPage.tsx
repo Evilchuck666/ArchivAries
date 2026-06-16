@@ -4,12 +4,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { documentsApi } from '../../api/documents.api';
 import { Input } from '../../components/ui/Input';
+import { Button } from '../../components/ui/Button';
 import { Spinner } from '../../components/ui/Spinner';
 import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
 
 export function DocumentEditPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('documents');
+  const { t: tc } = useTranslation('common');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -153,20 +155,8 @@ export function DocumentEditPage() {
         )}
 
         <div className="flex gap-3 pt-2">
-          <button
-            type="submit"
-            disabled={mutation.isPending || !title || !categoryId}
-            className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-sm px-4 py-2 rounded-md transition-colors border border-amber-500"
-          >
-            {mutation.isPending ? t('form.saving') : t('form.save')}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate(`/app/documents/${id}`)}
-            className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors"
-          >
-            {t('form.cancel')}
-          </button>
+          <Button type="submit" loading={mutation.isPending} disabled={mutation.isPending || !title || !categoryId}>{tc('actions.save_changes')}</Button>
+          <Button type="button" variant="ghost" onClick={() => navigate(`/app/documents/${id}`)}>{tc('actions.cancel')}</Button>
         </div>
       </form>
     </div>
