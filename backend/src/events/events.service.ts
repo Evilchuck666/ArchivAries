@@ -113,8 +113,8 @@ export class EventsService {
     });
   }
 
-  async update(id: string, dto: UpdateEventDto) {
-    await this.findOne(id);
+  async update(id: string, dto: UpdateEventDto, viewerRole?: Role) {
+    await this.findOne(id, undefined, viewerRole);
     return this.prisma.event.update({
       where: { id },
       data: {

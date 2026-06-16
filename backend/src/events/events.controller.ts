@@ -64,8 +64,8 @@ export class EventsController {
 
   @Patch(':id')
   @RequiresPermission('events.edit')
-  update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
-    return this.eventsService.update(id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateEventDto, @CurrentUser('role') role: Role) {
+    return this.eventsService.update(id, dto, role);
   }
 
   @Delete(':id')
