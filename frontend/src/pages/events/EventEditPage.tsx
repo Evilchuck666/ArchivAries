@@ -111,9 +111,9 @@ export function EventEditPage() {
             <input type="checkbox" {...register('isPublished')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
             {t('form.mark_published')}
           </label>
-          <div className="flex gap-3 justify-end pt-2">
-            <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
+          <div className="flex gap-3 pt-2">
             <Button type="submit" loading={isPending}>{tc('actions.save_changes')}</Button>
+            <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
           </div>
         </form>
       </Card>

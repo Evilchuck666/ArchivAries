@@ -124,9 +124,9 @@ export function LoreEditPage() {
 
           {isError && <p className="text-red-400 text-sm">{t('form.save_error')}</p>}
 
-          <div className="flex gap-3 justify-end pt-2">
-            <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
+          <div className="flex gap-3 pt-2">
             <Button type="submit" loading={isPending}>{tc('actions.save_changes')}</Button>
+            <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
           </div>
         </form>
       </Card>
