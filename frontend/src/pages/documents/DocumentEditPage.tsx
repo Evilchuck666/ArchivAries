@@ -155,7 +155,7 @@ export function DocumentEditPage() {
         )}
 
         <div className="flex gap-3 pt-2">
-          <Button type="submit" loading={mutation.isPending} disabled={mutation.isPending || !title || !categoryId}>{tc('actions.save_changes')}</Button>
+          <Button type="submit" loading={mutation.isPending}>{tc('actions.save_changes')}</Button>
           <Button type="button" variant="ghost" onClick={() => navigate(`/app/documents/${id}`)}>{tc('actions.cancel')}</Button>
         </div>
       </form>
