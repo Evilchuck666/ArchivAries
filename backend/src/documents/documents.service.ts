@@ -55,6 +55,7 @@ export class DocumentsService {
         summary: true,
         visibility: true,
         isPinned: true,
+        isPublished: true,
         createdAt: true,
         updatedAt: true,
         category: { select: { id: true, name: true, slug: true } },
