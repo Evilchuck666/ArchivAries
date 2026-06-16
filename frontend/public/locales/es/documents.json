@@ -42,6 +42,6 @@
   "draft": "Borrador",
   "visibility": {
     "all_members": "Todos los miembros",
-    "restricted": "Restringido (ADMIN+)"
+    "restricted": "Restringido"
   }
 }
