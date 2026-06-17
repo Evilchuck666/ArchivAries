@@ -30,7 +30,7 @@ export function EventCreatePage() {
   const [watchTitle, watchEventType, watchStartDate] = watch(['title', 'eventType', 'startDate']);
   const canSubmit = !!watchTitle && !!watchEventType && !!watchStartDate;
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: FormData) => eventsApi.create(data),
     onSuccess: (event) => {
       queryClient.invalidateQueries({ queryKey: ['events'] });
@@ -80,25 +80,11 @@ export function EventCreatePage() {
             <input type="checkbox" {...register('isPublic')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
             {t('is_public')}
           </label>
+          {isError && <p className="text-red-400 text-sm">{t('form.save_error')}</p>}
           <div className="flex gap-3 pt-2">
-            <Button type="button" loading={isPending} disabled={!canSubmit || isPending} onClick={onPublish}>
-              {t('create_event')}
-            </Button>
-            <button
-              type="button"
-              disabled={!canSubmit || isPending}
-              onClick={() => { if (!canSubmit) return; onDraft(); }}
-              className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors disabled:opacity-50"
-            >
-              {t('form.save_draft')}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate('/app/events')}
-              className="text-sm px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors"
-            >
-              {tc('actions.cancel')}
-            </button>
+            <Button type="button" loading={isPending} disabled={!canSubmit || isPending} onClick={onPublish}>{t('create_event')}</Button>
+            <Button type="button" variant="secondary" disabled={!canSubmit || isPending} onClick={() => { if (!canSubmit) return; onDraft(); }}>{t('form.save_draft')}</Button>
+            <Button type="button" variant="ghost" onClick={() => navigate('/app/events')}>{tc('actions.cancel')}</Button>
           </div>
         </form>
       </Card>
