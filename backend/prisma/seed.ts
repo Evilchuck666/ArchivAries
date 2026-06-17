@@ -81,10 +81,10 @@ async function main() {
       'members.read', 'members.edit_own',
     ],
     BOARD: [
-      'events.read', 'events.rsvp', 'events.create', 'events.edit', 'calendar.read',
-      'lore.read', 'lore.create', 'lore.edit',
-      'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit',
-      'news.read', 'news.create', 'news.edit',
+      'events.read', 'events.rsvp', 'events.create', 'events.edit', 'events.delete', 'calendar.read',
+      'lore.read', 'lore.create', 'lore.edit', 'lore.delete',
+      'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit', 'documents.delete',
+      'news.read', 'news.create', 'news.edit', 'news.delete',
       'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_notes',
     ],
     ADMIN: [
