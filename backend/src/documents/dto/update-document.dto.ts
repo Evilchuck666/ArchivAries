@@ -9,11 +9,11 @@ import {
 export class UpdateDocumentDto {
   @IsString()
   @IsNotEmpty()
-  title!: string;
+  declare title: string;
 
   @IsString()
   @IsNotEmpty()
-  content!: string;
+  declare content: string;
 
   @IsOptional()
   @IsString()
@@ -21,7 +21,7 @@ export class UpdateDocumentDto {
 
   @IsString()
   @IsNotEmpty()
-  categoryId!: string;
+  declare categoryId: string;
 
   @IsOptional()
   @IsEnum(['ALL_MEMBERS', 'RESTRICTED'])
