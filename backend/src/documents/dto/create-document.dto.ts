@@ -1,6 +1,7 @@
 import {
   IsBoolean,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
   MinLength,
@@ -12,6 +13,7 @@ export class CreateDocumentDto {
   title: string;
 
   @IsString()
+  @IsNotEmpty()
   content: string;
 
   @IsOptional()
@@ -19,6 +21,7 @@ export class CreateDocumentDto {
   summary?: string;
 
   @IsString()
+  @IsNotEmpty()
   categoryId: string;
 
   @IsOptional()

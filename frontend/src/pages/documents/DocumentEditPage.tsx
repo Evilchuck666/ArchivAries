@@ -41,8 +41,8 @@ export function DocumentEditPage() {
 
   const { register, handleSubmit, reset, watch } = useForm<FormData>();
   const [initialized, setInitialized] = useState(false);
-  const [wTitle, wCat] = watch(['title', 'categoryId']);
-  const canSubmit = !!wTitle && !!wCat;
+  const [wTitle, wCat, wContent] = watch(['title', 'categoryId', 'content']);
+  const canSubmit = !!wTitle && !!wCat && !!wContent;
 
   useEffect(() => {
     if (doc) {
@@ -101,8 +101,8 @@ export function DocumentEditPage() {
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">{t('form.content')}</label>
-            <MarkdownEditor {...register('content')} rows={16} />
+            <label className="block text-sm text-slate-400 mb-1">{t('form.content')} *</label>
+            <MarkdownEditor {...register('content', { required: true })} rows={16} />
           </div>
 
           <div className="flex gap-6">

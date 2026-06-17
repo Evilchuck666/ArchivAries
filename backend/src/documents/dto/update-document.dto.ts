@@ -1,26 +1,27 @@
 import {
   IsBoolean,
   IsEnum,
+  IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 
 export class UpdateDocumentDto {
-  @IsOptional()
   @IsString()
-  title?: string;
+  @IsNotEmpty()
+  title: string;
 
-  @IsOptional()
   @IsString()
-  content?: string;
+  @IsNotEmpty()
+  content: string;
 
   @IsOptional()
   @IsString()
   summary?: string;
 
-  @IsOptional()
   @IsString()
-  categoryId?: string;
+  @IsNotEmpty()
+  categoryId: string;
 
   @IsOptional()
   @IsEnum(['ALL_MEMBERS', 'RESTRICTED'])

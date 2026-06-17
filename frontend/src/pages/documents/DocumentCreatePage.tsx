@@ -32,8 +32,8 @@ export function DocumentCreatePage() {
   const { register, handleSubmit, watch } = useForm<FormData>({
     defaultValues: { visibility: 'ALL_MEMBERS', isPinned: false, summary: '' },
   });
-  const [watchTitle, watchCategoryId] = watch(['title', 'categoryId']);
-  const canSubmit = !!watchTitle && !!watchCategoryId;
+  const [watchTitle, watchCategoryId, watchContent] = watch(['title', 'categoryId', 'content']);
+  const canSubmit = !!watchTitle && !!watchCategoryId && !!watchContent;
 
   const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: FormData & { isPublished: boolean }) =>
@@ -74,8 +74,8 @@ export function DocumentCreatePage() {
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-1">{t('form.content')}</label>
-            <MarkdownEditor {...register('content')} rows={16} />
+            <label className="block text-sm text-slate-400 mb-1">{t('form.content')} *</label>
+            <MarkdownEditor {...register('content', { required: true })} rows={16} />
           </div>
 
           <div className="flex gap-6">
