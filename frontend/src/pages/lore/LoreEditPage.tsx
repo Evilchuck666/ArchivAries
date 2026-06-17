@@ -58,8 +58,9 @@ export function LoreEditPage() {
 
   const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: FormData) => {
-      const tags = data.tagsInput.split(',').map((s) => s.trim()).filter(Boolean);
-      return loreApi.update(id!, { ...data, summary: data.summary || undefined, tags });
+      const { tagsInput, ...rest } = data;
+      const tags = tagsInput.split(',').map((s) => s.trim()).filter(Boolean);
+      return loreApi.update(id!, { ...rest, summary: rest.summary || undefined, tags });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['lore', id] });

@@ -35,8 +35,9 @@ export function LoreCreatePage() {
 
   const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: FormData & { isPublished: boolean }) => {
-      const tags = data.tagsInput.split(',').map((s) => s.trim()).filter(Boolean);
-      return loreApi.create({ ...data, summary: data.summary || undefined, tags });
+      const { tagsInput, ...rest } = data;
+      const tags = tagsInput.split(',').map((s) => s.trim()).filter(Boolean);
+      return loreApi.create({ ...rest, summary: rest.summary || undefined, tags });
     },
     onSuccess: (entry) => {
       queryClient.invalidateQueries({ queryKey: ['lore'] });
