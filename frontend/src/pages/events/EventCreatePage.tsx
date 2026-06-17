@@ -83,7 +83,7 @@ export function EventCreatePage() {
           {isError && <p className="text-red-400 text-sm">{t('form.save_error')}</p>}
           <div className="flex gap-3 pt-2">
             <Button type="button" loading={isPending} disabled={!canSubmit || isPending} onClick={onPublish}>{t('create_event')}</Button>
-            <Button type="button" variant="secondary" disabled={!canSubmit || isPending} onClick={() => { if (!canSubmit) return; onDraft(); }}>{t('form.save_draft')}</Button>
+            <Button type="button" variant="secondary" disabled={!canSubmit || isPending} onClick={onDraft}>{t('form.save_draft')}</Button>
             <Button type="button" variant="ghost" onClick={() => navigate('/app/events')}>{tc('actions.cancel')}</Button>
           </div>
         </form>
