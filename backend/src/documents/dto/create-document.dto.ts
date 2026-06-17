@@ -10,11 +10,11 @@ import {
 export class CreateDocumentDto {
   @IsString()
   @MinLength(3)
-  title: string;
+  title!: string;
 
   @IsString()
   @IsNotEmpty()
-  content: string;
+  content!: string;
 
   @IsOptional()
   @IsString()
@@ -22,7 +22,7 @@ export class CreateDocumentDto {
 
   @IsString()
   @IsNotEmpty()
-  categoryId: string;
+  categoryId!: string;
 
   @IsOptional()
   @IsEnum(['ALL_MEMBERS', 'RESTRICTED'])
