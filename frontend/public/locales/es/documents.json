@@ -37,12 +37,13 @@
     "cancel": "Cancelar",
     "save_draft": "Guardar como borrador",
     "mark_published": "Publicar",
-    "save_error": "Ha ocurrido un error al guardar."
+    "save_error": "Ha ocurrido un error al guardar.",
+    "required": "* Este campo es obligatorio"
   },
   "draft": "Borrador",
   "visibility": {
     "all_members": "Todos los miembros",
-    "restricted": "Restringido *",
-    "restricted_note": "* Solo visible para usuarios con rol de Junta y administradores"
+    "restricted": "Restringido **",
+    "restricted_note": "** Solo visible para usuarios con rol de Junta y administradores"
   }
 }

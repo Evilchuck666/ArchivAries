@@ -37,12 +37,13 @@
     "cancel": "Cancel·lar",
     "save_draft": "Desar com a esborrany",
     "mark_published": "Publicar",
-    "save_error": "S'ha produït un error en desar."
+    "save_error": "S'ha produït un error en desar.",
+    "required": "* Aquest camp és obligatori"
   },
   "draft": "Esborrany",
   "visibility": {
     "all_members": "Tots els membres",
-    "restricted": "Restringit *",
-    "restricted_note": "* Només visible per a usuaris amb rol de Junta i administradors"
+    "restricted": "Restringit **",
+    "restricted_note": "** Només visible per a usuaris amb rol de Junta i administradors"
   }
 }

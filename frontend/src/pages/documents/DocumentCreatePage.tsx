@@ -89,6 +89,7 @@ export function DocumentCreatePage() {
                 <option value="RESTRICTED">{t('visibility.restricted')}</option>
               </select>
               <p className="text-xs text-slate-500 mt-1">{t('visibility.restricted_note')}</p>
+              <p className="text-xs text-slate-500 mt-1">{t('form.required')}</p>
             </div>
 
             <label className="flex items-center gap-2 cursor-pointer self-end pb-2">
