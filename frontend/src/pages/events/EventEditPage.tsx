@@ -36,8 +36,10 @@ export function EventEditPage() {
     enabled: !!id,
   });
 
-  const { register, handleSubmit, reset, control } = useForm<FormData>();
+  const { register, handleSubmit, reset, watch, control } = useForm<FormData>();
   const [initialized, setInitialized] = useState(false);
+  const [wTitle, wType, wDate] = watch(['title', 'eventType', 'startDate']);
+  const canSubmit = !!wTitle && !!wType && !!wDate;
 
   useEffect(() => {
     if (event) {
@@ -56,7 +58,7 @@ export function EventEditPage() {
     }
   }, [event, reset]);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: FormData) => eventsApi.update(id!, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['event', id] });
@@ -111,8 +113,9 @@ export function EventEditPage() {
             <input type="checkbox" {...register('isPublished')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
             {t('form.mark_published')}
           </label>
+          {isError && <p className="text-red-400 text-sm">{t('form.save_error')}</p>}
           <div className="flex gap-3 pt-2">
-            <Button type="submit" loading={isPending}>{tc('actions.save_changes')}</Button>
+            <Button type="submit" loading={isPending} disabled={isPending || !canSubmit}>{tc('actions.save_changes')}</Button>
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
           </div>
         </form>

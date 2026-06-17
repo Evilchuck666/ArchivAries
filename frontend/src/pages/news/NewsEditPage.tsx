@@ -30,8 +30,10 @@ export function NewsEditPage() {
     enabled: !!id,
   });
 
-  const { register, handleSubmit, reset } = useForm<FormData>();
+  const { register, handleSubmit, reset, watch } = useForm<FormData>();
   const [initialized, setInitialized] = useState(false);
+  const watchTitle = watch('title');
+  const canSubmit = !!watchTitle;
 
   useEffect(() => {
     if (item) {
@@ -45,7 +47,7 @@ export function NewsEditPage() {
     }
   }, [item, reset]);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: FormData) => newsApi.update(id!, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['news', id] });
@@ -75,8 +77,9 @@ export function NewsEditPage() {
             <input type="checkbox" {...register('isPublished')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
             {t('form.mark_published')}
           </label>
+          {isError && <p className="text-red-400 text-sm">{t('form.save_error')}</p>}
           <div className="flex gap-3 pt-2">
-            <Button type="submit" loading={isPending}>{tc('actions.save_changes')}</Button>
+            <Button type="submit" loading={isPending} disabled={isPending || !canSubmit}>{tc('actions.save_changes')}</Button>
             <Button type="button" variant="ghost" onClick={() => navigate(-1)}>{tc('actions.cancel')}</Button>
           </div>
         </form>
