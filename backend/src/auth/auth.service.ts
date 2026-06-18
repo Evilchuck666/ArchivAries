@@ -31,7 +31,8 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(dto.password, user.passwordHash);
     if (!passwordMatch) throw new UnauthorizedException('Credenciales incorrectas');
 
-    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    const level = await this.getRoleLevel(user.role);
+    const tokens = await this.generateTokens(user.id, user.email, user.role, level);
     await this.storeRefreshToken(user.id, tokens.refreshToken);
 
     return {
@@ -41,6 +42,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        level,
         displayName: user.member?.displayName ?? user.email,
         avatarUrl: user.member?.avatarUrl ?? null,
       },
@@ -48,7 +50,8 @@ export class AuthService {
   }
 
   async refresh(userId: string, email: string, role: string) {
-    const tokens = await this.generateTokens(userId, email, role);
+    const level = await this.getRoleLevel(role);
+    const tokens = await this.generateTokens(userId, email, role, level);
     await this.storeRefreshToken(userId, tokens.refreshToken);
     return tokens;
   }
@@ -115,7 +118,8 @@ export class AuthService {
       });
     });
 
-    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    const level = await this.getRoleLevel(user.role);
+    const tokens = await this.generateTokens(user.id, user.email, user.role, level);
     await this.storeRefreshToken(user.id, tokens.refreshToken);
 
     return {
@@ -125,14 +129,23 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        level,
         displayName: dto.displayName,
         avatarUrl: null,
       },
     };
   }
 
-  private async generateTokens(userId: string, email: string, role: string) {
-    const payload = { sub: userId, email, role };
+  private async getRoleLevel(roleName: string): Promise<number> {
+    const roleDef = await this.prisma.roleDefinition.findUnique({
+      where: { name: roleName },
+      select: { level: true },
+    });
+    return roleDef?.level ?? 0;
+  }
+
+  private async generateTokens(userId: string, email: string, role: string, level: number) {
+    const payload = { sub: userId, email, role, level };
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {

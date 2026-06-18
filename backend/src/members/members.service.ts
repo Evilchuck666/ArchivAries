@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
-import { Role } from '../common/enums/role.enum';
+import { SYSTEM_ROLE } from '../common/enums/role.enum';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import * as bcrypt from 'bcrypt';
@@ -75,7 +75,7 @@ export class MembersService {
   ) {}
 
   async findAll(
-    viewerRole: Role,
+    viewerRole: string,
     search?: string,
     status?: string,
   ) {
@@ -97,7 +97,7 @@ export class MembersService {
     return privileged ? members : members.map(applyPublicVisibility);
   }
 
-  async findOne(id: string, viewerRole: Role) {
+  async findOne(id: string, viewerRole: string) {
     const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
     const member = await this.prisma.member.findUnique({
       where: { id },
@@ -107,7 +107,7 @@ export class MembersService {
     return privileged ? member : applyPublicVisibility(member);
   }
 
-  async findByUserId(userId: string, viewerRole: Role) {
+  async findByUserId(userId: string, viewerRole: string) {
     const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
     const member = await this.prisma.member.findUnique({
       where: { userId },
@@ -130,7 +130,7 @@ export class MembersService {
         data: {
           email: dto.email,
           passwordHash,
-          role: dto.role ?? Role.MEMBER,
+          role: dto.role ?? SYSTEM_ROLE.MEMBER,
         },
       });
 
@@ -151,7 +151,7 @@ export class MembersService {
     });
   }
 
-  async update(id: string, dto: UpdateMemberDto, viewerRole: Role) {
+  async update(id: string, dto: UpdateMemberDto, viewerRole: string) {
     await this.findOne(id, viewerRole);
 
     const data: any = { ...normalizeDates(dto) };
@@ -173,7 +173,7 @@ export class MembersService {
     });
   }
 
-  async updateNotes(id: string, notes: string, viewerRole: Role) {
+  async updateNotes(id: string, notes: string, viewerRole: string) {
     const member = await this.prisma.member.findUnique({ where: { id } });
     if (!member) throw new NotFoundException('Miembro no encontrado');
     const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');

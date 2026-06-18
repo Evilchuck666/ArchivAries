@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
-import { Role } from '../common/enums/role.enum';
 import { CreateLoreEntryDto } from './dto/create-lore-entry.dto';
 import { UpdateLoreEntryDto } from './dto/update-lore-entry.dto';
 
@@ -13,7 +12,7 @@ export class LoreService {
   ) {}
 
   async findAll(
-    viewerRole: Role,
+    viewerRole: string,
     category?: string,
     tag?: string,
     search?: string,
@@ -52,7 +51,7 @@ export class LoreService {
     });
   }
 
-  async findOne(id: string, viewerRole: Role) {
+  async findOne(id: string, viewerRole: string) {
     const [canSeeDrafts, canViewRestricted] = await Promise.all([
       this.permissionsService.hasPermission(viewerRole, 'lore.edit'),
       this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted'),
@@ -70,14 +69,14 @@ export class LoreService {
     return entry;
   }
 
-  async create(dto: CreateLoreEntryDto, creatorId: string, viewerRole: Role) {
+  async create(dto: CreateLoreEntryDto, creatorId: string, viewerRole: string) {
     const canMarkRestricted = await this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted');
     const data: any = { ...dto, category: dto.category as any, creatorId };
     if (!canMarkRestricted) data.isRestricted = false;
     return this.prisma.loreEntry.create({ data });
   }
 
-  async update(id: string, dto: UpdateLoreEntryDto, viewerRole: Role) {
+  async update(id: string, dto: UpdateLoreEntryDto, viewerRole: string) {
     await this.prisma.loreEntry.findUniqueOrThrow({ where: { id } });
     const canMarkRestricted = await this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted');
     const data: any = { ...dto, category: dto.category as any };

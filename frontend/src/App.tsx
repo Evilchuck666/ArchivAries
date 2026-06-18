@@ -43,6 +43,7 @@ import { LoreEditPage } from './pages/lore/LoreEditPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { UserManagementPage } from './pages/admin/UserManagementPage';
 import { PermissionsPage } from './pages/admin/PermissionsPage';
+import { RolesPage } from './pages/admin/RolesPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -104,12 +105,15 @@ export default function App() {
                   <Route path="/app/lore/:id/edit" element={<LoreEditPage />} />
                 </Route>
 
-                {/* Admin */}
-                <Route element={<RoleRoute minRole="ADMIN" />}>
+                {/* Admin — ADMIN level (40) or above */}
+                <Route element={<RoleRoute minLevel={40} />}>
                   <Route path="/app/members/:id/edit" element={<MemberEditPage />} />
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
                   <Route path="/app/admin/permissions" element={<PermissionsPage />} />
+                  <Route element={<PermissionRoute permission="roles.manage" />}>
+                    <Route path="/app/admin/roles" element={<RolesPage />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

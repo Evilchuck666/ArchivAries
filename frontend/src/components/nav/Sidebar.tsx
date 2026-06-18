@@ -27,6 +27,7 @@ export function Sidebar() {
     { to: ROUTES.NEWS, label: t('nav.news'), icon: '📢', permission: 'news.read' },
     { to: ROUTES.LORE, label: t('nav.lore'), icon: '🔮', permission: 'lore.read' },
     { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', permission: 'users.manage' },
+    { to: ROUTES.ADMIN_ROLES, label: t('nav.roles'), icon: '🏷️', permission: 'roles.manage' },
   ];
 
   if (!user) return null;

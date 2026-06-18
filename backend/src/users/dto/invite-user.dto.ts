@@ -1,11 +1,10 @@
-import { IsEmail, IsEnum, IsOptional } from 'class-validator';
-import { Role } from '../../common/enums/role.enum';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class InviteUserDto {
   @IsEmail()
   email: string;
 
   @IsOptional()
-  @IsEnum(Role)
-  role?: Role;
+  @IsString()
+  role?: string;
 }

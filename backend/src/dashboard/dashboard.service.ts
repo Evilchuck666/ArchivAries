@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Role } from '../common/enums/role.enum';
 import { EventsService } from '../events/events.service';
 import { NewsService } from '../news/news.service';
 import { DocumentsService } from '../documents/documents.service';
@@ -14,7 +13,7 @@ export class DashboardService {
     private documentsService: DocumentsService,
   ) {}
 
-  async getDashboard(userId: string, role: Role) {
+  async getDashboard(userId: string, role: string) {
     const [upcomingEvents, importantNews, recentDocuments] = await Promise.all([
       this.eventsService.findUpcoming(3),
       this.newsService.findImportant(),

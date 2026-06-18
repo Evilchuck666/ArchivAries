@@ -13,7 +13,6 @@ import { CreateLoreEntryDto } from './dto/create-lore-entry.dto';
 import { UpdateLoreEntryDto } from './dto/update-lore-entry.dto';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Role } from '../common/enums/role.enum';
 
 @Controller('lore')
 export class LoreController {
@@ -22,7 +21,7 @@ export class LoreController {
   @Get()
   @RequiresPermission('lore.read')
   findAll(
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
     @Query('category') category?: string,
     @Query('tag') tag?: string,
     @Query('search') search?: string,
@@ -32,7 +31,7 @@ export class LoreController {
 
   @Get(':id')
   @RequiresPermission('lore.read')
-  findOne(@Param('id') id: string, @CurrentUser('role') role: Role) {
+  findOne(@Param('id') id: string, @CurrentUser('role') role: string) {
     return this.loreService.findOne(id, role);
   }
 
@@ -41,7 +40,7 @@ export class LoreController {
   create(
     @Body() dto: CreateLoreEntryDto,
     @CurrentUser('id') userId: string,
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
   ) {
     return this.loreService.create(dto, userId, role);
   }
@@ -51,7 +50,7 @@ export class LoreController {
   update(
     @Param('id') id: string,
     @Body() dto: UpdateLoreEntryDto,
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
   ) {
     return this.loreService.update(id, dto, role);
   }

@@ -3,16 +3,13 @@ import { createPortal } from 'react-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { usersApi } from '../../api/users.api';
+import { rolesApi } from '../../api/roles.api';
 import { Spinner } from '../../components/ui/Spinner';
 import { RoleBadge } from '../../components/shared/RoleBadge';
 import { ConfirmStatusModal } from '../../components/shared/ConfirmStatusModal';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { useAuthStore } from '../../store/auth.store';
-import type { Role } from '../../types/auth.types';
-
-const ROLES: Role[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
-const ROLE_HIERARCHY: Role[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];
 
 export function UserManagementPage() {
   const { t } = useTranslation('common');
@@ -22,7 +19,7 @@ export function UserManagementPage() {
 
   const [showInvite, setShowInvite] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
-  const [inviteRole, setInviteRole] = useState<Role>('MEMBER');
+  const [inviteRole, setInviteRole] = useState('MEMBER');
   const [inviteSuccess, setInviteSuccess] = useState<{ email: string; devUrl: string } | null>(null);
   const [inviteError, setInviteError] = useState('');
   const [pendingStatus, setPendingStatus] = useState<{ id: string; email: string; currentIsActive: boolean } | null>(null);
@@ -34,8 +31,14 @@ export function UserManagementPage() {
     staleTime: 30_000,
   });
 
+  const { data: roles = [] } = useQuery({
+    queryKey: ['roles'],
+    queryFn: rolesApi.getAll,
+    staleTime: 60_000,
+  });
+
   const roleMutation = useMutation({
-    mutationFn: ({ id, role }: { id: string; role: Role }) => usersApi.updateRole(id, role),
+    mutationFn: ({ id, role }: { id: string; role: string }) => usersApi.updateRole(id, role),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
   });
 
@@ -69,7 +72,9 @@ export function UserManagementPage() {
     inviteMutation.mutate();
   };
 
-  const isSuperAdmin = me && ROLE_HIERARCHY.indexOf(me.role) >= ROLE_HIERARCHY.indexOf('SUPER_ADMIN');
+  const levelMap = Object.fromEntries(roles.map((r) => [r.name, r.level]));
+  const myLevel = me?.level ?? 0;
+  const isSuperAdmin = myLevel >= (levelMap['SUPER_ADMIN'] ?? 50);
 
   if (isLoading) return <Spinner className="py-20" />;
 
@@ -107,12 +112,16 @@ export function UserManagementPage() {
                 <label className="block text-sm text-slate-400 mb-1">{ta('invite_role_label')}</label>
                 <select
                   value={inviteRole}
-                  onChange={(e) => setInviteRole(e.target.value as Role)}
+                  onChange={(e) => setInviteRole(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
-                  {ROLES.filter((r) => r !== 'SUPER_ADMIN').map((r) => (
-                    <option key={r} value={r}>{r}</option>
-                  ))}
+                  {roles
+                    .filter((r) => (levelMap[r.name] ?? r.level) < myLevel)
+                    .map((r) => (
+                      <option key={r.name} value={r.name}>
+                        {t(`roles.${r.name}`, { defaultValue: r.label })}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -154,7 +163,8 @@ export function UserManagementPage() {
           <tbody>
             {users.map((u) => {
               const isSelf = u.id === me?.id;
-              const canChangeRole = isSuperAdmin || (me && ROLE_HIERARCHY.indexOf(me.role) > ROLE_HIERARCHY.indexOf(u.role));
+              const targetLevel = levelMap[u.role] ?? 0;
+              const canChangeRole = isSuperAdmin || myLevel > targetLevel;
 
               return (
                 <tr
@@ -193,12 +203,16 @@ export function UserManagementPage() {
                     {canChangeRole && !isSelf ? (
                       <select
                         value={u.role}
-                        onChange={(e) => roleMutation.mutate({ id: u.id, role: e.target.value as Role })}
+                        onChange={(e) => roleMutation.mutate({ id: u.id, role: e.target.value })}
                         className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
                       >
-                        {ROLES.map((r) => (
-                          <option key={r} value={r}>{r}</option>
-                        ))}
+                        {roles
+                          .filter((r) => isSuperAdmin || (levelMap[r.name] ?? r.level) < myLevel)
+                          .map((r) => (
+                            <option key={r.name} value={r.name}>
+                              {t(`roles.${r.name}`, { defaultValue: r.label })}
+                            </option>
+                          ))}
                       </select>
                     ) : (
                       <RoleBadge role={u.role} />

@@ -1,7 +1,6 @@
 import { Controller, Get, Patch, Param, Body } from '@nestjs/common';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Role } from '../common/enums/role.enum';
 import { PermissionsService } from './permissions.service';
 
 @Controller('permissions')
@@ -9,7 +8,7 @@ export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Get('me')
-  async getMyPermissions(@CurrentUser('role') role: Role) {
+  async getMyPermissions(@CurrentUser('role') role: string) {
     return this.permissionsService.getPermissionsForRole(role);
   }
 
@@ -26,7 +25,7 @@ export class PermissionsController {
     @Param('permission') permission: string,
     @Body() body: { granted: boolean },
   ) {
-    await this.permissionsService.setPermission(role as Role, permission, body.granted);
+    await this.permissionsService.setPermission(role, permission, body.granted);
     return { ok: true };
   }
 }

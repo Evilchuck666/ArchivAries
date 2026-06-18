@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { permissionsApi } from '../../api/permissions.api';
+import { rolesApi } from '../../api/roles.api';
 import { Spinner } from '../../components/ui/Spinner';
 
-const ROLES = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'] as const;
-
-const GROUP_ORDER = ['events', 'calendar', 'lore', 'documents', 'news', 'members', 'users', 'permissions'];
+const GROUP_ORDER = ['events', 'calendar', 'lore', 'documents', 'news', 'members', 'users', 'permissions', 'roles'];
 
 export function PermissionsPage() {
   const { t } = useTranslation('permissions');
@@ -21,8 +20,15 @@ export function PermissionsPage() {
     staleTime: 0,
   });
 
+  const { data: roleDefinitions = [] } = useQuery({
+    queryKey: ['roles'],
+    queryFn: rolesApi.getAll,
+    staleTime: 60_000,
+  });
+
   const rows = response?.matrix ?? [];
   const protectedRoles = response?.protectedRoles ?? [];
+  const ROLES = roleDefinitions.map((r) => r.name);
 
   const matrix = new Map<string, boolean>();
   for (const row of rows) {
@@ -79,13 +85,16 @@ export function PermissionsPage() {
               <th className="text-left py-2 pr-4 text-slate-400 font-medium min-w-48 sticky left-0 bg-slate-950 z-10">
                 {tc('nav.permissions', { defaultValue: 'Permiso' })}
               </th>
-              {ROLES.map((role) => (
-                <th key={role} className="text-center py-2 px-3 text-slate-400 font-medium min-w-24">
-                  <span className={protectedRoles.includes(role) ? 'text-amber-500' : ''}>
-                    {tc(`roles.${role}`)}
-                  </span>
-                </th>
-              ))}
+              {ROLES.map((role) => {
+                const roleDef = roleDefinitions.find((r) => r.name === role);
+                return (
+                  <th key={role} className="text-center py-2 px-3 text-slate-400 font-medium min-w-24">
+                    <span className={protectedRoles.includes(role) ? 'text-amber-500' : ''}>
+                      {tc(`roles.${role}`, { defaultValue: roleDef?.label ?? role })}
+                    </span>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>

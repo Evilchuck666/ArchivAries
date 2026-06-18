@@ -1,9 +1,10 @@
-export type Role = 'VISITOR' | 'MEMBER' | 'CONTENT_MANAGER' | 'BOARD' | 'ADMIN' | 'SUPER_ADMIN';
+export type Role = string;
 
 export interface AuthUser {
   id: string;
   email: string;
   role: Role;
+  level: number;
   displayName: string;
   avatarUrl: string | null;
 }

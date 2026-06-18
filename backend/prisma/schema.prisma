@@ -9,15 +9,6 @@ datasource db {
 
 // ─── Enums ────────────────────────────────────────────────────────────────────
 
-enum Role {
-  VISITOR
-  MEMBER
-  CONTENT_MANAGER
-  BOARD
-  ADMIN
-  SUPER_ADMIN
-}
-
 enum MemberStatus {
   ACTIVE
   INACTIVE
@@ -60,7 +51,7 @@ model User {
   id           String   @id @default(cuid())
   email        String   @unique
   passwordHash String
-  role         Role     @default(MEMBER)
+  role         String   @default("MEMBER")
   isActive     Boolean  @default(true)
   refreshToken    String?
   inviteToken     String?
@@ -210,12 +201,24 @@ model NewsAnnouncement {
 
 model RolePermission {
   id         String  @id @default(cuid())
-  role       Role
+  role       String
   permission String
   granted    Boolean @default(true)
 
-  @@unique([role, permission])
+  @@unique([role, permission], name: "role_permission")
   @@map("role_permissions")
+}
+
+// ─── RoleDefinition ───────────────────────────────────────────────────────────
+
+model RoleDefinition {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  label       String
+  level       Int
+  isProtected Boolean @default(false)
+
+  @@map("role_definitions")
 }
 
 // ─── LoreEntry ────────────────────────────────────────────────────────────────

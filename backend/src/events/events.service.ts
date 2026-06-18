@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
-import { Role } from '../common/enums/role.enum';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ParticipationDto } from './dto/participation.dto';
@@ -18,7 +17,7 @@ export class EventsService {
     dateFrom?: string;
     dateTo?: string;
     isPublic?: boolean;
-  }, userId?: string, viewerRole?: Role) {
+  }, userId?: string, viewerRole?: string) {
     const canSeeDrafts = viewerRole
       ? await this.permissionsService.hasPermission(viewerRole, 'events.edit')
       : false;
@@ -79,7 +78,7 @@ export class EventsService {
     });
   }
 
-  async findOne(id: string, userId?: string, viewerRole?: Role) {
+  async findOne(id: string, userId?: string, viewerRole?: string) {
     const canSeeDrafts = viewerRole
       ? await this.permissionsService.hasPermission(viewerRole, 'events.edit')
       : false;
@@ -113,7 +112,7 @@ export class EventsService {
     });
   }
 
-  async update(id: string, dto: UpdateEventDto, viewerRole?: Role) {
+  async update(id: string, dto: UpdateEventDto, viewerRole?: string) {
     await this.findOne(id, undefined, viewerRole);
     return this.prisma.event.update({
       where: { id },

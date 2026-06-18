@@ -6,7 +6,6 @@ import {
   MinLength,
 } from 'class-validator';
 import { MemberStatus } from '../../common/enums/member-status.enum';
-import { Role } from '../../common/enums/role.enum';
 
 export class CreateMemberDto {
   @IsEmail()
@@ -28,8 +27,8 @@ export class CreateMemberDto {
   status?: MemberStatus;
 
   @IsOptional()
-  @IsEnum(Role)
-  role?: Role;
+  @IsString()
+  role?: string;
 
   @IsOptional()
   @IsString()

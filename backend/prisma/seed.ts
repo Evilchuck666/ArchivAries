@@ -8,6 +8,24 @@ async function main() {
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@ariesferrus.local';
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'changeme123';
 
+  // ── Role definitions ──────────────────────────────────────────────────────
+  const roleDefs = [
+    { name: 'VISITOR',         label: 'Visitante',           level: 0,  isProtected: true },
+    { name: 'MEMBER',          label: 'Miembro',             level: 10, isProtected: true },
+    { name: 'CONTENT_MANAGER', label: 'Gestor de contenido', level: 20, isProtected: false },
+    { name: 'BOARD',           label: 'Junta directiva',     level: 30, isProtected: false },
+    { name: 'ADMIN',           label: 'Administrador',       level: 40, isProtected: false },
+    { name: 'SUPER_ADMIN',     label: 'Super Admin',         level: 50, isProtected: true },
+  ];
+  for (const rd of roleDefs) {
+    await prisma.roleDefinition.upsert({
+      where: { name: rd.name },
+      update: { label: rd.label, level: rd.level, isProtected: rd.isProtected },
+      create: rd,
+    });
+  }
+  console.log(`Seeded ${roleDefs.length} role definitions`);
+
   const existing = await prisma.user.findUnique({ where: { email: adminEmail } });
   if (!existing) {
     const hash = await bcrypt.hash(adminPassword, 10);
@@ -63,6 +81,7 @@ async function main() {
     'members.edit_status', 'members.create',
     'users.manage', 'users.edit_role',
     'permissions.manage',
+    'roles.manage',
   ];
 
   const GRANTED: Record<RoleKey, string[]> = {
@@ -95,7 +114,7 @@ async function main() {
       ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'users.edit_role', 'lore.view_restricted'].includes(p)),
       'events.delete', 'lore.delete', 'documents.delete', 'news.delete',
     ],
-    SUPER_ADMIN: [...ALL_PERMISSIONS.filter((p) => p !== 'lore.view_restricted')],
+    SUPER_ADMIN: [...ALL_PERMISSIONS.filter((p) => !['lore.view_restricted'].includes(p))],
   };
 
   const roles: RoleKey[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];

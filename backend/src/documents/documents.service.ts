@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
-import { Role } from '../common/enums/role.enum';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentCategoryDto } from './dto/create-document-category.dto';
@@ -33,7 +32,7 @@ export class DocumentsService {
     return this.prisma.documentCategory.update({ where: { id }, data: dto });
   }
 
-  async findAll(viewerRole: Role, categoryId?: string, search?: string) {
+  async findAll(viewerRole: string, categoryId?: string, search?: string) {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'documents.edit');
     const where: any = canSeeDrafts ? {} : { isPublished: true };
@@ -65,7 +64,7 @@ export class DocumentsService {
     });
   }
 
-  async findRecent(viewerRole: Role, limit = 5) {
+  async findRecent(viewerRole: string, limit = 5) {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const where: any = { isPublished: true };
     if (!canReadRestricted) where.visibility = 'ALL_MEMBERS';
@@ -84,7 +83,7 @@ export class DocumentsService {
     });
   }
 
-  async findOne(id: string, viewerRole: Role) {
+  async findOne(id: string, viewerRole: string) {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'documents.edit');
     const doc = await this.prisma.document.findUnique({

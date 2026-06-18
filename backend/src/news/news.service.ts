@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
-import { Role } from '../common/enums/role.enum';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 
@@ -12,7 +11,7 @@ export class NewsService {
     private permissionsService: PermissionsService,
   ) {}
 
-  async findAll(page = 1, limit = 10, viewerRole?: Role) {
+  async findAll(page = 1, limit = 10, viewerRole?: string) {
     const canSeeDrafts = viewerRole
       ? await this.permissionsService.hasPermission(viewerRole, 'news.edit')
       : false;

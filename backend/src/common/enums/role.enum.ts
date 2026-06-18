@@ -1,17 +1,4 @@
-export enum Role {
-  VISITOR = 'VISITOR',
-  MEMBER = 'MEMBER',
-  CONTENT_MANAGER = 'CONTENT_MANAGER',
-  BOARD = 'BOARD',
-  ADMIN = 'ADMIN',
-  SUPER_ADMIN = 'SUPER_ADMIN',
-}
-
-export const ROLE_HIERARCHY: Role[] = [
-  Role.VISITOR,
-  Role.MEMBER,
-  Role.CONTENT_MANAGER,
-  Role.BOARD,
-  Role.ADMIN,
-  Role.SUPER_ADMIN,
-];
+export const SYSTEM_ROLE = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  MEMBER: 'MEMBER',
+} as const;

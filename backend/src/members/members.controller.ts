@@ -19,7 +19,6 @@ import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Role } from '../common/enums/role.enum';
 
 const AVATAR_DIR = join(process.cwd(), 'uploads', 'avatars');
 
@@ -49,7 +48,7 @@ export class MembersController {
   @Get()
   @RequiresPermission('members.read')
   findAll(
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
     @Query('search') search?: string,
     @Query('status') status?: string,
   ) {
@@ -58,13 +57,13 @@ export class MembersController {
 
   @Get('me')
   @RequiresPermission('members.edit_own')
-  getMe(@CurrentUser() user: { id: string; role: Role }) {
+  getMe(@CurrentUser() user: { id: string; role: string }) {
     return this.membersService.findByUserId(user.id, user.role);
   }
 
   @Get(':id')
   @RequiresPermission('members.read')
-  findOne(@Param('id') id: string, @CurrentUser('role') role: Role) {
+  findOne(@Param('id') id: string, @CurrentUser('role') role: string) {
     return this.membersService.findOne(id, role);
   }
 
@@ -100,7 +99,7 @@ export class MembersController {
   updateNotes(
     @Param('id') id: string,
     @Body('notes') notes: string,
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
   ) {
     return this.membersService.updateNotes(id, notes, role);
   }
@@ -110,7 +109,7 @@ export class MembersController {
   update(
     @Param('id') id: string,
     @Body() dto: UpdateMemberDto,
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
   ) {
     return this.membersService.update(id, dto, role);
   }

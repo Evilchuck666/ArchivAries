@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Role } from '../common/enums/role.enum';
+import { SYSTEM_ROLE } from '../common/enums/role.enum';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { InviteUserDto } from './dto/invite-user.dto';
@@ -55,9 +55,9 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException('Usuario no encontrado');
 
-    if (user.role === Role.SUPER_ADMIN && dto.role !== Role.SUPER_ADMIN) {
+    if (user.role === SYSTEM_ROLE.SUPER_ADMIN && dto.role !== SYSTEM_ROLE.SUPER_ADMIN) {
       const superAdminCount = await this.prisma.user.count({
-        where: { role: Role.SUPER_ADMIN, isActive: true },
+        where: { role: SYSTEM_ROLE.SUPER_ADMIN, isActive: true },
       });
       if (superAdminCount <= 1) {
         throw new BadRequestException(
@@ -77,9 +77,9 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException('Usuario no encontrado');
 
-    if (user.role === Role.SUPER_ADMIN && !dto.isActive) {
+    if (user.role === SYSTEM_ROLE.SUPER_ADMIN && !dto.isActive) {
       const superAdminCount = await this.prisma.user.count({
-        where: { role: Role.SUPER_ADMIN, isActive: true },
+        where: { role: SYSTEM_ROLE.SUPER_ADMIN, isActive: true },
       });
       if (superAdminCount <= 1) {
         throw new BadRequestException(
@@ -126,7 +126,7 @@ export class UsersService {
         email: dto.email,
         passwordHash: '',
         isActive: false,
-        role: dto.role ?? Role.MEMBER,
+        role: dto.role ?? SYSTEM_ROLE.MEMBER,
         inviteToken: tokenHash,
         inviteExpiresAt,
       },

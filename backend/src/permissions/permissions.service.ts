@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Role } from '../common/enums/role.enum';
 import { PrismaService } from '../prisma/prisma.service';
 
 const CACHE_TTL_MS = 1 * 60 * 1000;
 
-const PROTECTED_ROLES: Role[] = [Role.SUPER_ADMIN];
-
 @Injectable()
 export class PermissionsService {
-  private cache = new Map<Role, Set<string>>();
+  private cache = new Map<string, Set<string>>();
   private cacheBuiltAt: Date | null = null;
 
   constructor(private readonly prisma: PrismaService) {}
@@ -20,10 +17,10 @@ export class PermissionsService {
 
   private async buildCache(): Promise<void> {
     const rows = await this.prisma.rolePermission.findMany({ where: { granted: true } });
-    const map = new Map<Role, Set<string>>();
+    const map = new Map<string, Set<string>>();
     for (const row of rows) {
-      if (!map.has(row.role as Role)) map.set(row.role as Role, new Set());
-      map.get(row.role as Role)!.add(row.permission);
+      if (!map.has(row.role)) map.set(row.role, new Set());
+      map.get(row.role)!.add(row.permission);
     }
     this.cache = map;
     this.cacheBuiltAt = new Date();
@@ -37,12 +34,12 @@ export class PermissionsService {
     this.cacheBuiltAt = null;
   }
 
-  async hasPermission(role: Role, permission: string): Promise<boolean> {
+  async hasPermission(role: string, permission: string): Promise<boolean> {
     await this.ensureCache();
     return this.cache.get(role)?.has(permission) ?? false;
   }
 
-  async getPermissionsForRole(role: Role): Promise<string[]> {
+  async getPermissionsForRole(role: string): Promise<string[]> {
     await this.ensureCache();
     return Array.from(this.cache.get(role) ?? []);
   }
@@ -63,16 +60,22 @@ export class PermissionsService {
     matrix: { role: string; permission: string; granted: boolean }[];
     protectedRoles: string[];
   }> {
-    const rows = await this.prisma.rolePermission.findMany({
-      orderBy: [{ role: 'asc' }, { permission: 'asc' }],
-    });
+    const [rows, protectedDefs] = await Promise.all([
+      this.prisma.rolePermission.findMany({
+        orderBy: [{ role: 'asc' }, { permission: 'asc' }],
+      }),
+      this.prisma.roleDefinition.findMany({
+        where: { isProtected: true },
+        select: { name: true },
+      }),
+    ]);
     return {
       matrix: rows.map((r) => ({ role: r.role, permission: r.permission, granted: r.granted })),
-      protectedRoles: PROTECTED_ROLES,
+      protectedRoles: protectedDefs.map((d) => d.name),
     };
   }
 
-  async setPermission(role: Role, permission: string, granted: boolean): Promise<void> {
+  async setPermission(role: string, permission: string, granted: boolean): Promise<void> {
     await this.prisma.rolePermission.upsert({
       where: { role_permission: { role, permission } },
       update: { granted },

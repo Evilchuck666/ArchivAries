@@ -23,5 +23,6 @@ export const ROUTES = {
   LORE_EDIT: '/app/lore/:id/edit',
   ADMIN: '/app/admin',
   ADMIN_USERS: '/app/admin/users',
+  ADMIN_ROLES: '/app/admin/roles',
   ACTIVATE: '/activate',
 } as const;

@@ -11,7 +11,8 @@
     "news": "Avisos",
     "members": "Membres",
     "users": "Usuaris",
-    "permissions": "Permisos"
+    "permissions": "Permisos",
+    "roles": "Rols"
   },
   "permissions": {
     "events.read": "Veure esdeveniments",
@@ -44,6 +45,7 @@
     "members.edit_status": "Canviar estat i rang",
     "users.manage": "Gestionar usuaris",
     "users.edit_role": "Canviar rol d'usuaris",
-    "permissions.manage": "Gestionar permisos"
+    "permissions.manage": "Gestionar permisos",
+    "roles.manage": "Gestionar rols"
   }
 }

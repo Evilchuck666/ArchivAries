@@ -11,7 +11,8 @@
     "news": "Avisos",
     "members": "Miembros",
     "users": "Usuarios",
-    "permissions": "Permisos"
+    "permissions": "Permisos",
+    "roles": "Roles"
   },
   "permissions": {
     "events.read": "Ver eventos",
@@ -44,6 +45,7 @@
     "members.edit_status": "Cambiar estado y rango",
     "users.manage": "Gestionar usuarios",
     "users.edit_role": "Cambiar rol de usuarios",
-    "permissions.manage": "Gestionar permisos"
+    "permissions.manage": "Gestionar permisos",
+    "roles.manage": "Gestionar roles"
   }
 }

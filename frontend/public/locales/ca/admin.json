@@ -14,5 +14,16 @@
   "invite_success": "Invitació enviada a {{email}}",
   "invite_dev_url": "URL d'activació (dev):",
   "invite_error_conflict": "Aquest correu ja està registrat.",
-  "invite_error_generic": "Error en enviar la invitació."
+  "invite_error_generic": "Error en enviar la invitació.",
+  "roles_title": "Gestió de rols",
+  "roles_subtitle": "Crea i administra els rols disponibles al sistema",
+  "roles_create": "Nou rol",
+  "roles_field_name": "Nom intern",
+  "roles_field_label": "Etiqueta",
+  "roles_field_label_placeholder": "Ex: Tresorer",
+  "roles_field_level": "Nivell jeràrquic",
+  "roles_protected": "(protegit)",
+  "roles_create_error": "Error en crear el rol",
+  "roles_update_error": "Error en actualitzar el rol",
+  "roles_delete_error": "Error en eliminar el rol"
 }

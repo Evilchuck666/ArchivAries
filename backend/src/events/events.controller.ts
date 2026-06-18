@@ -15,8 +15,6 @@ import { ParticipationDto } from './dto/participation.dto';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Role } from '../common/enums/role.enum';
-
 @Controller('events')
 export class EventsController {
   constructor(private eventsService: EventsService) {}
@@ -25,7 +23,7 @@ export class EventsController {
   @RequiresPermission('events.read')
   findAll(
     @CurrentUser('id') userId: string,
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
     @Query('status') status?: string,
     @Query('dateFrom') dateFrom?: string,
     @Query('dateTo') dateTo?: string,
@@ -50,7 +48,7 @@ export class EventsController {
   findOne(
     @Param('id') id: string,
     @CurrentUser('id') userId: string,
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
   ) {
     return this.eventsService.findOne(id, userId, role);
   }
@@ -63,7 +61,7 @@ export class EventsController {
 
   @Patch(':id')
   @RequiresPermission('events.edit')
-  update(@Param('id') id: string, @Body() dto: UpdateEventDto, @CurrentUser('role') role: Role) {
+  update(@Param('id') id: string, @Body() dto: UpdateEventDto, @CurrentUser('role') role: string) {
     return this.eventsService.update(id, dto, role);
   }
 

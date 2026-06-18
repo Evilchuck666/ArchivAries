@@ -14,7 +14,6 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentCategoryDto } from './dto/create-document-category.dto';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Role } from '../common/enums/role.enum';
 
 @Controller()
 export class DocumentsController {
@@ -44,7 +43,7 @@ export class DocumentsController {
   @Get('documents')
   @RequiresPermission('documents.read')
   findAll(
-    @CurrentUser('role') role: Role,
+    @CurrentUser('role') role: string,
     @Query('categoryId') categoryId?: string,
     @Query('search') search?: string,
   ) {
@@ -53,13 +52,13 @@ export class DocumentsController {
 
   @Get('documents/recent')
   @RequiresPermission('documents.read')
-  findRecent(@CurrentUser('role') role: Role, @Query('limit') limit?: string) {
+  findRecent(@CurrentUser('role') role: string, @Query('limit') limit?: string) {
     return this.documentsService.findRecent(role, limit ? parseInt(limit) : 5);
   }
 
   @Get('documents/:id')
   @RequiresPermission('documents.read')
-  findOne(@Param('id') id: string, @CurrentUser('role') role: Role) {
+  findOne(@Param('id') id: string, @CurrentUser('role') role: string) {
     return this.documentsService.findOne(id, role);
   }
 
