@@ -55,7 +55,7 @@ async function main() {
   const ALL_PERMISSIONS: string[] = [
     'events.read', 'events.rsvp', 'events.create', 'events.edit', 'events.delete',
     'calendar.read',
-    'lore.read', 'lore.create', 'lore.edit', 'lore.delete',
+    'lore.read', 'lore.create', 'lore.edit', 'lore.delete', 'lore.view_restricted',
     'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit', 'documents.delete',
     'documents.manage_categories',
     'news.read', 'news.create', 'news.edit', 'news.delete',
@@ -79,7 +79,7 @@ async function main() {
     ],
     CONTENT_MANAGER: [
       'events.read', 'events.rsvp', 'events.create', 'events.edit', 'calendar.read',
-      'lore.read', 'lore.create', 'lore.edit',
+      'lore.read', 'lore.create', 'lore.edit', 'lore.view_restricted',
       'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit',
       'news.read', 'news.create', 'news.edit',
       'members.read', 'members.edit_own',
@@ -92,10 +92,10 @@ async function main() {
       'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_notes',
     ],
     ADMIN: [
-      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'users.edit_role'].includes(p)),
+      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'users.edit_role', 'lore.view_restricted'].includes(p)),
       'events.delete', 'lore.delete', 'documents.delete', 'news.delete',
     ],
-    SUPER_ADMIN: [...ALL_PERMISSIONS],
+    SUPER_ADMIN: [...ALL_PERMISSIONS.filter((p) => p !== 'lore.view_restricted')],
   };
 
   const roles: RoleKey[] = ['VISITOR', 'MEMBER', 'CONTENT_MANAGER', 'BOARD', 'ADMIN', 'SUPER_ADMIN'];

@@ -12,7 +12,6 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ParticipationDto } from './dto/participation.dto';
-import { Roles } from '../common/decorators/roles.decorator';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';

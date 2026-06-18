@@ -34,4 +34,8 @@ export class UpdateLoreEntryDto {
   @IsOptional()
   @IsBoolean()
   isPublished?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isRestricted?: boolean;
 }

@@ -18,9 +18,14 @@ export class LoreService {
     tag?: string,
     search?: string,
   ) {
-    const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'lore.edit');
+    const [canSeeDrafts, canViewRestricted] = await Promise.all([
+      this.permissionsService.hasPermission(viewerRole, 'lore.edit'),
+      this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted'),
+    ]);
+
     const where: any = {};
     if (!canSeeDrafts) where.isPublished = true;
+    if (!canViewRestricted) where.isRestricted = false;
     if (category) where.category = category;
     if (tag) where.tags = { has: tag };
     if (search) {
@@ -39,6 +44,7 @@ export class LoreService {
         category: true,
         tags: true,
         isPublished: true,
+        isRestricted: true,
         updatedAt: true,
         creator: { select: { member: { select: { displayName: true } } } },
       },
@@ -47,7 +53,11 @@ export class LoreService {
   }
 
   async findOne(id: string, viewerRole: Role) {
-    const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'lore.edit');
+    const [canSeeDrafts, canViewRestricted] = await Promise.all([
+      this.permissionsService.hasPermission(viewerRole, 'lore.edit'),
+      this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted'),
+    ]);
+
     const entry = await this.prisma.loreEntry.findUnique({
       where: { id },
       include: {
@@ -56,21 +66,23 @@ export class LoreService {
     });
     if (!entry) throw new NotFoundException('Entrada de lore no encontrada');
     if (!entry.isPublished && !canSeeDrafts) throw new NotFoundException('Entrada de lore no encontrada');
+    if (entry.isRestricted && !canViewRestricted) throw new NotFoundException('Entrada de lore no encontrada');
     return entry;
   }
 
-  create(dto: CreateLoreEntryDto, creatorId: string) {
-    return this.prisma.loreEntry.create({
-      data: { ...dto, category: dto.category as any, creatorId },
-    });
+  async create(dto: CreateLoreEntryDto, creatorId: string, viewerRole: Role) {
+    const canMarkRestricted = await this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted');
+    const data: any = { ...dto, category: dto.category as any, creatorId };
+    if (!canMarkRestricted) data.isRestricted = false;
+    return this.prisma.loreEntry.create({ data });
   }
 
-  async update(id: string, dto: UpdateLoreEntryDto) {
+  async update(id: string, dto: UpdateLoreEntryDto, viewerRole: Role) {
     await this.prisma.loreEntry.findUniqueOrThrow({ where: { id } });
-    return this.prisma.loreEntry.update({
-      where: { id },
-      data: { ...dto, category: dto.category as any },
-    });
+    const canMarkRestricted = await this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted');
+    const data: any = { ...dto, category: dto.category as any };
+    if (!canMarkRestricted) delete data.isRestricted;
+    return this.prisma.loreEntry.update({ where: { id }, data });
   }
 
   async remove(id: string) {

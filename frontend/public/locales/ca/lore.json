@@ -25,6 +25,7 @@
     "OTHER": "Altres"
   },
   "draft": "Esborrany",
+  "restricted": "Restringit",
   "edit_entry": "Editar entrada",
   "form": {
     "title": "Títol",
@@ -40,6 +41,7 @@
     "cancel": "Cancel·lar",
     "save_draft": "Desar com a esborrany",
     "mark_published": "Publicar",
+    "restricted_label": "Només visible per a masters (restringit)",
     "save_error": "S'ha produït un error en desar."
   }
 }

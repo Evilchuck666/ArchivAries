@@ -38,7 +38,6 @@ export class PermissionsService {
   }
 
   async hasPermission(role: Role, permission: string): Promise<boolean> {
-    if (role === Role.SUPER_ADMIN) return true;
     await this.ensureCache();
     return this.cache.get(role)?.has(permission) ?? false;
   }

@@ -16,8 +16,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { ActivateDto } from './dto/activate.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { Roles } from '../common/decorators/roles.decorator';
-import { Role } from '../common/enums/role.enum';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -45,7 +44,7 @@ export class AuthController {
   }
 
   @Post('verify-password')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.edit_own')
   @HttpCode(HttpStatus.NO_CONTENT)
   verifyPassword(
     @CurrentUser('id') userId: string,
@@ -55,7 +54,7 @@ export class AuthController {
   }
 
   @Patch('password')
-  @Roles(Role.MEMBER)
+  @RequiresPermission('members.edit_own')
   @HttpCode(HttpStatus.NO_CONTENT)
   changePassword(
     @CurrentUser('id') userId: string,

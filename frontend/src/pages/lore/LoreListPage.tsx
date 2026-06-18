@@ -80,6 +80,7 @@ export function LoreListPage() {
                     {CATEGORY_ICONS[entry.category]} {t(`categories.${entry.category}`)}
                   </span>
                   {!entry.isPublished && <Badge color="gray">{t('draft')}</Badge>}
+                {entry.isRestricted && <Badge color="red">{t('restricted')}</Badge>}
                 </div>
                 <h3 className="font-medium text-slate-200 group-hover:text-amber-300 transition-colors">{entry.title}</h3>
                 {entry.summary && <p className="text-xs text-slate-500 mt-1 truncate">{entry.summary}</p>}

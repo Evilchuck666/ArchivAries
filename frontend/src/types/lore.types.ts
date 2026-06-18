@@ -16,6 +16,7 @@ export interface LoreEntry {
   category: LoreCategory;
   tags: string[];
   isPublished: boolean;
+  isRestricted: boolean;
   updatedAt: string;
   creator?: { member: { displayName: string } | null };
 }

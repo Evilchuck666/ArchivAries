@@ -24,6 +24,7 @@
     "lore.create": "Crear entrades de lore",
     "lore.edit": "Editar lore",
     "lore.delete": "Eliminar lore",
+    "lore.view_restricted": "Veure lore restringit",
     "documents.read": "Veure documents",
     "documents.read_restricted": "Veure documents restringits",
     "documents.create": "Crear documents",

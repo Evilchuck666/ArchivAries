@@ -9,6 +9,7 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
+import { usePermissions } from '../../hooks/usePermissions';
 import type { LoreCategory } from '../../types/lore.types';
 
 const LORE_CATEGORIES: LoreCategory[] = [
@@ -22,6 +23,7 @@ interface FormData {
   category: LoreCategory;
   tagsInput: string;
   isPublished: boolean;
+  isRestricted: boolean;
 }
 
 export function LoreEditPage() {
@@ -30,6 +32,9 @@ export function LoreEditPage() {
   const { t: tc } = useTranslation('common');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { can } = usePermissions();
+
+  const canMarkRestricted = can('lore.view_restricted');
 
   const { data: entry, isLoading } = useQuery({
     queryKey: ['lore', id],
@@ -51,6 +56,7 @@ export function LoreEditPage() {
         category: entry.category,
         tagsInput: entry.tags.join(', '),
         isPublished: entry.isPublished,
+        isRestricted: entry.isRestricted,
       });
       setInitialized(true);
     }
@@ -115,6 +121,13 @@ export function LoreEditPage() {
             <input type="checkbox" {...register('isPublished')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
             {t('form.mark_published')}
           </label>
+
+          {canMarkRestricted && (
+            <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+              <input type="checkbox" {...register('isRestricted')} className="rounded border-slate-600 bg-slate-800 text-amber-600" />
+              {t('form.restricted_label')}
+            </label>
+          )}
 
           {isError && <p className="text-red-400 text-sm">{t('form.save_error')}</p>}
 

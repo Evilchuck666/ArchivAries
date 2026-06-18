@@ -25,6 +25,7 @@
     "OTHER": "Otros"
   },
   "draft": "Borrador",
+  "restricted": "Restringido",
   "edit_entry": "Editar entrada",
   "form": {
     "title": "Título",
@@ -40,6 +41,7 @@
     "cancel": "Cancelar",
     "save_draft": "Guardar como borrador",
     "mark_published": "Publicar",
+    "restricted_label": "Solo visible para masters (restringido)",
     "save_error": "Ha ocurrido un error al guardar."
   }
 }

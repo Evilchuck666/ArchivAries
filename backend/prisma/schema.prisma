@@ -227,8 +227,9 @@ model LoreEntry {
   summary     String?
   category    LoreCategory @default(OTHER)
   tags        String[]
-  isPublished Boolean      @default(true)
-  creatorId   String
+  isPublished  Boolean      @default(true)
+  isRestricted Boolean      @default(false)
+  creatorId    String
   creator     User         @relation("LoreCreator", fields: [creatorId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt

@@ -38,14 +38,22 @@ export class LoreController {
 
   @Post()
   @RequiresPermission('lore.create')
-  create(@Body() dto: CreateLoreEntryDto, @CurrentUser('id') userId: string) {
-    return this.loreService.create(dto, userId);
+  create(
+    @Body() dto: CreateLoreEntryDto,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: Role,
+  ) {
+    return this.loreService.create(dto, userId, role);
   }
 
   @Patch(':id')
   @RequiresPermission('lore.edit')
-  update(@Param('id') id: string, @Body() dto: UpdateLoreEntryDto) {
-    return this.loreService.update(id, dto);
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateLoreEntryDto,
+    @CurrentUser('role') role: Role,
+  ) {
+    return this.loreService.update(id, dto, role);
   }
 
   @Delete(':id')
