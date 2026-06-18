@@ -84,7 +84,9 @@
     "events_desc": "Crear y gestionar eventos",
     "lore_desc": "Gestionar entradas del lore",
     "permissions": "Permisos de roles",
-    "permissions_desc": "Configurar qué puede hacer cada rol"
+    "permissions_desc": "Configurar qué puede hacer cada rol",
+    "roles": "Gestión de roles",
+    "roles_desc": "Crear y administrar roles del sistema"
   },
   "markdown_editor": {
     "write": "Editar",
