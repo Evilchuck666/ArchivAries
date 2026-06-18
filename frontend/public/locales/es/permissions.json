@@ -2,13 +2,16 @@
   "title": "Gestión de permisos",
   "subtitle": "Configura qué puede hacer cada rol",
   "save_error": "Error al guardar el permiso",
+  "protected_role": "SUPER_ADMIN siempre tiene todos los permisos",
   "groups": {
     "events": "Eventos",
     "calendar": "Calendario",
     "lore": "Lore",
     "documents": "Documentos",
     "news": "Avisos",
-    "members": "Miembros"
+    "members": "Miembros",
+    "users": "Usuarios",
+    "permissions": "Permisos"
   },
   "permissions": {
     "events.read": "Ver eventos",
@@ -26,14 +29,20 @@
     "documents.create": "Crear documentos",
     "documents.edit": "Editar documentos",
     "documents.delete": "Eliminar documentos",
+    "documents.manage_categories": "Gestionar categorías de documentos",
     "news.read": "Ver avisos",
     "news.create": "Crear avisos",
     "news.edit": "Editar avisos",
     "news.delete": "Eliminar avisos",
     "members.read": "Ver lista de miembros",
     "members.read_sensitive": "Ver datos sensibles",
+    "members.create": "Crear miembros",
     "members.edit_own": "Editar propio perfil",
     "members.edit_any": "Editar perfil de cualquier miembro",
-    "members.edit_notes": "Editar notas internas"
+    "members.edit_notes": "Editar notas internas",
+    "members.edit_status": "Cambiar estado y rango",
+    "users.manage": "Gestionar usuarios",
+    "users.edit_role": "Cambiar rol de usuarios",
+    "permissions.manage": "Gestionar permisos"
   }
 }

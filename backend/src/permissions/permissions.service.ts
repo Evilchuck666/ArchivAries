@@ -4,6 +4,8 @@ import { PrismaService } from '../prisma/prisma.service';
 
 const CACHE_TTL_MS = 1 * 60 * 1000;
 
+const PROTECTED_ROLES: Role[] = [Role.SUPER_ADMIN];
+
 @Injectable()
 export class PermissionsService {
   private cache = new Map<Role, Set<string>>();
@@ -58,11 +60,17 @@ export class PermissionsService {
     return result;
   }
 
-  async getFullMatrix(): Promise<{ role: string; permission: string; granted: boolean }[]> {
+  async getFullMatrix(): Promise<{
+    matrix: { role: string; permission: string; granted: boolean }[];
+    protectedRoles: string[];
+  }> {
     const rows = await this.prisma.rolePermission.findMany({
       orderBy: [{ role: 'asc' }, { permission: 'asc' }],
     });
-    return rows.map((r) => ({ role: r.role, permission: r.permission, granted: r.granted }));
+    return {
+      matrix: rows.map((r) => ({ role: r.role, permission: r.permission, granted: r.granted })),
+      protectedRoles: PROTECTED_ROLES,
+    };
   }
 
   async setPermission(role: Role, permission: string, granted: boolean): Promise<void> {

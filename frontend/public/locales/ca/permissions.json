@@ -2,13 +2,16 @@
   "title": "Gestió de permisos",
   "subtitle": "Configura què pot fer cada rol",
   "save_error": "Error en desar el permís",
+  "protected_role": "SUPER_ADMIN sempre té tots els permisos",
   "groups": {
     "events": "Esdeveniments",
     "calendar": "Calendari",
     "lore": "Lore",
     "documents": "Documents",
     "news": "Avisos",
-    "members": "Membres"
+    "members": "Membres",
+    "users": "Usuaris",
+    "permissions": "Permisos"
   },
   "permissions": {
     "events.read": "Veure esdeveniments",
@@ -26,14 +29,20 @@
     "documents.create": "Crear documents",
     "documents.edit": "Editar documents",
     "documents.delete": "Eliminar documents",
+    "documents.manage_categories": "Gestionar categories de documents",
     "news.read": "Veure avisos",
     "news.create": "Crear avisos",
     "news.edit": "Editar avisos",
     "news.delete": "Eliminar avisos",
     "members.read": "Veure llista de membres",
     "members.read_sensitive": "Veure dades sensibles",
+    "members.create": "Crear membres",
     "members.edit_own": "Editar el propi perfil",
     "members.edit_any": "Editar el perfil de qualsevol membre",
-    "members.edit_notes": "Editar notes internes"
+    "members.edit_notes": "Editar notes internes",
+    "members.edit_status": "Canviar estat i rang",
+    "users.manage": "Gestionar usuaris",
+    "users.edit_role": "Canviar rol d'usuaris",
+    "permissions.manage": "Gestionar permisos"
   }
 }
