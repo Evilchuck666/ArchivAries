@@ -14,6 +14,8 @@ export const membersApi = {
     apiClient.patch<{ data: Member }>('/members/me', data).then(unwrap),
   update: (id: string, data: Partial<Member>) =>
     apiClient.patch<{ data: Member }>(`/members/${id}`, data).then(unwrap),
+  updateNotes: (id: string, notes: string) =>
+    apiClient.patch<{ data: Member }>(`/members/${id}/notes`, { notes }).then(unwrap),
   uploadAvatar: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);

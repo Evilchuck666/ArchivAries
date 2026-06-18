@@ -95,6 +95,16 @@ export class MembersController {
     return this.membersService.updateByUserId(userId, dto);
   }
 
+  @Patch(':id/notes')
+  @RequiresPermission('members.edit_notes')
+  updateNotes(
+    @Param('id') id: string,
+    @Body('notes') notes: string,
+    @CurrentUser('role') role: Role,
+  ) {
+    return this.membersService.updateNotes(id, notes, role);
+  }
+
   @Patch(':id')
   @RequiresPermission('members.edit_any')
   update(

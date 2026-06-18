@@ -160,14 +160,26 @@ export class MembersService {
       delete data.status;
       delete data.rank;
     }
-    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
-    if (!privileged) {
+    const canEditNotes = await this.permissionsService.hasPermission(viewerRole, 'members.edit_notes');
+    if (!canEditNotes) {
       delete data.notes;
     }
 
+    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
     return this.prisma.member.update({
       where: { id },
       data,
+      select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
+    });
+  }
+
+  async updateNotes(id: string, notes: string, viewerRole: Role) {
+    const member = await this.prisma.member.findUnique({ where: { id } });
+    if (!member) throw new NotFoundException('Miembro no encontrado');
+    const privileged = await this.permissionsService.hasPermission(viewerRole, 'members.read_sensitive');
+    return this.prisma.member.update({
+      where: { id },
+      data: { notes },
       select: privileged ? ADMIN_MEMBER_SELECT : PUBLIC_MEMBER_SELECT,
     });
   }

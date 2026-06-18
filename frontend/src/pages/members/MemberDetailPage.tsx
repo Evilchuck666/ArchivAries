@@ -35,7 +35,7 @@ export function MemberDetailPage() {
   const [notesValue, setNotesValue] = useState('');
 
   const { mutate: saveNotes, isPending: savingNotes } = useMutation({
-    mutationFn: (notes: string) => membersApi.update(member!.id, { notes }),
+    mutationFn: (notes: string) => membersApi.updateNotes(member!.id, notes),
     onSuccess: () => {
       setEditingNotes(false);
       queryClient.invalidateQueries({ queryKey: ['member', isMeRoute ? 'me' : id] });
