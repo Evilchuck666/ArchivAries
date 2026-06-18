@@ -1,5 +1,5 @@
 import { Controller, Get, Patch, Param, Body } from '@nestjs/common';
-import { Roles } from '../common/decorators/roles.decorator';
+import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
 import { PermissionsService } from './permissions.service';
@@ -14,13 +14,13 @@ export class PermissionsController {
   }
 
   @Get()
-  @Roles(Role.ADMIN)
+  @RequiresPermission('permissions.manage')
   async getAll() {
     return this.permissionsService.getFullMatrix();
   }
 
   @Patch(':role/:permission')
-  @Roles(Role.ADMIN)
+  @RequiresPermission('permissions.manage')
   async setPermission(
     @Param('role') role: string,
     @Param('permission') permission: string,

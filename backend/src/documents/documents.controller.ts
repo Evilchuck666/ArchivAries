@@ -12,7 +12,6 @@ import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentCategoryDto } from './dto/create-document-category.dto';
-import { Roles } from '../common/decorators/roles.decorator';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
@@ -28,13 +27,13 @@ export class DocumentsController {
   }
 
   @Post('document-categories')
-  @Roles(Role.ADMIN)
+  @RequiresPermission('documents.manage_categories')
   createCategory(@Body() dto: CreateDocumentCategoryDto) {
     return this.documentsService.createCategory(dto);
   }
 
   @Patch('document-categories/:id')
-  @Roles(Role.ADMIN)
+  @RequiresPermission('documents.manage_categories')
   updateCategory(
     @Param('id') id: string,
     @Body() dto: Partial<CreateDocumentCategoryDto>,

@@ -155,7 +155,8 @@ export class MembersService {
     await this.findOne(id, viewerRole);
 
     const data: any = { ...normalizeDates(dto) };
-    if (!this.isAdmin(viewerRole)) {
+    const canEditStatus = await this.permissionsService.hasPermission(viewerRole, 'members.edit_status');
+    if (!canEditStatus) {
       delete data.status;
       delete data.rank;
     }
@@ -184,7 +185,4 @@ export class MembersService {
     });
   }
 
-  private isAdmin(role: Role): boolean {
-    return [Role.ADMIN, Role.SUPER_ADMIN].includes(role);
-  }
 }

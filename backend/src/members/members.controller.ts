@@ -17,7 +17,6 @@ import { existsSync, mkdirSync } from 'fs';
 import { MembersService } from './members.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
-import { Roles } from '../common/decorators/roles.decorator';
 import { RequiresPermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Role } from '../common/enums/role.enum';
@@ -70,7 +69,7 @@ export class MembersController {
   }
 
   @Post()
-  @Roles(Role.ADMIN)
+  @RequiresPermission('members.create')
   create(@Body() dto: CreateMemberDto) {
     return this.membersService.create(dto);
   }

@@ -125,13 +125,8 @@ export class EventsService {
     });
   }
 
-  async remove(id: string, userId: string, userRole: Role) {
-    const event = await this.findOne(id);
-    const isCreator = event.creatorId === userId;
-    const isAdmin = [Role.ADMIN, Role.SUPER_ADMIN].includes(userRole);
-    if (!isCreator && !isAdmin) {
-      throw new ForbiddenException('No tienes permiso para eliminar este evento');
-    }
+  async remove(id: string) {
+    await this.findOne(id);
     return this.prisma.event.delete({ where: { id } });
   }
 

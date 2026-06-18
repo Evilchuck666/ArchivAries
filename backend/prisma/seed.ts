@@ -57,8 +57,12 @@ async function main() {
     'calendar.read',
     'lore.read', 'lore.create', 'lore.edit', 'lore.delete',
     'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit', 'documents.delete',
+    'documents.manage_categories',
     'news.read', 'news.create', 'news.edit', 'news.delete',
     'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_any', 'members.edit_notes',
+    'members.edit_status', 'members.create',
+    'users.manage', 'users.edit_role',
+    'permissions.manage',
   ];
 
   const GRANTED: Record<RoleKey, string[]> = {
@@ -88,7 +92,7 @@ async function main() {
       'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_notes',
     ],
     ADMIN: [
-      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete'].includes(p)),
+      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'users.edit_role'].includes(p)),
       'events.delete', 'lore.delete', 'documents.delete', 'news.delete',
     ],
     SUPER_ADMIN: [...ALL_PERMISSIONS],

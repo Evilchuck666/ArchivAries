@@ -4,16 +4,12 @@ import { useAuthStore } from '../../store/auth.store';
 import { useUiStore } from '../../store/ui.store';
 import { usePermissions } from '../../hooks/usePermissions';
 import { ROUTES } from '../../router/routes';
-import type { Role } from '../../types/auth.types';
-
-const ADMIN_ROLES: Role[] = ['ADMIN', 'SUPER_ADMIN'];
 
 interface NavItem {
   to: string;
   label: string;
   icon: string;
   permission?: string;
-  adminOnly?: boolean;
 }
 
 export function Sidebar() {
@@ -30,12 +26,10 @@ export function Sidebar() {
     { to: ROUTES.DOCUMENTS, label: t('nav.documents'), icon: '📜', permission: 'documents.read' },
     { to: ROUTES.NEWS, label: t('nav.news'), icon: '📢', permission: 'news.read' },
     { to: ROUTES.LORE, label: t('nav.lore'), icon: '🔮', permission: 'lore.read' },
-    { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', adminOnly: true },
+    { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', permission: 'users.manage' },
   ];
 
   if (!user) return null;
-
-  const isAdmin = ADMIN_ROLES.includes(user.role);
 
   return (
     <aside
@@ -56,7 +50,6 @@ export function Sidebar() {
       <nav className="flex-1 py-4 flex flex-col gap-0.5">
         {navItems
           .filter((item) => {
-            if (item.adminOnly) return isAdmin;
             if (item.permission) return can(item.permission);
             return true;
           })
