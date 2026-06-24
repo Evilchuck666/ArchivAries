@@ -2,6 +2,8 @@
 
 set -e
 
+export PATH="$HOME/.bun/bin:$PATH"
+
 PROJECT_DIR="$(pwd -P)"
 BACKEND_DIR="$PROJECT_DIR/backend"
 FRONTEND_DIR="$PROJECT_DIR/frontend"
@@ -29,12 +31,12 @@ trap cleanup INT TERM EXIT
 
 echo "📦 Starting backend..."
 cd "$BACKEND_DIR"
-npm run start:dev &
+bun run start:dev &
 BACKEND_PID=$!
 
 echo "🎨 Starting frontend..."
 cd "$FRONTEND_DIR"
-npm run dev &
+bun run dev &
 FRONTEND_PID=$!
 
 echo
