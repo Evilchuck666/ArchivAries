@@ -79,28 +79,40 @@ export default function App() {
                 {/* Events */}
                 <Route path="/app/events" element={<EventListPage />} />
                 <Route path="/app/events/calendar" element={<CalendarPage />} />
-                <Route path="/app/events/create" element={<EventCreatePage />} />
                 <Route path="/app/events/:id" element={<EventDetailPage />} />
-                <Route path="/app/events/:id/edit" element={<EventEditPage />} />
+                <Route element={<PermissionRoute permission="events.create" />}>
+                  <Route path="/app/events/create" element={<EventCreatePage />} />
+                </Route>
+                <Route element={<PermissionRoute permission="events.edit" />}>
+                  <Route path="/app/events/:id/edit" element={<EventEditPage />} />
+                </Route>
 
                 {/* Documents */}
                 <Route path="/app/documents" element={<DocumentListPage />} />
-                <Route path="/app/documents/create" element={<DocumentCreatePage />} />
                 <Route path="/app/documents/:id" element={<DocumentDetailPage />} />
-                <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
+                <Route element={<PermissionRoute permission="documents.create" />}>
+                  <Route path="/app/documents/create" element={<DocumentCreatePage />} />
+                </Route>
+                <Route element={<PermissionRoute permission="documents.edit" />}>
+                  <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
+                </Route>
 
                 {/* News */}
                 <Route path="/app/news" element={<NewsListPage />} />
-                <Route path="/app/news/create" element={<NewsCreatePage />} />
                 <Route path="/app/news/:id" element={<NewsDetailPage />} />
+                <Route element={<PermissionRoute permission="news.create" />}>
+                  <Route path="/app/news/create" element={<NewsCreatePage />} />
+                </Route>
                 <Route element={<PermissionRoute permission="news.edit" />}>
                   <Route path="/app/news/:id/edit" element={<NewsEditPage />} />
                 </Route>
 
                 {/* Lore */}
                 <Route path="/app/lore" element={<LoreListPage />} />
-                <Route path="/app/lore/create" element={<LoreCreatePage />} />
                 <Route path="/app/lore/:id" element={<LoreDetailPage />} />
+                <Route element={<PermissionRoute permission="lore.create" />}>
+                  <Route path="/app/lore/create" element={<LoreCreatePage />} />
+                </Route>
                 <Route element={<PermissionRoute permission="lore.edit" />}>
                   <Route path="/app/lore/:id/edit" element={<LoreEditPage />} />
                 </Route>
