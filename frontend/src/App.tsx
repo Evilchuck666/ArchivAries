@@ -73,6 +73,8 @@ export default function App() {
                 <Route element={<PermissionRoute permission="members.read" />}>
                   <Route path="/app/members" element={<MemberListPage />} />
                   <Route path="/app/members/:id" element={<MemberDetailPage />} />
+                </Route>
+                <Route element={<PermissionRoute permission="members.edit_own" />}>
                   <Route path="/app/members/me/edit" element={<MemberEditPage />} />
                 </Route>
 
