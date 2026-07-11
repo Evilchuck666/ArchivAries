@@ -2,7 +2,7 @@
 
 set -e
 
-export PATH="$HOME/.bun/bin:$PATH"
+#export PATH="$HOME/.bun/bin:$PATH"
 
 PROJECT_DIR="$(pwd -P)"
 BACKEND_DIR="$PROJECT_DIR/backend"
