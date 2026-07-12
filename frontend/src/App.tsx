@@ -74,7 +74,7 @@ export default function App() {
                   <Route path="/app/members" element={<MemberListPage />} />
                   <Route path="/app/members/:id" element={<MemberDetailPage />} />
                 </Route>
-                <Route element={<PermissionRoute permission="members.edit_own" />}>
+                <Route element={<PermissionRoute permission="members.edit_own" redirectTo="/app/members/me" />}>
                   <Route path="/app/members/me/edit" element={<MemberEditPage />} />
                 </Route>
 
@@ -82,40 +82,40 @@ export default function App() {
                 <Route path="/app/events" element={<EventListPage />} />
                 <Route path="/app/events/calendar" element={<CalendarPage />} />
                 <Route path="/app/events/:id" element={<EventDetailPage />} />
-                <Route element={<PermissionRoute permission="events.create" />}>
+                <Route element={<PermissionRoute permission="events.create" redirectTo="/app/events" />}>
                   <Route path="/app/events/create" element={<EventCreatePage />} />
                 </Route>
-                <Route element={<PermissionRoute permission="events.edit" />}>
+                <Route element={<PermissionRoute permission="events.edit" redirectTo="/app/events/:id" />}>
                   <Route path="/app/events/:id/edit" element={<EventEditPage />} />
                 </Route>
 
                 {/* Documents */}
                 <Route path="/app/documents" element={<DocumentListPage />} />
                 <Route path="/app/documents/:id" element={<DocumentDetailPage />} />
-                <Route element={<PermissionRoute permission="documents.create" />}>
+                <Route element={<PermissionRoute permission="documents.create" redirectTo="/app/documents" />}>
                   <Route path="/app/documents/create" element={<DocumentCreatePage />} />
                 </Route>
-                <Route element={<PermissionRoute permission="documents.edit" />}>
+                <Route element={<PermissionRoute permission="documents.edit" redirectTo="/app/documents/:id" />}>
                   <Route path="/app/documents/:id/edit" element={<DocumentEditPage />} />
                 </Route>
 
                 {/* News */}
                 <Route path="/app/news" element={<NewsListPage />} />
                 <Route path="/app/news/:id" element={<NewsDetailPage />} />
-                <Route element={<PermissionRoute permission="news.create" />}>
+                <Route element={<PermissionRoute permission="news.create" redirectTo="/app/news" />}>
                   <Route path="/app/news/create" element={<NewsCreatePage />} />
                 </Route>
-                <Route element={<PermissionRoute permission="news.edit" />}>
+                <Route element={<PermissionRoute permission="news.edit" redirectTo="/app/news/:id" />}>
                   <Route path="/app/news/:id/edit" element={<NewsEditPage />} />
                 </Route>
 
                 {/* Lore */}
                 <Route path="/app/lore" element={<LoreListPage />} />
                 <Route path="/app/lore/:id" element={<LoreDetailPage />} />
-                <Route element={<PermissionRoute permission="lore.create" />}>
+                <Route element={<PermissionRoute permission="lore.create" redirectTo="/app/lore" />}>
                   <Route path="/app/lore/create" element={<LoreCreatePage />} />
                 </Route>
-                <Route element={<PermissionRoute permission="lore.edit" />}>
+                <Route element={<PermissionRoute permission="lore.edit" redirectTo="/app/lore/:id" />}>
                   <Route path="/app/lore/:id/edit" element={<LoreEditPage />} />
                 </Route>
 
@@ -125,7 +125,7 @@ export default function App() {
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
                   <Route path="/app/admin/permissions" element={<PermissionsPage />} />
-                  <Route element={<PermissionRoute permission="roles.manage" />}>
+                  <Route element={<PermissionRoute permission="roles.manage" redirectTo="/app/admin" />}>
                     <Route path="/app/admin/roles" element={<RolesPage />} />
                   </Route>
                 </Route>
