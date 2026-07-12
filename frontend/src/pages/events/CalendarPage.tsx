@@ -65,6 +65,7 @@ export function CalendarPage() {
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
+          firstDay={1}
           events={calEvents}
           locale="es"
           headerToolbar={{
