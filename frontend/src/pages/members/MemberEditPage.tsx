@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { membersApi } from '../../api/members.api';
 import { authApi } from '../../api/auth.api';
@@ -10,6 +10,7 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Spinner } from '../../components/ui/Spinner';
 import { MarkdownEditor } from '../../components/ui/MarkdownEditor';
+import { DateInput } from '../../components/ui/DateInput';
 import { ROUTES } from '../../router/routes';
 import type { MemberStatus } from '../../types/member.types';
 
@@ -287,8 +288,13 @@ export function MemberEditPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-slate-400 mb-1">{t('birth_date')}</label>
-                <Input type="date" {...form.register('birthDate')} />
+                <Controller
+                  control={form.control}
+                  name="birthDate"
+                  render={({ field }) => (
+                    <DateInput label={t('birth_date')} value={field.value} onChange={field.onChange} />
+                  )}
+                />
                 <label className="flex items-center gap-1.5 mt-1.5 cursor-pointer text-xs text-slate-500">
                   <input type="checkbox" {...form.register('showBirthDate')} className="accent-amber-600" />
                   {t('show_birth_date')}
