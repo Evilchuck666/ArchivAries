@@ -144,10 +144,18 @@ export function MemberDetailPage() {
                 <dd className="text-slate-300 text-right max-w-[60%]">{member.address}</dd>
               </div>
             )}
-            {isSelf && member.user?.email && (
+            {(isSelf || can('members.read_sensitive')) && member.user?.email && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('email')}</dt>
                 <dd className="text-slate-300">{member.user.email}</dd>
+              </div>
+            )}
+            {!isSelf && can('members.read_sensitive') && member.user !== undefined && (
+              <div className="flex justify-between text-sm">
+                <dt className="text-slate-500">{t('account_status')}</dt>
+                <dd className={member.user.isActive ? 'text-green-400' : 'text-red-400'}>
+                  {member.user.isActive ? tc('status.active') : tc('status.inactive')}
+                </dd>
               </div>
             )}
           </dl>

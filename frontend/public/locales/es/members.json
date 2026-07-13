@@ -56,6 +56,7 @@
   "dni_placeholder": "12345678A",
   "address": "Dirección",
   "address_placeholder": "Calle, número, ciudad...",
+  "account_status": "Estado de cuenta",
   "admin_only": "Solo visible para administradores",
   "notes_placeholder": "Notas internas sobre este miembro..."
 }
