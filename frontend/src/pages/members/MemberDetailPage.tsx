@@ -87,7 +87,11 @@ export function MemberDetailPage() {
           )}
           <div>
             <h1 className="text-xl font-serif text-amber-200">{member.displayName}</h1>
-            {member.rank && <p className="text-amber-600 text-sm">{member.rank}</p>}
+            {(member.rank || isAdmin) && (
+              <p className={member.rank ? 'text-amber-600 text-sm' : 'text-slate-600 italic text-sm'}>
+                {member.rank || t('not_set')}
+              </p>
+            )}
             <div className="flex gap-2 mt-1 flex-wrap">
               <MemberStatusBadge status={member.status} />
               {member.user?.role && <RoleBadge role={member.user.role as Role} />}
