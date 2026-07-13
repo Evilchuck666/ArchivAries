@@ -57,6 +57,7 @@
   "address": "Adreça",
   "address_placeholder": "Carrer, número, ciutat...",
   "account_status": "Estat del compte",
+  "not_set": "Sense emplenar",
   "admin_only": "Només visible per a administradors",
   "notes_placeholder": "Notes internes sobre aquest membre..."
 }

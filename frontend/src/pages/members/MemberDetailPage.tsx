@@ -46,6 +46,7 @@ export function MemberDetailPage() {
   if (!member) return <p className="text-slate-500">{t('not_found')}</p>;
 
   const isSelf = isMeRoute || member.userId === user?.id;
+  const isAdmin = can('members.read_sensitive');
   const canEditNotes = can('members.edit_notes');
   const canEditMember = can('members.edit_any') && !isSelf;
 
@@ -96,61 +97,78 @@ export function MemberDetailPage() {
       </Card>
 
       <div className="grid gap-4">
-        {member.bio && (
+        {(member.bio || isAdmin) && (
           <Card title={t('bio')}>
-            <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{member.bio}</p>
+            {member.bio
+              ? <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">{member.bio}</p>
+              : <p className="text-slate-600 italic text-sm">{t('not_set')}</p>
+            }
           </Card>
         )}
 
         <Card title={t('information')}>
           <dl className="grid gap-3">
-            {member.realName && (
+            {(member.realName || isAdmin) && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('real_name')}</dt>
-                <dd className="text-slate-300">{member.realName}</dd>
+                <dd className={member.realName ? 'text-slate-300' : 'text-slate-600 italic'}>
+                  {member.realName || t('not_set')}
+                </dd>
               </div>
             )}
             <div className="flex justify-between text-sm">
               <dt className="text-slate-500">{t('joined')}</dt>
               <dd className="text-slate-300">{format(new Date(member.joinedAt), "d 'de' MMMM yyyy", { locale: es })}</dd>
             </div>
-            {member.discordHandle && (
+            {(member.discordHandle || isAdmin) && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('discord')}</dt>
-                <dd className="text-slate-300">{member.discordHandle}</dd>
+                <dd className={member.discordHandle ? 'text-slate-300' : 'text-slate-600 italic'}>
+                  {member.discordHandle || t('not_set')}
+                </dd>
               </div>
             )}
-            {member.phone && (
+            {(member.phone || isAdmin) && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('phone')}</dt>
-                <dd className="text-slate-300">{member.phone}</dd>
+                <dd className={member.phone ? 'text-slate-300' : 'text-slate-600 italic'}>
+                  {member.phone || t('not_set')}
+                </dd>
               </div>
             )}
-            {member.birthDate && (
+            {(member.birthDate || isAdmin) && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('birth_date')}</dt>
-                <dd className="text-slate-300">{format(new Date(member.birthDate), "d 'de' MMMM yyyy", { locale: es })}</dd>
+                <dd className={member.birthDate ? 'text-slate-300' : 'text-slate-600 italic'}>
+                  {member.birthDate
+                    ? format(new Date(member.birthDate), "d 'de' MMMM yyyy", { locale: es })
+                    : t('not_set')}
+                </dd>
               </div>
             )}
-            {member.dni && (
+            {(member.dni || isAdmin) && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('dni')}</dt>
-                <dd className="text-slate-300">{member.dni}</dd>
+                <dd className={member.dni ? 'text-slate-300' : 'text-slate-600 italic'}>
+                  {member.dni || t('not_set')}
+                </dd>
               </div>
             )}
-            {member.address && (
+            {(member.address || isAdmin) && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('address')}</dt>
-                <dd className="text-slate-300 text-right max-w-[60%]">{member.address}</dd>
+                <dd className={`${member.address ? 'text-slate-300' : 'text-slate-600 italic'} text-right max-w-[60%]`}>
+                  {member.address || t('not_set')}
+                </dd>
               </div>
             )}
-            {(isSelf || can('members.read_sensitive')) && member.user?.email && (
+            {(isSelf || isAdmin) && member.user !== undefined && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('email')}</dt>
                 <dd className="text-slate-300">{member.user.email}</dd>
               </div>
             )}
-            {!isSelf && can('members.read_sensitive') && member.user !== undefined && (
+            {!isSelf && isAdmin && member.user !== undefined && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('account_status')}</dt>
                 <dd className={member.user.isActive ? 'text-green-400' : 'text-red-400'}>
