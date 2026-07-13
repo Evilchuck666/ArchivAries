@@ -168,7 +168,7 @@ export function MemberDetailPage() {
                 <dd className="text-slate-300">{member.user.email}</dd>
               </div>
             )}
-            {!isSelf && isAdmin && member.user !== undefined && (
+            {isAdmin && member.user !== undefined && (
               <div className="flex justify-between text-sm">
                 <dt className="text-slate-500">{t('account_status')}</dt>
                 <dd className={member.user.isActive ? 'text-green-400' : 'text-red-400'}>
