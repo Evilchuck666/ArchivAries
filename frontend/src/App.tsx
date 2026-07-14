@@ -6,7 +6,6 @@ import { Spinner } from './components/ui/Spinner';
 import { PublicLayout } from './layouts/PublicLayout';
 import { AppLayout } from './layouts/AppLayout';
 import { ProtectedRoute } from './router/ProtectedRoute';
-import { RoleRoute } from './router/RoleRoute';
 import { PermissionRoute } from './router/PermissionRoute';
 
 import { LandingPage } from './pages/public/LandingPage';
@@ -124,8 +123,8 @@ export default function App() {
                   <Route path="/app/members/:id/edit" element={<MemberEditPage />} />
                 </Route>
 
-                {/* Admin — ADMIN level (40) or above */}
-                <Route element={<RoleRoute minLevel={40} />}>
+                {/* Admin */}
+                <Route element={<PermissionRoute permission="users.manage" />}>
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
                   <Route path="/app/admin/permissions" element={<PermissionsPage />} />
