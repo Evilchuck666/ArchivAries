@@ -97,10 +97,10 @@ async function main() {
       'members.read', 'members.edit_own',
     ],
     CONTENT_MANAGER: [
-      'events.read', 'events.rsvp', 'events.create', 'events.edit', 'calendar.read',
-      'lore.read', 'lore.create', 'lore.edit', 'lore.view_restricted',
-      'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit',
-      'news.read', 'news.create', 'news.edit',
+      'events.read', 'events.rsvp', 'calendar.read',
+      'lore.read', 'lore.create', 'lore.edit', 'lore.delete', 'lore.view_restricted',
+      'documents.read',
+      'news.read',
       'members.read', 'members.edit_own',
     ],
     BOARD: [
