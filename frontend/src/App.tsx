@@ -119,9 +119,13 @@ export default function App() {
                   <Route path="/app/lore/:id/edit" element={<LoreEditPage />} />
                 </Route>
 
+                {/* Edición de miembro por admin */}
+                <Route element={<PermissionRoute permission="members.edit_any" redirectTo="/app/members/:id" />}>
+                  <Route path="/app/members/:id/edit" element={<MemberEditPage />} />
+                </Route>
+
                 {/* Admin — ADMIN level (40) or above */}
                 <Route element={<RoleRoute minLevel={40} />}>
-                  <Route path="/app/members/:id/edit" element={<MemberEditPage />} />
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
                   <Route path="/app/admin/permissions" element={<PermissionsPage />} />
