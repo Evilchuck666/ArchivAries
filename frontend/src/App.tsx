@@ -127,7 +127,9 @@ export default function App() {
                 <Route element={<PermissionRoute permission="users.manage" />}>
                   <Route path="/app/admin" element={<AdminDashboardPage />} />
                   <Route path="/app/admin/users" element={<UserManagementPage />} />
-                  <Route path="/app/admin/permissions" element={<PermissionsPage />} />
+                  <Route element={<PermissionRoute permission="permissions.manage" redirectTo="/app/admin" />}>
+                    <Route path="/app/admin/permissions" element={<PermissionsPage />} />
+                  </Route>
                   <Route element={<PermissionRoute permission="roles.manage" redirectTo="/app/admin" />}>
                     <Route path="/app/admin/roles" element={<RolesPage />} />
                   </Route>

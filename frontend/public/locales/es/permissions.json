@@ -45,6 +45,7 @@
     "members.edit_status": "Cambiar estado y rango",
     "users.manage": "Gestionar usuarios",
     "users.edit_role": "Cambiar rol de usuarios",
+    "users.grant_admin": "Asignar roles de administrador",
     "permissions.manage": "Gestionar permisos",
     "roles.manage": "Gestionar roles"
   }

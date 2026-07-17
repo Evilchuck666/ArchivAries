@@ -9,7 +9,7 @@ export function AdminDashboardPage() {
 
   const sections = [
     { to: '/app/admin/users', icon: '👥', label: t('admin.users'), desc: t('admin.users_desc') },
-    { to: '/app/admin/permissions', icon: '🔑', label: t('admin.permissions'), desc: t('admin.permissions_desc') },
+    ...(can('permissions.manage') ? [{ to: '/app/admin/permissions', icon: '🔑', label: t('admin.permissions'), desc: t('admin.permissions_desc') }] : []),
     ...(can('roles.manage') ? [{ to: '/app/admin/roles', icon: '🏷️', label: t('admin.roles'), desc: t('admin.roles_desc') }] : []),
     { to: '/app/documents', icon: '📜', label: t('nav.documents'), desc: t('admin.documents_desc') },
     { to: '/app/news', icon: '📢', label: t('nav.news'), desc: t('admin.news_desc') },

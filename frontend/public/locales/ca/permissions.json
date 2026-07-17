@@ -45,6 +45,7 @@
     "members.edit_status": "Canviar estat i rang",
     "users.manage": "Gestionar usuaris",
     "users.edit_role": "Canviar rol d'usuaris",
+    "users.grant_admin": "Assignar rols d'administrador",
     "permissions.manage": "Gestionar permisos",
     "roles.manage": "Gestionar rols"
   }
