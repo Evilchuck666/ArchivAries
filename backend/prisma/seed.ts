@@ -79,7 +79,7 @@ async function main() {
     'news.read', 'news.create', 'news.edit', 'news.delete',
     'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_any', 'members.edit_notes',
     'members.edit_status', 'members.create',
-    'users.manage', 'users.edit_role',
+    'users.manage', 'users.edit_role', 'users.grant_admin',
     'permissions.manage',
     'roles.manage',
   ];
@@ -111,7 +111,7 @@ async function main() {
       'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_notes',
     ],
     ADMIN: [
-      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'users.edit_role', 'lore.view_restricted'].includes(p)),
+      ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'lore.view_restricted', 'users.grant_admin'].includes(p)),
       'events.delete', 'lore.delete', 'documents.delete', 'news.delete',
     ],
     SUPER_ADMIN: [...ALL_PERMISSIONS.filter((p) => !['lore.view_restricted'].includes(p))],
