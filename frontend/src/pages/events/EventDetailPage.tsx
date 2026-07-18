@@ -191,6 +191,13 @@ export function EventDetailPage() {
         </dl>
 
         {(() => {
+          if (event.status === 'CANCELLED' || event.status === 'FINISHED') {
+            return (
+              <p className="text-sm italic text-slate-500 pt-3 border-t border-slate-800">
+                {event.status === 'CANCELLED' ? t('rsvp_cancelled') : t('rsvp_finished')}
+              </p>
+            );
+          }
           const myStatus = event.participations?.[0]?.status;
           const isConfirmed = myStatus === 'CONFIRMED';
           const isDeclined = myStatus === 'DECLINED';

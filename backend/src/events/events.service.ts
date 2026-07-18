@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { EventStatus } from '../common/enums/event-status.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -130,7 +131,10 @@ export class EventsService {
   }
 
   async participate(eventId: string, userId: string, dto: ParticipationDto) {
-    await this.findOne(eventId);
+    const event = await this.findOne(eventId);
+    if (event.status === EventStatus.CANCELLED || event.status === EventStatus.FINISHED) {
+      throw new BadRequestException('No se puede confirmar asistencia a un evento cancelado o finalizado');
+    }
     return this.prisma.eventParticipation.upsert({
       where: { eventId_userId: { eventId, userId } },
       create: {
