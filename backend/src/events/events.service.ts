@@ -126,7 +126,8 @@ export class EventsService {
   }
 
   async remove(id: string) {
-    await this.findOne(id);
+    const event = await this.prisma.event.findUnique({ where: { id } });
+    if (!event) throw new NotFoundException('Evento no encontrado');
     return this.prisma.event.delete({ where: { id } });
   }
 

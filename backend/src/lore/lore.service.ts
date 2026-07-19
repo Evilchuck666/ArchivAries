@@ -85,7 +85,8 @@ export class LoreService {
   }
 
   async remove(id: string) {
-    await this.prisma.loreEntry.findUniqueOrThrow({ where: { id } });
+    const entry = await this.prisma.loreEntry.findUnique({ where: { id } });
+    if (!entry) throw new NotFoundException('Entrada de lore no encontrada');
     return this.prisma.loreEntry.delete({ where: { id } });
   }
 }
