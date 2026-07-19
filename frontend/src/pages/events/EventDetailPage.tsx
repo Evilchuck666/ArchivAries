@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { getApiErrorKey } from '../../utils/apiError';
-import { ConfirmDeleteModal } from '../../components/ui/ConfirmDeleteModal';
+import { ConfirmActionModal } from '../../components/ui/ConfirmActionModal';
 import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
@@ -222,7 +222,7 @@ export function EventDetailPage() {
       )}
     </div>
 
-    <ConfirmDeleteModal
+    <ConfirmActionModal
       isOpen={showDeleteModal}
       message={t('confirm_delete')}
       onConfirm={() => deleteEvent()}
@@ -230,7 +230,7 @@ export function EventDetailPage() {
       isPending={isDeleting}
       error={deleteError}
     />
-    <ConfirmDeleteModal
+    <ConfirmActionModal
       isOpen={showCancelModal}
       title={t('cancel_event')}
       message={t('confirm_cancel')}

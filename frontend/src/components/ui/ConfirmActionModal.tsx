@@ -12,7 +12,7 @@ interface Props {
   confirmLabel?: string;
 }
 
-export function ConfirmDeleteModal({ isOpen, message, onConfirm, onCancel, isPending, error, title, confirmLabel }: Props) {
+export function ConfirmActionModal({ isOpen, message, onConfirm, onCancel, isPending, error, title, confirmLabel }: Props) {
   const { t } = useTranslation('common');
 
   if (!isOpen) return null;

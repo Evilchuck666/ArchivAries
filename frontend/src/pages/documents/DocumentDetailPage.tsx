@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { documentsApi } from '../../api/documents.api';
 import { getApiErrorKey } from '../../utils/apiError';
-import { ConfirmDeleteModal } from '../../components/ui/ConfirmDeleteModal';
+import { ConfirmActionModal } from '../../components/ui/ConfirmActionModal';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
@@ -99,7 +99,7 @@ export function DocumentDetailPage() {
       </div>
     </div>
 
-    <ConfirmDeleteModal
+    <ConfirmActionModal
       isOpen={showDeleteModal}
       message={t('confirm_delete')}
       onConfirm={() => deleteMutation.mutate()}
