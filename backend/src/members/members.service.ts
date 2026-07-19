@@ -8,7 +8,7 @@ import { PermissionsService } from '../permissions/permissions.service';
 import { SYSTEM_ROLE } from '../common/enums/role.enum';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 const BASE_PUBLIC = {
   id: true,

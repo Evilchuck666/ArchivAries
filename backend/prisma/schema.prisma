@@ -58,6 +58,7 @@ model User {
   inviteExpiresAt DateTime?
   createdAt       DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  deletedAt    DateTime?
 
   member              Member?
   eventParticipations EventParticipation[]
@@ -66,6 +67,7 @@ model User {
   createdNews         NewsAnnouncement[]   @relation("NewsCreator")
   createdLoreEntries  LoreEntry[]          @relation("LoreCreator")
 
+  @@index([deletedAt])
   @@map("users")
 }
 
@@ -92,7 +94,9 @@ model Member {
   notes         String?      @db.Text
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
 
+  @@index([deletedAt])
   @@map("members")
 }
 
@@ -114,11 +118,13 @@ model Event {
   creator       User        @relation("EventCreator", fields: [creatorId], references: [id])
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
 
   participations EventParticipation[]
 
   @@index([startDate])
   @@index([status])
+  @@index([deletedAt])
   @@map("events")
 }
 
@@ -136,8 +142,10 @@ model EventParticipation {
   confirmedAt DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
 
   @@unique([eventId, userId])
+  @@index([deletedAt])
   @@map("event_participations")
 }
 
@@ -151,9 +159,11 @@ model DocumentCategory {
   sortOrder   Int        @default(0)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
 
   documents Document[]
 
+  @@index([deletedAt])
   @@map("document_categories")
 }
 
@@ -173,9 +183,11 @@ model Document {
   isPublished Boolean            @default(true)
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
+  deletedAt   DateTime?
 
   @@index([categoryId])
   @@index([isPublished, visibility])
+  @@index([deletedAt])
   @@map("documents")
 }
 
@@ -192,8 +204,10 @@ model NewsAnnouncement {
   creator     User     @relation("NewsCreator", fields: [creatorId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
 
   @@index([isPublished, isImportant])
+  @@index([deletedAt])
   @@map("news_announcements")
 }
 
@@ -203,9 +217,11 @@ model RolePermission {
   id         String  @id @default(cuid())
   role       String
   permission String
-  granted    Boolean @default(true)
+  granted    Boolean   @default(true)
+  deletedAt  DateTime?
 
   @@unique([role, permission], name: "role_permission")
+  @@index([deletedAt])
   @@map("role_permissions")
 }
 
@@ -216,8 +232,10 @@ model RoleDefinition {
   name        String  @unique
   label       String
   level       Int
-  isProtected Boolean @default(false)
+  isProtected Boolean   @default(false)
+  deletedAt   DateTime?
 
+  @@index([deletedAt])
   @@map("role_definitions")
 }
 
@@ -236,6 +254,8 @@ model LoreEntry {
   creator     User         @relation("LoreCreator", fields: [creatorId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
 
+  @@index([deletedAt])
   @@map("lore_entries")
 }
