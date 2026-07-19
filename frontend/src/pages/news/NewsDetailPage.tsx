@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { newsApi } from '../../api/news.api';
+import { getApiErrorKey } from '../../utils/apiError';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
@@ -18,6 +20,7 @@ export function NewsDetailPage() {
   const queryClient = useQueryClient();
 
   const canEdit = can('news.edit');
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const { data: item, isLoading } = useQuery({
     queryKey: ['news', id],
@@ -31,6 +34,7 @@ export function NewsDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['news'] });
       navigate('/app/news');
     },
+    onError: (err) => setDeleteError(tc(getApiErrorKey(err))),
   });
 
   if (isLoading) return <Spinner className="py-20" />;
@@ -55,20 +59,24 @@ export function NewsDetailPage() {
           </div>
 
           {canEdit && (
-            <div className="flex gap-2 shrink-0">
-              <Link to={`/app/news/${id}/edit`}>
-                <button className="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors">
-                  {tc('actions.edit')}
+            <div className="flex flex-col items-end gap-1 shrink-0">
+              <div className="flex gap-2">
+                <Link to={`/app/news/${id}/edit`}>
+                  <button className="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors">
+                    {tc('actions.edit')}
+                  </button>
+                </Link>
+                <button
+                  onClick={() => {
+                    setDeleteError(null);
+                    if (confirm(t('confirm_delete'))) deleteMutation.mutate();
+                  }}
+                  className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
+                >
+                  {t('delete')}
                 </button>
-              </Link>
-              <button
-                onClick={() => {
-                  if (confirm(t('confirm_delete'))) deleteMutation.mutate();
-                }}
-                className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
-              >
-                {t('delete')}
-              </button>
+              </div>
+              {deleteError && <p className="text-red-400 text-xs">{deleteError}</p>}
             </div>
           )}
         </div>

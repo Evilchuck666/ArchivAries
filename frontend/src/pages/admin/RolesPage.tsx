@@ -39,8 +39,8 @@ export function RolesPage() {
       setForm(EMPTY_FORM);
       setError('');
     },
-    onError: (err: any) => {
-      setError(err?.response?.data?.message ?? t('roles_create_error'));
+    onError: () => {
+      setError(t('roles_create_error'));
     },
   });
 
@@ -51,8 +51,8 @@ export function RolesPage() {
       queryClient.invalidateQueries({ queryKey: ['roles'] });
       setEditingId(null);
     },
-    onError: (err: any) => {
-      setError(err?.response?.data?.message ?? t('roles_update_error'));
+    onError: () => {
+      setError(t('roles_update_error'));
     },
   });
 
@@ -62,8 +62,8 @@ export function RolesPage() {
       queryClient.invalidateQueries({ queryKey: ['roles'] });
       queryClient.invalidateQueries({ queryKey: ['permissions-matrix'] });
     },
-    onError: (err: any) => {
-      setError(err?.response?.data?.message ?? t('roles_delete_error'));
+    onError: () => {
+      setError(t('roles_delete_error'));
     },
   });
 

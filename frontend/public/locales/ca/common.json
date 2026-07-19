@@ -58,7 +58,10 @@
     "generic": "S'ha produït un error. Si us plau, torna-ho a intentar.",
     "not_found": "No trobat",
     "unauthorized": "No autoritzat",
-    "forbidden": "Accés denegat"
+    "forbidden": "Accés denegat",
+    "bad_request": "La sol·licitud no és vàlida",
+    "conflict": "Ja existeix un registre amb aquestes dades",
+    "delete_failed": "No s'ha pogut eliminar"
   },
   "empty": {
     "default": "Encara no hi ha res aquí"

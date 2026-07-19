@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { documentsApi } from '../../api/documents.api';
+import { getApiErrorKey } from '../../utils/apiError';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
@@ -12,7 +14,9 @@ import { es } from 'date-fns/locale';
 export function DocumentDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation('documents');
+  const { t: tc } = useTranslation('common');
   const { can } = usePermissions();
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -30,6 +34,7 @@ export function DocumentDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['documents'] });
       navigate('/app/documents');
     },
+    onError: (err) => setDeleteError(tc(getApiErrorKey(err))),
   });
 
   if (isLoading) return <Spinner className="py-20" />;
@@ -58,6 +63,7 @@ export function DocumentDetailPage() {
             {doc.summary && <p className="text-slate-400 mt-1 text-sm">{doc.summary}</p>}
           </div>
 
+          {deleteError && <p className="text-red-400 text-sm mt-2">{deleteError}</p>}
           {canEdit && (
             <div className="flex gap-2 shrink-0">
               <Link
@@ -68,6 +74,7 @@ export function DocumentDetailPage() {
               </Link>
               <button
                 onClick={() => {
+                  setDeleteError(null);
                   if (confirm(t('confirm_delete'))) deleteMutation.mutate();
                 }}
                 className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"

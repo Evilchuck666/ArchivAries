@@ -58,7 +58,10 @@
     "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
     "not_found": "No encontrado",
     "unauthorized": "No autorizado",
-    "forbidden": "Acceso denegado"
+    "forbidden": "Acceso denegado",
+    "bad_request": "La solicitud no es válida",
+    "conflict": "Ya existe un registro con esos datos",
+    "delete_failed": "No se ha podido eliminar"
   },
   "empty": {
     "default": "No hay nada aquí todavía"

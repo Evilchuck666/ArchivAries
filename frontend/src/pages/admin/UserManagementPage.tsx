@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { usersApi } from '../../api/users.api';
 import { rolesApi } from '../../api/roles.api';
+import { getApiErrorKey } from '../../utils/apiError';
 import { Spinner } from '../../components/ui/Spinner';
 import { RoleBadge } from '../../components/shared/RoleBadge';
 import { ConfirmStatusModal } from '../../components/shared/ConfirmStatusModal';
@@ -23,6 +24,7 @@ export function UserManagementPage() {
   const [inviteSuccess, setInviteSuccess] = useState<{ email: string; devUrl: string } | null>(null);
   const [inviteError, setInviteError] = useState('');
   const [pendingStatus, setPendingStatus] = useState<{ id: string; email: string; currentIsActive: boolean } | null>(null);
+  const [actionError, setActionError] = useState('');
   const [tooltip, setTooltip] = useState<{ notes: string; x: number; top?: number; bottom?: number } | null>(null);
 
   const { data: users = [], isLoading } = useQuery({
@@ -39,16 +41,22 @@ export function UserManagementPage() {
 
   const roleMutation = useMutation({
     mutationFn: ({ id, role }: { id: string; role: string }) => usersApi.updateRole(id, role),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-users'] }),
+    onSuccess: () => {
+      setActionError('');
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+    },
+    onError: (err) => setActionError(t(getApiErrorKey(err), { ns: 'common' })),
   });
 
   const statusMutation = useMutation({
     mutationFn: ({ id, isActive, reason }: { id: string; isActive: boolean; reason: string }) =>
       usersApi.updateStatus(id, isActive, reason),
     onSuccess: () => {
+      setActionError('');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       setPendingStatus(null);
     },
+    onError: (err) => setActionError(t(getApiErrorKey(err), { ns: 'common' })),
   });
 
   const inviteMutation = useMutation({
@@ -149,6 +157,7 @@ export function UserManagementPage() {
         </div>
       )}
 
+      {actionError && <p className="text-red-400 text-sm mb-4">{actionError}</p>}
       <div className="bg-slate-900 border border-slate-800 rounded-lg overflow-x-auto">
         <table className="w-full text-sm">
           <thead>

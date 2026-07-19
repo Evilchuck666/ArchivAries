@@ -378,7 +378,7 @@ export function MemberEditPage() {
 
               {passwordMutation.isError && (
                 <p className="text-red-400 text-sm">
-                  {(passwordMutation.error as any)?.response?.data?.message ?? t('password_change_error')}
+                  {t('password_change_error')}
                 </p>
               )}
 
