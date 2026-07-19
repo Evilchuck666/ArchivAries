@@ -34,6 +34,7 @@
   "list_view": "Vista llista",
   "draft": "Esborrany",
   "edit_event": "Editar esdeveniment",
+  "confirm_delete": "Segur que vols eliminar aquest esdeveniment?",
   "cancel_event": "Cancel·lar esdeveniment",
   "cancel_confirm_yes": "Confirmar cancel·lació",
   "delete_event": "Eliminar esdeveniment",

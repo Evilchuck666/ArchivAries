@@ -34,6 +34,7 @@
   "list_view": "Vista lista",
   "draft": "Borrador",
   "edit_event": "Editar evento",
+  "confirm_delete": "¿Seguro que quieres eliminar este evento?",
   "cancel_event": "Cancelar evento",
   "cancel_confirm_yes": "Confirmar cancelación",
   "delete_event": "Eliminar evento",

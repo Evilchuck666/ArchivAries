@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { eventsApi } from '../../api/events.api';
 import { getApiErrorKey } from '../../utils/apiError';
+import { ConfirmDeleteModal } from '../../components/ui/ConfirmDeleteModal';
 import { EventStatusBadge } from '../../components/shared/EventStatusBadge';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
@@ -31,7 +32,7 @@ export function EventDetailPage() {
   });
 
   const [pendingAction, setPendingAction] = useState<'CONFIRMED' | 'DECLINED' | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
@@ -84,6 +85,7 @@ export function EventDetailPage() {
   const canDelete = !isPast && (user?.id === event.creatorId || can('events.delete'));
 
   return (
+    <>
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <Link to="/app/events" className="text-sm text-slate-400 hover:text-amber-300">
@@ -119,29 +121,14 @@ export function EventDetailPage() {
               )
             )}
             {canDelete && (
-              <>
-                {confirmDelete ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => deleteEvent()}
-                    loading={isDeleting}
-                    className="text-red-400 border-red-900 hover:bg-red-950"
-                  >
-                    {t('delete_confirm_yes')}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => { setConfirmDelete(true); setDeleteError(null); }}
-                    className="text-red-400 border-red-900 hover:bg-red-950"
-                  >
-                    {tc('actions.delete')}
-                  </Button>
-                )}
-                {deleteError && <span className="text-red-400 text-xs">{deleteError}</span>}
-              </>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => { setDeleteError(null); setShowDeleteModal(true); }}
+                className="text-red-400 border-red-900 hover:bg-red-950"
+              >
+                {tc('actions.delete')}
+              </Button>
             )}
           </div>
         )}
@@ -245,5 +232,15 @@ export function EventDetailPage() {
         </Card>
       )}
     </div>
+
+    <ConfirmDeleteModal
+      isOpen={showDeleteModal}
+      message={t('confirm_delete')}
+      onConfirm={() => deleteEvent()}
+      onCancel={() => { setShowDeleteModal(false); setDeleteError(null); }}
+      isPending={isDeleting}
+      error={deleteError}
+    />
+    </>
   );
 }

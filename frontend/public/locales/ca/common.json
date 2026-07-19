@@ -61,7 +61,8 @@
     "forbidden": "Accés denegat",
     "bad_request": "La sol·licitud no és vàlida",
     "conflict": "Ja existeix un registre amb aquestes dades",
-    "delete_failed": "No s'ha pogut eliminar"
+    "delete_failed": "No s'ha pogut eliminar",
+    "delete_irreversible": "Aquesta acció no es pot desfer."
   },
   "empty": {
     "default": "Encara no hi ha res aquí"

@@ -61,7 +61,8 @@
     "forbidden": "Acceso denegado",
     "bad_request": "La solicitud no es válida",
     "conflict": "Ya existe un registro con esos datos",
-    "delete_failed": "No se ha podido eliminar"
+    "delete_failed": "No se ha podido eliminar",
+    "delete_irreversible": "Esta acción no se puede deshacer."
   },
   "empty": {
     "default": "No hay nada aquí todavía"

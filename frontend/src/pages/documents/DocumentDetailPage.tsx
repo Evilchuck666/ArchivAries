@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { documentsApi } from '../../api/documents.api';
 import { getApiErrorKey } from '../../utils/apiError';
+import { ConfirmDeleteModal } from '../../components/ui/ConfirmDeleteModal';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
@@ -16,6 +17,7 @@ export function DocumentDetailPage() {
   const { t } = useTranslation('documents');
   const { t: tc } = useTranslation('common');
   const { can } = usePermissions();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -41,6 +43,7 @@ export function DocumentDetailPage() {
   if (!doc) return <p className="text-slate-400">{t('not_found')}</p>;
 
   return (
+    <>
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center gap-2 mb-4 text-sm text-slate-500">
         <Link to="/app/documents" className="hover:text-amber-400 transition-colors">
@@ -63,7 +66,6 @@ export function DocumentDetailPage() {
             {doc.summary && <p className="text-slate-400 mt-1 text-sm">{doc.summary}</p>}
           </div>
 
-          {deleteError && <p className="text-red-400 text-sm mt-2">{deleteError}</p>}
           {canEdit && (
             <div className="flex gap-2 shrink-0">
               <Link
@@ -73,10 +75,7 @@ export function DocumentDetailPage() {
                 {t('edit')}
               </Link>
               <button
-                onClick={() => {
-                  setDeleteError(null);
-                  if (confirm(t('confirm_delete'))) deleteMutation.mutate();
-                }}
+                onClick={() => { setDeleteError(null); setShowDeleteModal(true); }}
                 className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
               >
                 {t('delete')}
@@ -99,5 +98,15 @@ export function DocumentDetailPage() {
         )}
       </div>
     </div>
+
+    <ConfirmDeleteModal
+      isOpen={showDeleteModal}
+      message={t('confirm_delete')}
+      onConfirm={() => deleteMutation.mutate()}
+      onCancel={() => { setShowDeleteModal(false); setDeleteError(null); }}
+      isPending={deleteMutation.isPending}
+      error={deleteError}
+    />
+    </>
   );
 }

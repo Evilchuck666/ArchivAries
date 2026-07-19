@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { loreApi } from '../../api/lore.api';
 import { getApiErrorKey } from '../../utils/apiError';
+import { ConfirmDeleteModal } from '../../components/ui/ConfirmDeleteModal';
 import { Spinner } from '../../components/ui/Spinner';
 import { Badge } from '../../components/ui/Badge';
 import { MarkdownRenderer } from '../../components/ui/MarkdownRenderer';
@@ -24,6 +25,7 @@ export function LoreDetailPage() {
   const queryClient = useQueryClient();
 
   const canEdit = can('lore.edit');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const { data: entry, isLoading } = useQuery({
@@ -45,6 +47,7 @@ export function LoreDetailPage() {
   if (!entry) return <p className="text-slate-400">{t('not_found')}</p>;
 
   return (
+    <>
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center gap-2 mb-4 text-sm text-slate-500">
         <Link to="/app/lore" className="hover:text-amber-400 transition-colors">{t('title')}</Link>
@@ -73,24 +76,18 @@ export function LoreDetailPage() {
           </div>
 
           {canEdit && (
-            <div className="flex flex-col items-end gap-1 shrink-0">
-              <div className="flex gap-2">
-                <Link to={`/app/lore/${id}/edit`}>
-                  <button className="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors">
-                    {tc('actions.edit')}
-                  </button>
-                </Link>
-                <button
-                  onClick={() => {
-                    setDeleteError(null);
-                    if (confirm(t('confirm_delete'))) deleteMutation.mutate();
-                  }}
-                  className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
-                >
-                  {t('delete')}
+            <div className="flex gap-2 shrink-0">
+              <Link to={`/app/lore/${id}/edit`}>
+                <button className="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-md transition-colors">
+                  {tc('actions.edit')}
                 </button>
-              </div>
-              {deleteError && <p className="text-red-400 text-xs">{deleteError}</p>}
+              </Link>
+              <button
+                onClick={() => { setDeleteError(null); setShowDeleteModal(true); }}
+                className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
+              >
+                {t('delete')}
+              </button>
             </div>
           )}
         </div>
@@ -104,5 +101,15 @@ export function LoreDetailPage() {
         )}
       </div>
     </div>
+
+    <ConfirmDeleteModal
+      isOpen={showDeleteModal}
+      message={t('confirm_delete')}
+      onConfirm={() => deleteMutation.mutate()}
+      onCancel={() => { setShowDeleteModal(false); setDeleteError(null); }}
+      isPending={deleteMutation.isPending}
+      error={deleteError}
+    />
+    </>
   );
 }
