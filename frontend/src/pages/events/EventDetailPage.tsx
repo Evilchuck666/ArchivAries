@@ -33,8 +33,9 @@ export function EventDetailPage() {
 
   const [pendingAction, setPendingAction] = useState<'CONFIRMED' | 'DECLINED' | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [confirmCancel, setConfirmCancel] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [cancelError, setCancelError] = useState<string | null>(null);
 
   const { mutate: rsvpMutate, isPending } = useMutation({
     mutationFn: (status: 'CONFIRMED' | 'DECLINED') =>
@@ -60,12 +61,12 @@ export function EventDetailPage() {
   const { mutate: cancelEvent, isPending: isCancelling } = useMutation({
     mutationFn: () => eventsApi.update(id!, { status: 'CANCELLED' }),
     onSuccess: () => {
-      setConfirmCancel(false);
+      setShowCancelModal(false);
       queryClient.invalidateQueries({ queryKey: ['event', id] });
       queryClient.invalidateQueries({ queryKey: ['events'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
-    onError: () => setConfirmCancel(false),
+    onError: (err) => setCancelError(tc(getApiErrorKey(err))),
   });
 
   const rsvp = (status: 'CONFIRMED' | 'DECLINED') => {
@@ -99,26 +100,14 @@ export function EventDetailPage() {
               </Link>
             )}
             {canCancel && (
-              confirmCancel ? (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => cancelEvent()}
-                  loading={isCancelling}
-                  className="text-orange-400 border-orange-900 hover:bg-orange-950"
-                >
-                  {t('cancel_confirm_yes')}
-                </Button>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setConfirmCancel(true)}
-                  className="text-orange-400 border-orange-900 hover:bg-orange-950"
-                >
-                  {t('cancel_event')}
-                </Button>
-              )
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowCancelModal(true)}
+                className="text-orange-400 border-orange-900 hover:bg-orange-950"
+              >
+                {t('cancel_event')}
+              </Button>
             )}
             {canDelete && (
               <Button
@@ -240,6 +229,16 @@ export function EventDetailPage() {
       onCancel={() => { setShowDeleteModal(false); setDeleteError(null); }}
       isPending={isDeleting}
       error={deleteError}
+    />
+    <ConfirmDeleteModal
+      isOpen={showCancelModal}
+      title={t('cancel_event')}
+      message={t('confirm_cancel')}
+      confirmLabel={t('cancel_confirm_yes')}
+      onConfirm={() => cancelEvent()}
+      onCancel={() => { setShowCancelModal(false); setCancelError(null); }}
+      isPending={isCancelling}
+      error={cancelError}
     />
     </>
   );

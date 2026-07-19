@@ -8,9 +8,11 @@ interface Props {
   onCancel: () => void;
   isPending?: boolean;
   error?: string | null;
+  title?: string;
+  confirmLabel?: string;
 }
 
-export function ConfirmDeleteModal({ isOpen, message, onConfirm, onCancel, isPending, error }: Props) {
+export function ConfirmDeleteModal({ isOpen, message, onConfirm, onCancel, isPending, error, title, confirmLabel }: Props) {
   const { t } = useTranslation('common');
 
   if (!isOpen) return null;
@@ -25,7 +27,7 @@ export function ConfirmDeleteModal({ isOpen, message, onConfirm, onCancel, isPen
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-serif text-red-400 mb-2">
-          {t('actions.delete')}
+          {title ?? t('actions.delete')}
         </h2>
         <p className="text-slate-300 text-sm mb-1">{message}</p>
         <p className="text-slate-500 text-xs mb-4">{t('errors.delete_irreversible')}</p>
@@ -46,7 +48,7 @@ export function ConfirmDeleteModal({ isOpen, message, onConfirm, onCancel, isPen
             onClick={onConfirm}
             loading={isPending}
           >
-            {t('actions.delete')}
+            {confirmLabel ?? t('actions.delete')}
           </Button>
         </div>
       </div>

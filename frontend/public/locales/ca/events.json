@@ -37,6 +37,7 @@
   "confirm_delete": "Segur que vols eliminar aquest esdeveniment?",
   "cancel_event": "Cancel·lar esdeveniment",
   "cancel_confirm_yes": "Confirmar cancel·lació",
+  "confirm_cancel": "Segur que vols cancel·lar aquest esdeveniment? Els participants seran notificats.",
   "delete_event": "Eliminar esdeveniment",
   "delete_confirm_yes": "Confirmar eliminació",
   "rsvp_filter_all": "La meva assistència",
