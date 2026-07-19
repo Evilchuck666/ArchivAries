@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import configuration from './config/configuration';
@@ -14,7 +13,6 @@ import { NewsModule } from './news/news.module';
 import { LoreModule } from './lore/lore.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { RolesModule } from './roles/roles.module';
-import { PurgeModule } from './purge/purge.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { PermissionsGuard } from './common/guards/permissions.guard';
@@ -30,7 +28,6 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
       validationSchema,
       envFilePath: ['../.env', '.env'],
     }),
-    ScheduleModule.forRoot(),
     PrismaModule,
     AuthModule,
     UsersModule,
@@ -42,7 +39,6 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     DashboardModule,
     PermissionsModule,
     RolesModule,
-    PurgeModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

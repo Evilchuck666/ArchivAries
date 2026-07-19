@@ -48,17 +48,16 @@ enum LoreCategory {
 // ─── User ─────────────────────────────────────────────────────────────────────
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  role         String   @default("MEMBER")
-  isActive     Boolean  @default(true)
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  role            String    @default("MEMBER")
+  isActive        Boolean   @default(true)
   refreshToken    String?
   inviteToken     String?
   inviteExpiresAt DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  deletedAt    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   member              Member?
   eventParticipations EventParticipation[]
@@ -67,7 +66,6 @@ model User {
   createdNews         NewsAnnouncement[]   @relation("NewsCreator")
   createdLoreEntries  LoreEntry[]          @relation("LoreCreator")
 
-  @@index([deletedAt])
   @@map("users")
 }
 
@@ -94,9 +92,7 @@ model Member {
   notes         String?      @db.Text
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  deletedAt     DateTime?
 
-  @@index([deletedAt])
   @@map("members")
 }
 
@@ -118,13 +114,11 @@ model Event {
   creator       User        @relation("EventCreator", fields: [creatorId], references: [id])
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  deletedAt     DateTime?
 
   participations EventParticipation[]
 
   @@index([startDate])
   @@index([status])
-  @@index([deletedAt])
   @@map("events")
 }
 
@@ -142,10 +136,8 @@ model EventParticipation {
   confirmedAt DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-  deletedAt   DateTime?
 
   @@unique([eventId, userId])
-  @@index([deletedAt])
   @@map("event_participations")
 }
 
@@ -159,11 +151,9 @@ model DocumentCategory {
   sortOrder   Int        @default(0)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  deletedAt   DateTime?
 
   documents Document[]
 
-  @@index([deletedAt])
   @@map("document_categories")
 }
 
@@ -183,11 +173,9 @@ model Document {
   isPublished Boolean            @default(true)
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
-  deletedAt   DateTime?
 
   @@index([categoryId])
   @@index([isPublished, visibility])
-  @@index([deletedAt])
   @@map("documents")
 }
 
@@ -204,10 +192,8 @@ model NewsAnnouncement {
   creator     User     @relation("NewsCreator", fields: [creatorId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
 
   @@index([isPublished, isImportant])
-  @@index([deletedAt])
   @@map("news_announcements")
 }
 
@@ -217,11 +203,9 @@ model RolePermission {
   id         String  @id @default(cuid())
   role       String
   permission String
-  granted    Boolean   @default(true)
-  deletedAt  DateTime?
+  granted    Boolean @default(true)
 
   @@unique([role, permission], name: "role_permission")
-  @@index([deletedAt])
   @@map("role_permissions")
 }
 
@@ -232,30 +216,26 @@ model RoleDefinition {
   name        String  @unique
   label       String
   level       Int
-  isProtected Boolean   @default(false)
-  deletedAt   DateTime?
+  isProtected Boolean @default(false)
 
-  @@index([deletedAt])
   @@map("role_definitions")
 }
 
 // ─── LoreEntry ────────────────────────────────────────────────────────────────
 
 model LoreEntry {
-  id          String       @id @default(cuid())
-  title       String
-  content     String       @db.Text
-  summary     String?
-  category    LoreCategory @default(OTHER)
-  tags        String[]
+  id           String       @id @default(cuid())
+  title        String
+  content      String       @db.Text
+  summary      String?
+  category     LoreCategory @default(OTHER)
+  tags         String[]
   isPublished  Boolean      @default(true)
   isRestricted Boolean      @default(false)
   creatorId    String
-  creator     User         @relation("LoreCreator", fields: [creatorId], references: [id])
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  deletedAt   DateTime?
+  creator      User         @relation("LoreCreator", fields: [creatorId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 
-  @@index([deletedAt])
   @@map("lore_entries")
 }
