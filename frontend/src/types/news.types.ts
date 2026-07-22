@@ -7,4 +7,5 @@ export interface NewsAnnouncement {
   publishedAt: string;
   createdAt: string;
   creator?: { member: { displayName: string } | null };
+  canDelete?: boolean;
 }

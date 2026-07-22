@@ -74,12 +74,14 @@ export function DocumentDetailPage() {
               >
                 {t('edit')}
               </Link>
-              <button
-                onClick={() => { setDeleteError(null); setShowDeleteModal(true); }}
-                className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
-              >
-                {t('delete')}
-              </button>
+              {doc.canDelete && (
+                <button
+                  onClick={() => { setDeleteError(null); setShowDeleteModal(true); }}
+                  className="text-xs px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800 text-red-400 rounded-md transition-colors"
+                >
+                  {t('delete')}
+                </button>
+              )}
             </div>
           )}
         </div>

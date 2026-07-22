@@ -31,8 +31,13 @@ export class LoreController {
 
   @Get(':id')
   @RequiresPermission('lore.read')
-  findOne(@Param('id') id: string, @CurrentUser('role') role: string) {
-    return this.loreService.findOne(id, role);
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser('role') role: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.loreService.findOne(id, role, userId, userLevel);
   }
 
   @Post()

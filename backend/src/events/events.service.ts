@@ -79,14 +79,14 @@ export class EventsService {
     });
   }
 
-  async findOne(id: string, userId?: string, viewerRole?: string) {
+  async findOne(id: string, userId?: string, viewerRole?: string, currentUserLevel?: number) {
     const canSeeDrafts = viewerRole
       ? await this.permissionsService.hasPermission(viewerRole, 'events.edit')
       : false;
     const event = await this.prisma.event.findUnique({
       where: { id },
       include: {
-        creator: { select: { member: { select: { displayName: true } } } },
+        creator: { select: { role: true, member: { select: { displayName: true } } } },
         _count: { select: { participations: true } },
         ...(userId && {
           participations: {
@@ -99,7 +99,14 @@ export class EventsService {
     });
     if (!event) throw new NotFoundException('Evento no encontrado');
     if (!event.isPublished && !canSeeDrafts) throw new ForbiddenException();
-    return event;
+
+    const canDelete =
+      viewerRole !== undefined && userId !== undefined && currentUserLevel !== undefined
+        ? (await this.permissionsService.hasPermission(viewerRole, 'events.delete')) &&
+          (await this.permissionsService.canDelete(userId, currentUserLevel, event.creatorId, event.creator.role))
+        : false;
+
+    return { ...event, canDelete };
   }
 
   create(dto: CreateEventDto, creatorId: string) {

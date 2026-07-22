@@ -54,15 +54,22 @@ export class NewsService {
     });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, viewerRole?: string, currentUserId?: string, currentUserLevel?: number) {
     const news = await this.prisma.newsAnnouncement.findUnique({
       where: { id },
       include: {
-        creator: { select: { member: { select: { displayName: true } } } },
+        creator: { select: { role: true, member: { select: { displayName: true } } } },
       },
     });
     if (!news) throw new NotFoundException('Aviso no encontrado');
-    return news;
+
+    const canDelete =
+      viewerRole !== undefined && currentUserId !== undefined && currentUserLevel !== undefined
+        ? (await this.permissionsService.hasPermission(viewerRole, 'news.delete')) &&
+          (await this.permissionsService.canDelete(currentUserId, currentUserLevel, news.creatorId, news.creator.role))
+        : false;
+
+    return { ...news, canDelete };
   }
 
   create(dto: CreateNewsDto, creatorId: string) {

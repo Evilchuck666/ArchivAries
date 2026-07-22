@@ -51,7 +51,7 @@ export class LoreService {
     });
   }
 
-  async findOne(id: string, viewerRole: string) {
+  async findOne(id: string, viewerRole: string, currentUserId?: string, currentUserLevel?: number) {
     const [canSeeDrafts, canViewRestricted] = await Promise.all([
       this.permissionsService.hasPermission(viewerRole, 'lore.edit'),
       this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted'),
@@ -60,13 +60,20 @@ export class LoreService {
     const entry = await this.prisma.loreEntry.findUnique({
       where: { id },
       include: {
-        creator: { select: { member: { select: { displayName: true } } } },
+        creator: { select: { role: true, member: { select: { displayName: true } } } },
       },
     });
     if (!entry) throw new NotFoundException('Entrada de lore no encontrada');
     if (!entry.isPublished && !canSeeDrafts) throw new NotFoundException('Entrada de lore no encontrada');
     if (entry.isRestricted && !canViewRestricted) throw new NotFoundException('Entrada de lore no encontrada');
-    return entry;
+
+    const canDelete =
+      currentUserId !== undefined && currentUserLevel !== undefined
+        ? (await this.permissionsService.hasPermission(viewerRole, 'lore.delete')) &&
+          (await this.permissionsService.canDelete(currentUserId, currentUserLevel, entry.creatorId, entry.creator.role))
+        : false;
+
+    return { ...entry, canDelete };
   }
 
   async create(dto: CreateLoreEntryDto, creatorId: string, viewerRole: string) {

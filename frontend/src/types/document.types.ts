@@ -21,4 +21,5 @@ export interface Document {
   updatedAt: string;
   category: { id: string; name: string; slug: string };
   creator?: { member: { displayName: string } | null };
+  canDelete?: boolean;
 }

@@ -19,4 +19,5 @@ export interface LoreEntry {
   isRestricted: boolean;
   updatedAt: string;
   creator?: { member: { displayName: string } | null };
+  canDelete?: boolean;
 }

@@ -83,14 +83,14 @@ export class DocumentsService {
     });
   }
 
-  async findOne(id: string, viewerRole: string) {
+  async findOne(id: string, viewerRole: string, currentUserId?: string, currentUserLevel?: number) {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const canSeeDrafts = await this.permissionsService.hasPermission(viewerRole, 'documents.edit');
     const doc = await this.prisma.document.findUnique({
       where: { id },
       include: {
         category: true,
-        creator: { select: { member: { select: { displayName: true } } } },
+        creator: { select: { role: true, member: { select: { displayName: true } } } },
       },
     });
 
@@ -98,7 +98,13 @@ export class DocumentsService {
     if (!doc.isPublished && !canSeeDrafts) throw new ForbiddenException();
     if (doc.visibility === 'RESTRICTED' && !canReadRestricted) throw new ForbiddenException();
 
-    return doc;
+    const canDelete =
+      currentUserId !== undefined && currentUserLevel !== undefined
+        ? (await this.permissionsService.hasPermission(viewerRole, 'documents.delete')) &&
+          (await this.permissionsService.canDelete(currentUserId, currentUserLevel, doc.creatorId, doc.creator.role))
+        : false;
+
+    return { ...doc, canDelete };
   }
 
   create(dto: CreateDocumentDto, creatorId: string) {

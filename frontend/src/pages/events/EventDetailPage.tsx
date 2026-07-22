@@ -83,7 +83,7 @@ export function EventDetailPage() {
 
   const canEdit = !isPast && (user?.id === event.creatorId || can('events.edit'));
   const canCancel = canEdit && event.status === 'PLANNED';
-  const canDelete = !isPast && (user?.id === event.creatorId || can('events.delete'));
+  const canDelete = !isPast && !!event.canDelete;
 
   return (
     <>

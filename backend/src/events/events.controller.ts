@@ -49,8 +49,9 @@ export class EventsController {
     @Param('id') id: string,
     @CurrentUser('id') userId: string,
     @CurrentUser('role') role: string,
+    @CurrentUser('level') userLevel: number,
   ) {
-    return this.eventsService.findOne(id, userId, role);
+    return this.eventsService.findOne(id, userId, role, userLevel);
   }
 
   @Post()

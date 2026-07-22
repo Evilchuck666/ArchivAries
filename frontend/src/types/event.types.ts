@@ -17,6 +17,7 @@ export interface Event {
   createdAt: string;
   _count?: { participations: number };
   participations?: { status: AttendanceStatus }[];
+  canDelete?: boolean;
 }
 
 export interface EventParticipation {

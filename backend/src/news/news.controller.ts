@@ -46,8 +46,13 @@ export class NewsController {
 
   @Get(':id')
   @RequiresPermission('news.read')
-  findOne(@Param('id') id: string) {
-    return this.newsService.findOne(id);
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser('role') role: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.newsService.findOne(id, role, userId, userLevel);
   }
 
   @Post()

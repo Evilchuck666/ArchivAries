@@ -58,8 +58,13 @@ export class DocumentsController {
 
   @Get('documents/:id')
   @RequiresPermission('documents.read')
-  findOne(@Param('id') id: string, @CurrentUser('role') role: string) {
-    return this.documentsService.findOne(id, role);
+  findOne(
+    @Param('id') id: string,
+    @CurrentUser('role') role: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.documentsService.findOne(id, role, userId, userLevel);
   }
 
   @Post('documents')
