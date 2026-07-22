@@ -33,6 +33,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException();
     }
 
-    return user;
+    const roleDef = await this.prisma.roleDefinition.findUnique({
+      where: { name: user.role },
+      select: { level: true },
+    });
+
+    return { ...user, level: roleDef?.level ?? 0 };
   }
 }

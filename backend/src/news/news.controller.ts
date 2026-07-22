@@ -64,7 +64,11 @@ export class NewsController {
 
   @Delete(':id')
   @RequiresPermission('news.delete')
-  remove(@Param('id') id: string) {
-    return this.newsService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.newsService.remove(id, userId, userLevel);
   }
 }

@@ -67,8 +67,12 @@ export class EventsController {
 
   @Delete(':id')
   @RequiresPermission('events.delete')
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.eventsService.remove(id, userId, userLevel);
   }
 
   @Post(':id/participate')

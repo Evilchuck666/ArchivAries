@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
 import { CreateNewsDto } from './dto/create-news.dto';
@@ -76,8 +76,16 @@ export class NewsService {
     return this.prisma.newsAnnouncement.update({ where: { id }, data: dto });
   }
 
-  async remove(id: string) {
-    await this.findOne(id);
+  async remove(id: string, currentUserId: string, currentUserLevel: number) {
+    const news = await this.prisma.newsAnnouncement.findUnique({
+      where: { id },
+      include: { creator: { select: { role: true } } },
+    });
+    if (!news) throw new NotFoundException('Aviso no encontrado');
+    const allowed = await this.permissionsService.canDelete(
+      currentUserId, currentUserLevel, news.creatorId, news.creator.role,
+    );
+    if (!allowed) throw new ForbiddenException();
     return this.prisma.newsAnnouncement.delete({ where: { id } });
   }
 }

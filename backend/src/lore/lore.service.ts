@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
 import { CreateLoreEntryDto } from './dto/create-lore-entry.dto';
@@ -84,9 +84,16 @@ export class LoreService {
     return this.prisma.loreEntry.update({ where: { id }, data });
   }
 
-  async remove(id: string) {
-    const entry = await this.prisma.loreEntry.findUnique({ where: { id } });
+  async remove(id: string, currentUserId: string, currentUserLevel: number) {
+    const entry = await this.prisma.loreEntry.findUnique({
+      where: { id },
+      include: { creator: { select: { role: true } } },
+    });
     if (!entry) throw new NotFoundException('Entrada de lore no encontrada');
+    const allowed = await this.permissionsService.canDelete(
+      currentUserId, currentUserLevel, entry.creatorId, entry.creator.role,
+    );
+    if (!allowed) throw new ForbiddenException();
     return this.prisma.loreEntry.delete({ where: { id } });
   }
 }

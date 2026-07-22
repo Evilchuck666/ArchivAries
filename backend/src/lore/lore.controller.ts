@@ -57,7 +57,11 @@ export class LoreController {
 
   @Delete(':id')
   @RequiresPermission('lore.delete')
-  remove(@Param('id') id: string) {
-    return this.loreService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.loreService.remove(id, userId, userLevel);
   }
 }

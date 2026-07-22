@@ -75,6 +75,20 @@ export class PermissionsService {
     };
   }
 
+  async canDelete(
+    currentUserId: string,
+    currentUserLevel: number,
+    creatorId: string,
+    creatorRole: string,
+  ): Promise<boolean> {
+    if (currentUserId === creatorId) return true;
+    const creatorRoleDef = await this.prisma.roleDefinition.findUnique({
+      where: { name: creatorRole },
+      select: { level: true },
+    });
+    return currentUserLevel > (creatorRoleDef?.level ?? 0);
+  }
+
   async setPermission(role: string, permission: string, granted: boolean): Promise<void> {
     await this.prisma.rolePermission.upsert({
       where: { role_permission: { role, permission } },

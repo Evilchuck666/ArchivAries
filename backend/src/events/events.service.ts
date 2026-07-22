@@ -125,9 +125,16 @@ export class EventsService {
     });
   }
 
-  async remove(id: string) {
-    const event = await this.prisma.event.findUnique({ where: { id } });
+  async remove(id: string, currentUserId: string, currentUserLevel: number) {
+    const event = await this.prisma.event.findUnique({
+      where: { id },
+      include: { creator: { select: { role: true } } },
+    });
     if (!event) throw new NotFoundException('Evento no encontrado');
+    const allowed = await this.permissionsService.canDelete(
+      currentUserId, currentUserLevel, event.creatorId, event.creator.role,
+    );
+    if (!allowed) throw new ForbiddenException();
     return this.prisma.event.delete({ where: { id } });
   }
 

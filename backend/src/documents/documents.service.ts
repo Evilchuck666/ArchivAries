@@ -113,9 +113,16 @@ export class DocumentsService {
     return this.prisma.document.update({ where: { id }, data: dto });
   }
 
-  async remove(id: string) {
-    const doc = await this.prisma.document.findUnique({ where: { id } });
+  async remove(id: string, currentUserId: string, currentUserLevel: number) {
+    const doc = await this.prisma.document.findUnique({
+      where: { id },
+      include: { creator: { select: { role: true } } },
+    });
     if (!doc) throw new NotFoundException('Documento no encontrado');
+    const allowed = await this.permissionsService.canDelete(
+      currentUserId, currentUserLevel, doc.creatorId, doc.creator.role,
+    );
+    if (!allowed) throw new ForbiddenException();
     return this.prisma.document.delete({ where: { id } });
   }
 }

@@ -76,7 +76,11 @@ export class DocumentsController {
 
   @Delete('documents/:id')
   @RequiresPermission('documents.delete')
-  remove(@Param('id') id: string) {
-    return this.documentsService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @CurrentUser('id') userId: string,
+    @CurrentUser('level') userLevel: number,
+  ) {
+    return this.documentsService.remove(id, userId, userLevel);
   }
 }
