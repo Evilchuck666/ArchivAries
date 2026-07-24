@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException 
 import { EventStatus } from '../common/enums/event-status.enum';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
+import { TrashService } from '../trash/trash.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ParticipationDto } from './dto/participation.dto';
@@ -11,6 +12,7 @@ export class EventsService {
   constructor(
     private prisma: PrismaService,
     private permissionsService: PermissionsService,
+    private trashService: TrashService,
   ) {}
 
   async findAll(filters: {
@@ -32,6 +34,9 @@ export class EventsService {
       if (filters.dateTo) where.startDate.lte = new Date(filters.dateTo);
     }
 
+    const trashedIds = await this.trashService.getTrashedIds('events');
+    if (trashedIds.length) where.id = { notIn: trashedIds };
+
     return this.prisma.event.findMany({
       where,
       orderBy: { startDate: 'asc' },
@@ -49,17 +54,20 @@ export class EventsService {
     });
   }
 
-  findUpcoming(limit = 5) {
+  async findUpcoming(limit = 5) {
     const now = new Date();
+    const trashedIds = await this.trashService.getTrashedIds('events');
+    const where: any = {
+      isPublished: true,
+      status: { not: 'CANCELLED' },
+      OR: [
+        { startDate: { gte: now } },
+        { startDate: { lt: now }, endDate: { gte: now } },
+      ],
+    };
+    if (trashedIds.length) where.id = { notIn: trashedIds };
     return this.prisma.event.findMany({
-      where: {
-        isPublished: true,
-        status: { not: 'CANCELLED' },
-        OR: [
-          { startDate: { gte: now } },
-          { startDate: { lt: now }, endDate: { gte: now } },
-        ],
-      },
+      where,
       orderBy: { startDate: 'asc' },
       take: limit,
       include: {
@@ -68,9 +76,12 @@ export class EventsService {
     });
   }
 
-  findPublic() {
+  async findPublic() {
+    const trashedIds = await this.trashService.getTrashedIds('events');
+    const where: any = { isPublic: true, isPublished: true };
+    if (trashedIds.length) where.id = { notIn: trashedIds };
     return this.prisma.event.findMany({
-      where: { isPublic: true, isPublished: true },
+      where,
       orderBy: { startDate: 'asc' },
       include: {
         creator: { select: { member: { select: { displayName: true } } } },
@@ -98,6 +109,7 @@ export class EventsService {
       },
     });
     if (!event) throw new NotFoundException('Evento no encontrado');
+    if (await this.trashService.isInTrash('events', id)) throw new NotFoundException('Evento no encontrado');
     if (!event.isPublished && !canSeeDrafts) throw new ForbiddenException();
 
     const canDelete =
@@ -142,7 +154,7 @@ export class EventsService {
       currentUserId, currentUserLevel, event.creatorId, event.creator.role,
     );
     if (!allowed) throw new ForbiddenException();
-    return this.prisma.event.delete({ where: { id } });
+    return this.trashService.softDelete('events', id, event.title, currentUserId);
   }
 
   async participate(eventId: string, userId: string, dto: ParticipationDto) {

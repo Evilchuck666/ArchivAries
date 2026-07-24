@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
+import { TrashService } from '../trash/trash.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CreateDocumentCategoryDto } from './dto/create-document-category.dto';
@@ -14,6 +15,7 @@ export class DocumentsService {
   constructor(
     private prisma: PrismaService,
     private permissionsService: PermissionsService,
+    private trashService: TrashService,
   ) {}
 
   findAllCategories() {
@@ -46,6 +48,9 @@ export class DocumentsService {
       ];
     }
 
+    const trashedIds = await this.trashService.getTrashedIds('documents');
+    if (trashedIds.length) where.id = { notIn: trashedIds };
+
     return this.prisma.document.findMany({
       where,
       select: {
@@ -68,6 +73,8 @@ export class DocumentsService {
     const canReadRestricted = await this.permissionsService.hasPermission(viewerRole, 'documents.read_restricted');
     const where: any = { isPublished: true };
     if (!canReadRestricted) where.visibility = 'ALL_MEMBERS';
+    const trashedIds = await this.trashService.getTrashedIds('documents');
+    if (trashedIds.length) where.id = { notIn: trashedIds };
 
     return this.prisma.document.findMany({
       where,
@@ -95,6 +102,7 @@ export class DocumentsService {
     });
 
     if (!doc) throw new NotFoundException('Documento no encontrado');
+    if (await this.trashService.isInTrash('documents', id)) throw new NotFoundException('Documento no encontrado');
     if (!doc.isPublished && !canSeeDrafts) throw new ForbiddenException();
     if (doc.visibility === 'RESTRICTED' && !canReadRestricted) throw new ForbiddenException();
 
@@ -115,6 +123,7 @@ export class DocumentsService {
   }
 
   async update(id: string, dto: UpdateDocumentDto) {
+    if (await this.trashService.isInTrash('documents', id)) throw new NotFoundException('Documento no encontrado');
     await this.prisma.document.findUniqueOrThrow({ where: { id } });
     return this.prisma.document.update({ where: { id }, data: dto });
   }
@@ -129,6 +138,6 @@ export class DocumentsService {
       currentUserId, currentUserLevel, doc.creatorId, doc.creator.role,
     );
     if (!allowed) throw new ForbiddenException();
-    return this.prisma.document.delete({ where: { id } });
+    return this.trashService.softDelete('documents', id, doc.title, currentUserId);
   }
 }

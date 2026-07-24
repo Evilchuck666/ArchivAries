@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
+import { TrashService } from '../trash/trash.service';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 
@@ -9,6 +10,7 @@ export class NewsService {
   constructor(
     private prisma: PrismaService,
     private permissionsService: PermissionsService,
+    private trashService: TrashService,
   ) {}
 
   async findAll(page = 1, limit = 10, viewerRole?: string) {
@@ -16,8 +18,12 @@ export class NewsService {
       ? await this.permissionsService.hasPermission(viewerRole, 'news.edit')
       : false;
 
+    const trashedIds = await this.trashService.getTrashedIds('news_announcements');
+    const baseWhere = canSeeDrafts ? {} : { isPublished: true };
+    const where = trashedIds.length ? { ...baseWhere, id: { notIn: trashedIds } } : baseWhere;
+
     return this.prisma.newsAnnouncement.findMany({
-      where: canSeeDrafts ? {} : { isPublished: true },
+      where,
       orderBy: { publishedAt: 'desc' },
       skip: (page - 1) * limit,
       take: limit,
@@ -32,17 +38,23 @@ export class NewsService {
     });
   }
 
-  findImportant() {
+  async findImportant() {
+    const trashedIds = await this.trashService.getTrashedIds('news_announcements');
+    const where: any = { isPublished: true, isImportant: true };
+    if (trashedIds.length) where.id = { notIn: trashedIds };
     return this.prisma.newsAnnouncement.findMany({
-      where: { isPublished: true, isImportant: true },
+      where,
       orderBy: { publishedAt: 'desc' },
       take: 5,
     });
   }
 
-  findRecent(limit = 5) {
+  async findRecent(limit = 5) {
+    const trashedIds = await this.trashService.getTrashedIds('news_announcements');
+    const where: any = { isPublished: true };
+    if (trashedIds.length) where.id = { notIn: trashedIds };
     return this.prisma.newsAnnouncement.findMany({
-      where: { isPublished: true },
+      where,
       orderBy: { publishedAt: 'desc' },
       take: limit,
       select: {
@@ -62,6 +74,7 @@ export class NewsService {
       },
     });
     if (!news) throw new NotFoundException('Aviso no encontrado');
+    if (await this.trashService.isInTrash('news_announcements', id)) throw new NotFoundException('Aviso no encontrado');
 
     const canDelete =
       viewerRole !== undefined && currentUserId !== undefined && currentUserLevel !== undefined
@@ -93,6 +106,6 @@ export class NewsService {
       currentUserId, currentUserLevel, news.creatorId, news.creator.role,
     );
     if (!allowed) throw new ForbiddenException();
-    return this.prisma.newsAnnouncement.delete({ where: { id } });
+    return this.trashService.softDelete('news_announcements', id, news.title, currentUserId);
   }
 }

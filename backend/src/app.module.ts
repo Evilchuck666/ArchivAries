@@ -13,6 +13,7 @@ import { NewsModule } from './news/news.module';
 import { LoreModule } from './lore/lore.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { RolesModule } from './roles/roles.module';
+import { TrashModule } from './trash/trash.module';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { PermissionsGuard } from './common/guards/permissions.guard';
@@ -39,6 +40,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     DashboardModule,
     PermissionsModule,
     RolesModule,
+    TrashModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

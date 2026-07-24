@@ -65,6 +65,7 @@ model User {
   createdDocuments    Document[]           @relation("DocumentCreator")
   createdNews         NewsAnnouncement[]   @relation("NewsCreator")
   createdLoreEntries  LoreEntry[]          @relation("LoreCreator")
+  trashedEntries      TrashEntry[]         @relation("TrashDeletedBy")
 
   @@map("users")
 }
@@ -238,4 +239,22 @@ model LoreEntry {
   updatedAt    DateTime     @updatedAt
 
   @@map("lore_entries")
+}
+
+// ─── TrashEntry ───────────────────────────────────────────────────────────────
+
+model TrashEntry {
+  id          String   @id @default(cuid())
+  tableName   String
+  recordId    String
+  title       String
+  deletedAt   DateTime @default(now())
+  expiresAt   DateTime
+  deletedById String
+  deletedBy   User     @relation("TrashDeletedBy", fields: [deletedById], references: [id])
+
+  @@unique([tableName, recordId])
+  @@index([tableName])
+  @@index([expiresAt])
+  @@map("trash")
 }

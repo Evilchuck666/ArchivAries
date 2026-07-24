@@ -24,5 +24,6 @@ export const ROUTES = {
   ADMIN: '/app/admin',
   ADMIN_USERS: '/app/admin/users',
   ADMIN_ROLES: '/app/admin/roles',
+  ADMIN_TRASH: '/app/admin/trash',
   ACTIVATE: '/activate',
 } as const;

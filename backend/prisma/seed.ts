@@ -82,6 +82,7 @@ async function main() {
     'users.manage', 'users.edit_role', 'users.grant_admin',
     'permissions.manage',
     'roles.manage',
+    'trash.read', 'trash.restore', 'trash.purge',
   ];
 
   const GRANTED: Record<RoleKey, string[]> = {
@@ -102,6 +103,7 @@ async function main() {
       'documents.read',
       'news.read',
       'members.read', 'members.edit_own',
+      'trash.read', 'trash.restore',
     ],
     BOARD: [
       'events.read', 'events.rsvp', 'events.create', 'events.edit', 'events.delete', 'calendar.read',
@@ -109,6 +111,7 @@ async function main() {
       'documents.read', 'documents.read_restricted', 'documents.create', 'documents.edit', 'documents.delete',
       'news.read', 'news.create', 'news.edit', 'news.delete',
       'members.read', 'members.read_sensitive', 'members.edit_own', 'members.edit_notes',
+      'trash.read', 'trash.restore',
     ],
     ADMIN: [
       ...ALL_PERMISSIONS.filter((p) => !['events.delete', 'lore.delete', 'documents.delete', 'news.delete', 'lore.view_restricted', 'users.grant_admin', 'permissions.manage', 'roles.manage'].includes(p)),

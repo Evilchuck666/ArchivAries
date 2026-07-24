@@ -10,6 +10,7 @@ interface NavItem {
   label: string;
   icon: string;
   permission?: string;
+  end?: boolean;
 }
 
 export function Sidebar() {
@@ -26,7 +27,8 @@ export function Sidebar() {
     { to: ROUTES.DOCUMENTS, label: t('nav.documents'), icon: '📜', permission: 'documents.read' },
     { to: ROUTES.NEWS, label: t('nav.news'), icon: '📢', permission: 'news.read' },
     { to: ROUTES.LORE, label: t('nav.lore'), icon: '🔮', permission: 'lore.read' },
-    { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', permission: 'users.manage' },
+    { to: ROUTES.ADMIN, label: t('nav.admin'), icon: '⚙️', permission: 'users.manage', end: true },
+    { to: ROUTES.ADMIN_TRASH, label: t('nav.trash'), icon: '🗑️', permission: 'trash.read' },
   ];
 
   if (!user) return null;
@@ -57,7 +59,7 @@ export function Sidebar() {
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === ROUTES.DASHBOARD}
+              end={item.end ?? item.to === ROUTES.DASHBOARD}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                   isActive

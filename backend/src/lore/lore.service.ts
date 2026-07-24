@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PermissionsService } from '../permissions/permissions.service';
+import { TrashService } from '../trash/trash.service';
 import { CreateLoreEntryDto } from './dto/create-lore-entry.dto';
 import { UpdateLoreEntryDto } from './dto/update-lore-entry.dto';
 
@@ -9,6 +10,7 @@ export class LoreService {
   constructor(
     private prisma: PrismaService,
     private permissionsService: PermissionsService,
+    private trashService: TrashService,
   ) {}
 
   async findAll(
@@ -33,6 +35,9 @@ export class LoreService {
         { summary: { contains: search, mode: 'insensitive' } },
       ];
     }
+
+    const trashedIds = await this.trashService.getTrashedIds('lore_entries');
+    if (trashedIds.length) where.id = { notIn: trashedIds };
 
     return this.prisma.loreEntry.findMany({
       where,
@@ -64,6 +69,7 @@ export class LoreService {
       },
     });
     if (!entry) throw new NotFoundException('Entrada de lore no encontrada');
+    if (await this.trashService.isInTrash('lore_entries', id)) throw new NotFoundException('Entrada de lore no encontrada');
     if (!entry.isPublished && !canSeeDrafts) throw new NotFoundException('Entrada de lore no encontrada');
     if (entry.isRestricted && !canViewRestricted) throw new NotFoundException('Entrada de lore no encontrada');
 
@@ -84,6 +90,7 @@ export class LoreService {
   }
 
   async update(id: string, dto: UpdateLoreEntryDto, viewerRole: string) {
+    if (await this.trashService.isInTrash('lore_entries', id)) throw new NotFoundException('Entrada de lore no encontrada');
     await this.prisma.loreEntry.findUniqueOrThrow({ where: { id } });
     const canMarkRestricted = await this.permissionsService.hasPermission(viewerRole, 'lore.view_restricted');
     const data: any = { ...dto, category: dto.category as any };
@@ -101,6 +108,6 @@ export class LoreService {
       currentUserId, currentUserLevel, entry.creatorId, entry.creator.role,
     );
     if (!allowed) throw new ForbiddenException();
-    return this.prisma.loreEntry.delete({ where: { id } });
+    return this.trashService.softDelete('lore_entries', id, entry.title, currentUserId);
   }
 }

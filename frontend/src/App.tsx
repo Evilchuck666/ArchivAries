@@ -43,6 +43,7 @@ import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { UserManagementPage } from './pages/admin/UserManagementPage';
 import { PermissionsPage } from './pages/admin/PermissionsPage';
 import { RolesPage } from './pages/admin/RolesPage';
+import { TrashPage } from './pages/admin/TrashPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -133,6 +134,9 @@ export default function App() {
                   <Route element={<PermissionRoute permission="roles.manage" redirectTo="/app/admin" />}>
                     <Route path="/app/admin/roles" element={<RolesPage />} />
                   </Route>
+                </Route>
+                <Route element={<PermissionRoute permission="trash.read" redirectTo="/app" />}>
+                  <Route path="/app/admin/trash" element={<TrashPage />} />
                 </Route>
               </Route>
             </Route>
