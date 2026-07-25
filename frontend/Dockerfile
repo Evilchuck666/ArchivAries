@@ -1,17 +1,17 @@
-FROM node:24-alpine AS development
+FROM oven/bun:1-alpine AS development
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 EXPOSE 5173
 
-FROM node:24-alpine AS build
+FROM oven/bun:1-alpine AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 COPY . .
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
-RUN npm run build
+RUN bun run build
 
 FROM nginx:alpine AS production
 COPY --from=build /app/dist /usr/share/nginx/html

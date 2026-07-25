@@ -31,13 +31,13 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       NODE_ENV: production
       TZ: UTC
+    volumes:
+      - ./uploads:/app/uploads
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - archivaries_net
-    ports:
-      - "3000:3000"
 
   frontend:
     build:
@@ -51,7 +51,7 @@ services:
     networks:
       - archivaries_net
     ports:
-      - "80:80"
+      - "8090:80"
     depends_on:
       - backend
 
