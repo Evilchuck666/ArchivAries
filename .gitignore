@@ -34,3 +34,4 @@ postgres_data/
 # TypeScript
 *.tsbuildinfo
 backend/uploads/avatars/*
+.claude/settings.local.json
